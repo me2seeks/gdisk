@@ -1,0 +1,50 @@
+syntax = "v1"
+
+info(
+    title: "type title here"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+import (
+    "file/file.api"
+    "fileFolder/fileFolder.api"
+    "fileStore/fileStore.api"
+)
+
+//need login
+@server(
+    prefix: disk/v1
+    group: file
+    jwt: JwtAuth
+)
+service file {
+    @doc "文件"
+    @handler file
+    post
+}
+
+@server(
+    prefix: disk/v1
+    group: fileFolder
+    jwt: JwtAuth
+)
+service filefolder {
+    @doc "文件夹"
+    @handler 
+    post
+}
+
+
+@server(
+    prefix: disk/v1
+    group: fileStore
+    jwt: JwtAuth
+)
+service file_store {
+    @doc "文件"
+    @handler
+    post
+}
