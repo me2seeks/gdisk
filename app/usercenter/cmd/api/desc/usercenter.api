@@ -1,0 +1,40 @@
+syntax = "v1"
+
+info(
+	title: "用户中心"
+	desc: "注册 登入 用户信息、微信小程序授权"
+	author: "L.L"
+	email: "chinaskillproject.163.com"
+	version: "v1"
+)
+
+import "user/user.api"
+
+@server(
+	prefix: /usercenter/v1
+	group: user
+)
+service usercenter {
+	@doc "注册"
+	@handler register
+	post /user (RegisterReq) returns (RegisterResp)
+	
+	@doc "登入"
+	@handler login
+	post /user/login (LoginReq) returns (LoginResp)
+}
+
+@server(
+	prefix: /usercenter/v1
+	jwt: JwtAuth
+	group: user
+)
+service usercenter {
+	@doc "用户信息"
+	@handler detail
+	post /user/detail (UserInfoReq) returns (UserInfoResp)
+	
+	@doc "wx Auth"
+	@handler wxAuth
+	post /user/wxMiniAuth (WXMiniAuthReq) returns (WXMiniAuthResp)
+}

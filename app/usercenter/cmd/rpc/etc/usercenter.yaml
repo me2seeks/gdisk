@@ -1,0 +1,39 @@
+Name: usercenter-rpc
+ListenOn: 0.0.0.0:2001
+Mode: dev
+
+#jwtAuth
+JwtAuth:
+  AccessSecret: ae0536f9-1024-4606-8e13-5a19ed505da0
+  AccessExpire: 31536000
+
+#Monitoring
+Prometheus:
+  Host: 0.0.0.0
+  Port: 4002
+  Path: /metrics
+
+#Link Tracking
+Telemetry:
+  Name: usercenter-rpc
+  Endpoint: http://127.0.0.1:14268/api/traces
+  Sampler: 1.0
+  Batcher: jaeger
+
+Log:
+  ServiceName: usercenter-rpc
+  Level: error
+
+Redis:
+  Host: 127.0.0.1:6379
+  Key: rpc:user
+  Type: node
+  Pass: "000000"
+
+DB:
+  DataSource: root:000000@tcp(127.0.0.1:3306)/trytry?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+
+Cache:
+  - Host: 127.0.0.1:6379
+    Pass: "000000"
+

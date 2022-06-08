@@ -1,0 +1,66 @@
+syntax = "v1"
+
+info(
+    title: "用户实例"
+    desc: "用户实例"
+    author: "L.L"
+    email: "chinaskillproject.163.com"
+    version: "v1"
+)
+
+type User {
+    Id int64 `json:"id"`
+    phone int64 `json:"phone"`
+    Nickname string `json:"nickname"`
+    Sex string `json:"sex"`
+    Avatar string `json:"avatar"`
+    Info string `json:"info"`
+}
+
+type (
+    RegisterReq {
+        phone   string `json:"verify"`
+        Password string `json:"password"`
+        Captcha string `json:"captcha"`
+    }
+    RegisterResp {
+        AccessToken  string `json:"accessToken"`
+        AccessExpire int64  `json:"accessExpire"`
+        RefreshAfter int64  `json:"refreshAfter"`
+    }
+)
+
+type (
+    LoginReq{
+        phone   string `json:"verify"`
+        Password string `json:"password"`
+    }
+    LoginResp {
+        AccessToken string `json:"accessToken"`
+        AccessExpire int64 `json:"AccessExpire"`
+        RefreshAfter int64 `json:"RefreshAfter"`
+    }
+)
+
+type (
+    WXMiniAuthReq {
+        Code          string `json:"code"`
+        IV            string `json:"iv"`
+        EncryptedData string `json:"encryptedData"`
+    }
+    WXMiniAuthResp {
+        AccessToken  string `json:"accessToken"`
+        AccessExpire int64  `json:"accessExpire"`
+        RefreshAfter int64  `json:"refreshAfter"`
+    }
+)
+
+type (
+    UserInfoReq {
+    }
+    UserInfoResp {
+        UserInfo User `json:"userInfo"`
+    }
+)
+
+

@@ -1,0 +1,44 @@
+Name: usercenter-api
+Host: 0.0.0.0
+Port: 1001
+Mode: dev
+
+#jwtAuth
+JwtAuth:
+  AccessSecret: ae0536f9-1024-4606-8e13-5a19ed505da0
+  AccessExpire: 31536000
+
+#Monitoring
+Prometheus:
+  Host: 0.0.0.0
+  Port: 4001
+  Path: /metrics
+
+#Link Tracking
+Telemetry:
+  Name: usercenter-api
+  Endpoint: http://127.0.0.1:14268/api/traces
+  Sampler: 1.0
+  Batcher: jaeger
+
+Log:
+  ServiceName: usercenter-api
+  Level: error
+
+#WxMiniConf
+WxMiniConf:
+  AppId:
+  Secret:
+
+Redis:
+  Host: 127.0.0.1:6379
+  Key: rpc:user
+  Type: node
+  Pass: "000000"
+
+
+UserCenterRpc:
+  Endpoints:
+    - 127.0.0.1:2001
+  NonBlock: true
+
