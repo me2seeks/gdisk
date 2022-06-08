@@ -1,0 +1,39 @@
+Name: verification.rpc
+ListenOn: 0.0.0.0:2002
+Mode: dev
+
+
+
+#Etcd:
+#  Hosts:
+#    - 127.0.0.1:2379
+#  Key: verification.rpc
+
+#jwtAuth
+JwtAuth:
+  AccessSecret: ae0536f9-1024-4606-8e13-5a19ed505da0
+  AccessExpire: 31536000
+
+#Monitoring
+Prometheus:
+  Host: 0.0.0.0
+  Port: 4004
+  Path: /metrics
+
+#Link Tracking
+Telemetry:
+  Name: verification-rpc
+  Endpoint: http://127.0.0.1:14268/api/traces
+  Sampler: 1.0
+  Batcher: jaeger
+
+Log:
+  ServiceName: verification-rpc
+  Level: error
+
+Redis:
+  Host: 127.0.0.1:6379
+  Key: rpc:verification
+  Type: node
+  Pass: "000000"
+

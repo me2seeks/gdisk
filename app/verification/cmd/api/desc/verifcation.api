@@ -1,0 +1,41 @@
+syntax = "v1"
+
+info(
+	title: "verify "
+	desc: "verify"
+	author: "LL"
+	email: "z3653934@163.com"
+	version: "1"
+)
+
+type (
+	VerifyEmailReq {
+		Email string `json:"email"`
+		Key   string `json:"key"`
+		Value string `json:"value"`
+	}
+	VerifyEmailResp {
+	}
+)
+
+type (
+	VerifyImageReq {
+	}
+	VerifyImageResp {
+		ImageUrl string `json:"imageurl"`
+	}
+)
+
+@server(
+	prefix: v1
+	
+)
+service verification {
+	@doc "验证邮箱"
+	@handler verifyemail
+	post /verification/email (VerifyEmailReq) returns (VerifyEmailResp)
+	
+	@doc "验证图"
+	@handler verifyimage
+	post /verification/image (VerifyImageReq) returns (VerifyImageResp)
+}

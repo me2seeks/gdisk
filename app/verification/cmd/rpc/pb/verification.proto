@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package= "./pb";
+
+//req resp
+message VerifyEmailReq{
+  string email =1;
+  string key =2;
+  string value =3;
+}
+message VerifyEmailResp {
+}
+
+message VerifyImageReq{
+}
+message VerifyImageResp{
+  string imageUrl =1;
+}
+
+//service
+service verification {
+    rpc  verifyEmail(VerifyEmailReq) returns(VerifyEmailResp);
+    rpc verifyImage(VerifyImageReq) returns(VerifyImageResp);
+}
