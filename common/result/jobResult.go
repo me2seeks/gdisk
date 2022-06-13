@@ -3,7 +3,7 @@ package result
 import (
 	"context"
 
-	"trytry/common/xerr"
+	"cloud-disk/common/xerr"
 
 	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/logx"

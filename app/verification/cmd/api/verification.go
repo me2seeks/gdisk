@@ -1,11 +1,11 @@
 package main
 
 import (
+	"cloud-disk/app/verification/cmd/api/internal/config"
+	"cloud-disk/app/verification/cmd/api/internal/handler"
+	"cloud-disk/app/verification/cmd/api/internal/svc"
 	"flag"
 	"fmt"
-	"trytry/app/verification/cmd/api/internal/config"
-	"trytry/app/verification/cmd/api/internal/handler"
-	"trytry/app/verification/cmd/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"

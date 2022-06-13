@@ -9,3 +9,37 @@ info(
 )
 
 
+type  File {
+    Path string  `json:"path",default:"/"`
+    FileName string `json:"fileName"`
+    Size int `json:"size"`
+}
+
+type (
+    //上传凭证
+    UploadCertificateReq{
+        files []File `json:"files"`
+    }
+    UploadCertificateResp{
+        Certificate string  `json:"certificate""`
+    }
+
+    //下载凭证
+    DownloadCertificateReq{
+
+    }
+    DownloadCertificateResp {
+        Certificate string `json:"certificate""`
+    }
+
+    //上传回调
+    CallbackReq{
+
+    }
+    CallbackResp {
+    }
+
+)
+
+
+

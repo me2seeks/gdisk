@@ -1,12 +1,12 @@
 package main
 
 import (
+	"cloud-disk/app/usercenter/cmd/api/internal/handler"
 	"flag"
 	"fmt"
-	"trytry/app/usercenter/cmd/api/internal/handler"
 
-	"trytry/app/usercenter/cmd/api/internal/config"
-	"trytry/app/usercenter/cmd/api/internal/svc"
+	"cloud-disk/app/usercenter/cmd/api/internal/config"
+	"cloud-disk/app/usercenter/cmd/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"

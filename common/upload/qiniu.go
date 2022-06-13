@@ -10,11 +10,12 @@ import (
 
 const AK = "UZKiLt7Q4jhJA6z2xGo4jSpa-DyUPY5AsyzJ3RtA"
 const SK = "SoH_ie2zGIb_NegryWa5CyMYYUpwBs9GfPPljUqS"
+const Bucket = "chinaskill"
+const Url = "rc4dfplxe.hd-bkt.clouddn.com/"
 
 // 封装上传图片到七牛云然后返回状态和图片的url
 func UploadToQiNiu(key string, data []byte) (string, error) {
-	var Bucket = "chinaskill"
-	var Url = "rc4dfplxe.hd-bkt.clouddn.com/"
+
 	putPolicy := storage.PutPolicy{
 		Scope: Bucket,
 	}
@@ -36,7 +37,22 @@ func UploadToQiNiu(key string, data []byte) (string, error) {
 		fmt.Println(err)
 		return "", err
 	}
+	newUrl := Url + key
+	return newUrl, nil
+}
 
-	Url = Url + key
-	return Url, nil
+//返回上传凭证
+func UploadCertificate(max int64) string {
+	putPolicy := storage.PutPolicy{
+		Scope:            Bucket,
+		CallbackURL:      "http://api.example.com/qiniu/upload/callback",
+		CallbackBody:     `{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"path":"$(x:path)","uid":"$(x:uid)"}`,
+		CallbackBodyType: "application/json",
+		FsizeLimit:       max,
+	}
+	mac := qbox.NewMac(AK, SK)
+	upToken := putPolicy.UploadToken(mac)
+	putPolicy.Expires = 1800
+
+	return upToken
 }

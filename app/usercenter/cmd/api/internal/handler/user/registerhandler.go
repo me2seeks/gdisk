@@ -4,11 +4,11 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"net/http"
 
-	"trytry/common/result"
+	"cloud-disk/common/result"
 
-	"trytry/app/usercenter/cmd/api/internal/logic/user"
-	"trytry/app/usercenter/cmd/api/internal/svc"
-	"trytry/app/usercenter/cmd/api/internal/types"
+	"cloud-disk/app/usercenter/cmd/api/internal/logic/user"
+	"cloud-disk/app/usercenter/cmd/api/internal/svc"
+	"cloud-disk/app/usercenter/cmd/api/internal/types"
 )
 
 func RegisterHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {

@@ -1,13 +1,13 @@
 package logic
 
 import (
+	"cloud-disk/app/usercenter/cmd/rpc/usercenter"
+	"cloud-disk/common/ctxdata"
 	"context"
 	"github.com/jinzhu/copier"
-	"trytry/app/usercenter/cmd/rpc/usercenter"
-	"trytry/common/ctxdata"
 
-	"trytry/app/usercenter/cmd/api/internal/svc"
-	"trytry/app/usercenter/cmd/api/internal/types"
+	"cloud-disk/app/usercenter/cmd/api/internal/svc"
+	"cloud-disk/app/usercenter/cmd/api/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

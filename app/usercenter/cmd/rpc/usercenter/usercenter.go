@@ -6,7 +6,7 @@ package usercenter
 import (
 	"context"
 
-	"trytry/app/usercenter/cmd/rpc/pb"
+	"cloud-disk/app/usercenter/cmd/rpc/pb"
 
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"

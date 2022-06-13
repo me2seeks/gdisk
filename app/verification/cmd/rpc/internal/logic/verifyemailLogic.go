@@ -1,14 +1,14 @@
 package logic
 
 import (
+	"cloud-disk/app/verification/cmd/rpc/internal/svc"
+	"cloud-disk/app/verification/cmd/rpc/pb"
+	"cloud-disk/common/tool"
+	"cloud-disk/common/verify"
+	"cloud-disk/common/xerr"
 	"context"
 	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/logx"
-	"trytry/app/verification/cmd/rpc/internal/svc"
-	"trytry/app/verification/cmd/rpc/pb"
-	"trytry/common/tool"
-	"trytry/common/verify"
-	"trytry/common/xerr"
 )
 
 type VerifyemailLogic struct {

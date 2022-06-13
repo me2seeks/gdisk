@@ -1,11 +1,11 @@
 package logic
 
 import (
+	"cloud-disk/app/verification/cmd/api/internal/svc"
+	"cloud-disk/app/verification/cmd/api/internal/types"
+	"cloud-disk/app/verification/cmd/rpc/verification"
 	"context"
 	"github.com/pkg/errors"
-	"trytry/app/verification/cmd/api/internal/svc"
-	"trytry/app/verification/cmd/api/internal/types"
-	"trytry/app/verification/cmd/rpc/verification"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

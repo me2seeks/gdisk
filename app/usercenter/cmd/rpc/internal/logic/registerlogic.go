@@ -1,16 +1,16 @@
 package logic
 
 import (
+	"cloud-disk/app/usercenter/cmd/rpc/usercenter"
+	"cloud-disk/app/usercenter/model"
+	"cloud-disk/common/tool"
+	"cloud-disk/common/xerr"
 	"context"
 	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
-	"trytry/app/usercenter/cmd/rpc/usercenter"
-	"trytry/app/usercenter/model"
-	"trytry/common/tool"
-	"trytry/common/xerr"
 
-	"trytry/app/usercenter/cmd/rpc/internal/svc"
-	"trytry/app/usercenter/cmd/rpc/pb"
+	"cloud-disk/app/usercenter/cmd/rpc/internal/svc"
+	"cloud-disk/app/usercenter/cmd/rpc/pb"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

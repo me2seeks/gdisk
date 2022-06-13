@@ -6,9 +6,9 @@ package server
 import (
 	"context"
 
-	"trytry/app/usercenter/cmd/rpc/internal/logic"
-	"trytry/app/usercenter/cmd/rpc/internal/svc"
-	"trytry/app/usercenter/cmd/rpc/pb"
+	"cloud-disk/app/usercenter/cmd/rpc/internal/logic"
+	"cloud-disk/app/usercenter/cmd/rpc/internal/svc"
+	"cloud-disk/app/usercenter/cmd/rpc/pb"
 )
 
 type UsercenterServer struct {

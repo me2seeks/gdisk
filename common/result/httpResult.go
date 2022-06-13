@@ -1,12 +1,12 @@
 package result
 
 import (
+	"cloud-disk/common/xerr"
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc/status"
 	"net/http"
-	"trytry/common/xerr"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
 )

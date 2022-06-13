@@ -6,7 +6,7 @@ package verification
 import (
 	"context"
 
-	"trytry/app/verification/cmd/rpc/pb"
+	"cloud-disk/app/verification/cmd/rpc/pb"
 
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"

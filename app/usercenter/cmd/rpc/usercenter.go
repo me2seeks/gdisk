@@ -4,10 +4,10 @@ import (
 	"flag"
 	"fmt"
 
-	"trytry/app/usercenter/cmd/rpc/internal/config"
-	"trytry/app/usercenter/cmd/rpc/internal/server"
-	"trytry/app/usercenter/cmd/rpc/internal/svc"
-	"trytry/app/usercenter/cmd/rpc/pb"
+	"cloud-disk/app/usercenter/cmd/rpc/internal/config"
+	"cloud-disk/app/usercenter/cmd/rpc/internal/server"
+	"cloud-disk/app/usercenter/cmd/rpc/internal/svc"
+	"cloud-disk/app/usercenter/cmd/rpc/pb"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"

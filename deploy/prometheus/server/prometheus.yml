@@ -1,0 +1,111 @@
+global:
+  scrape_interval:
+  external_labels:
+    monitor: 'codelab-monitor'
+
+scrape_configs:
+  - job_name: 'prometheus'
+    scrape_interval: 5s  #global catch time
+    static_configs:
+      - targets: ['127.0.0.1:9090']
+
+  - job_name: 'usercenter-api'
+    static_configs:
+      - targets: ['trytry:4001']
+        labels:
+          job: usercenter-api
+          app: usercenter-api
+          env: dev
+  - job_name: 'usercenter-rpc'
+    static_configs:
+      - targets: ['trytry:4002']
+        labels:
+          job: usercenter-rpc
+          app: usercenter-rpc
+          env: dev
+
+  - job_name: 'verification-api'
+    static_configs:
+        - targets: ['trytry:4003']
+          labels:
+            job: verification-api
+            app: verification-api
+            env: dev
+  - job_name: 'verification-rpc'
+    static_configs:
+      - targets: ['trytry:4004']
+        labels:
+          job: verification-rpc
+          app: verification-rpc
+          env: dev
+
+  - job_name: 'travel-api'
+    static_configs:
+      - targets: [ 'trytry:4005' ]
+        labels:
+          job: travel-api
+          app: travel-api
+          env: dev
+  - job_name: 'travel-rpc'
+    static_configs:
+      - targets: [ 'trytry:4006' ]
+        labels:
+          job: travel-rpc
+          app: travel-rpc
+          env: dev
+
+  - job_name: 'order-api'
+    static_configs:
+      - targets: [ 'trytry:4007' ]
+        labels:
+          job: order-api
+          app: order-api
+          env: dev
+  - job_name: 'order-rpc'
+    static_configs:
+      - targets: [ 'trytry:4008' ]
+        labels:
+          job: order-rpc
+          app: order-rpc
+          env: dev
+  - job_name: 'order-mq'
+    static_configs:
+      - targets: [ 'trytry:4009' ]
+        labels:
+          job: order-mq
+          app: order-mq
+          env: dev
+
+  - job_name: 'payment-api'
+    static_configs:
+      - targets: [ 'trytry:4010' ]
+        labels:
+          job: payment-api
+          app: payment-api
+          env: dev
+  - job_name: 'payment-rpc'
+    static_configs:
+      - targets: [ 'trytry:4011' ]
+        labels:
+          job: payment-rpc
+          app: payment-rpc
+          env: dev
+
+
+
+
+
+  - job_name: 'mqueue-job'
+    static_configs:
+      - targets: [ 'trytry:4099' ]
+        labels:
+          job: mqueue-job
+          app: mqueue-job
+          env: dev
+  - job_name: 'mqueue-scheduler'
+    static_configs:
+      - targets: [ 'trytry:4100' ]
+        labels:
+          job: mqueue-scheduler
+          app: mqueue-scheduler
+          env: dev

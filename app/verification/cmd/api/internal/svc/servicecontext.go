@@ -1,9 +1,9 @@
 package svc
 
 import (
+	"cloud-disk/app/verification/cmd/api/internal/config"
+	"cloud-disk/app/verification/cmd/rpc/verification"
 	"github.com/zeromicro/go-zero/zrpc"
-	"trytry/app/verification/cmd/api/internal/config"
-	"trytry/app/verification/cmd/rpc/verification"
 )
 
 type ServiceContext struct {

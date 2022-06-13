@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "./pb";
+
+package pb;
+
+message JudgeReq {
+  int64 uid = 1;
+  int64 needSize = 2;
+}
+
+message JudgeResp {
+  bool  isAllowed = 1;
+}
+
+service payment {
+  //判断是否能存入
+  rpc JudgeAllowed(JudgeReq) returns(JudgeResp);
+}

@@ -1,0 +1,73 @@
+syntax = "v1"
+
+info(
+	title: "type title here"
+	desc: "type desc here"
+	author: "type author here"
+	email: "type email here"
+	version: "type version here"
+)
+
+import (
+	"file/file.api"
+	"fileFolder/fileFolder.api"
+	"fileStore/fileStore.api"
+)
+
+//need login
+@server(
+	prefix: disk/v1
+	group: file
+	jwt: JwtAuth
+)
+service disk {
+	
+	@doc "获取上传凭证"
+	@handler uploadCertificate
+	post /certificate/upload (UploadCertificateReq) returns (UploadCertificateResp)
+	
+	@doc "获取下载凭证"
+	@handler downloadCertificate
+	post /certificate/download (DownloadCertificateReq) returns (DownloadCertificateResp)
+	
+	@doc "上传回调"
+	@handler callback
+	post /certificate/callback (CallbackReq) returns (CallbackResp)
+}
+
+@server(
+	prefix: disk/v1
+	group: fileFolder
+	jwt: JwtAuth
+)
+service disk {
+	
+	@doc "创建文件夹"
+	@handler  foldercreate
+	post /folder (CreateFolderReq) returns (CreateFolderResp)
+	
+	@doc "列出文件夹下的文件和文件"
+	@handler folderlist
+	post /folder/list (ListReq) returns (ListResp)
+	
+	@doc "移动文件或文件夹"
+	@handler move
+	post /folder/move (MovedReq) returns (MovedResp)
+	
+	@doc "重命名"
+	@handler rename
+	post /folder/rename (RenamedReq) returns (RenamedResp)
+}
+
+@server(
+	prefix: disk/v1
+	group: store
+	jwt: JwtAuth
+)
+service disk {
+	@doc "容量"
+	@handler store
+	post /store (StoreDetailReq) returns (StoreDetailResp)
+}
+
+//分享

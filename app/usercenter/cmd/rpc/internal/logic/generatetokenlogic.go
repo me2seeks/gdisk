@@ -1,15 +1,15 @@
 package logic
 
 import (
+	"cloud-disk/common/ctxdata"
+	"cloud-disk/common/xerr"
 	"context"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/pkg/errors"
 	"time"
-	"trytry/common/ctxdata"
-	"trytry/common/xerr"
 
-	"trytry/app/usercenter/cmd/rpc/internal/svc"
-	"trytry/app/usercenter/cmd/rpc/pb"
+	"cloud-disk/app/usercenter/cmd/rpc/internal/svc"
+	"cloud-disk/app/usercenter/cmd/rpc/pb"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

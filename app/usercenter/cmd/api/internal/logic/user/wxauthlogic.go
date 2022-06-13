@@ -1,14 +1,14 @@
 package logic
 
 import (
+	"cloud-disk/app/usercenter/cmd/api/internal/svc"
+	"cloud-disk/app/usercenter/cmd/api/internal/types"
+	"cloud-disk/app/usercenter/cmd/rpc/usercenter"
+	usercenterModel "cloud-disk/app/usercenter/model"
+	"cloud-disk/common/xerr"
 	"context"
 	"fmt"
 	"github.com/pkg/errors"
-	"trytry/app/usercenter/cmd/api/internal/svc"
-	"trytry/app/usercenter/cmd/api/internal/types"
-	"trytry/app/usercenter/cmd/rpc/usercenter"
-	usercenterModel "trytry/app/usercenter/model"
-	"trytry/common/xerr"
 
 	wechat "github.com/silenceper/wechat/v2"
 	"github.com/silenceper/wechat/v2/cache"
@@ -65,7 +65,7 @@ func (l *WxAuthLogic) WxAuth(req *types.WXMiniAuthReq) (*types.WXMiniAuthResp, e
 
 		//Wechat-Mini Decrypted data
 		Phone := userData.PhoneNumber
-		nickName := fmt.Sprintf("TryTry%s", Phone[7:]) //防止昵称有重复无法注册
+		nickName := fmt.Sprintf("cloud-disk%s", Phone[7:]) //防止昵称有重复无法注册
 		registerRsp, err := l.svcCtx.UsercenterRpc.Register(l.ctx, &usercenter.RegisterReq{
 			AuthKey:  authResult.OpenID,
 			AuthType: usercenterModel.UserAuthTypeSmallWX,

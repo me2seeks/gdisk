@@ -6,9 +6,9 @@ package server
 import (
 	"context"
 
-	"trytry/app/verification/cmd/rpc/internal/logic"
-	"trytry/app/verification/cmd/rpc/internal/svc"
-	"trytry/app/verification/cmd/rpc/pb"
+	"cloud-disk/app/verification/cmd/rpc/internal/logic"
+	"cloud-disk/app/verification/cmd/rpc/internal/svc"
+	"cloud-disk/app/verification/cmd/rpc/pb"
 )
 
 type VerificationServer struct {

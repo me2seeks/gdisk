@@ -4,11 +4,11 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"net/http"
 
-	"trytry/common/result"
+	"cloud-disk/common/result"
 
-	"trytry/app/verification/cmd/api/internal/logic"
-	"trytry/app/verification/cmd/api/internal/svc"
-	"trytry/app/verification/cmd/api/internal/types"
+	"cloud-disk/app/verification/cmd/api/internal/logic"
+	"cloud-disk/app/verification/cmd/api/internal/svc"
+	"cloud-disk/app/verification/cmd/api/internal/types"
 )
 
 func verifyemailHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {

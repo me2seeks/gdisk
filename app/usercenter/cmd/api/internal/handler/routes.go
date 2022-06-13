@@ -4,8 +4,8 @@ package handler
 import (
 	"net/http"
 
-	user "trytry/app/usercenter/cmd/api/internal/handler/user"
-	"trytry/app/usercenter/cmd/api/internal/svc"
+	user "cloud-disk/app/usercenter/cmd/api/internal/handler/user"
+	"cloud-disk/app/usercenter/cmd/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )

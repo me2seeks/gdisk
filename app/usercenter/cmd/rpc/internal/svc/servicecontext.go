@@ -1,10 +1,10 @@
 package svc
 
 import (
+	"cloud-disk/app/usercenter/cmd/rpc/internal/config"
+	"cloud-disk/app/usercenter/model"
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
-	"trytry/app/usercenter/cmd/rpc/internal/config"
-	"trytry/app/usercenter/model"
 )
 
 type ServiceContext struct {

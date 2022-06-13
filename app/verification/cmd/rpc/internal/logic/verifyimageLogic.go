@@ -1,13 +1,13 @@
 package logic
 
 import (
+	"cloud-disk/common/upload"
+	"cloud-disk/common/verify"
 	"context"
 	"fmt"
-	"trytry/common/upload"
-	"trytry/common/verify"
 
-	"trytry/app/verification/cmd/rpc/internal/svc"
-	"trytry/app/verification/cmd/rpc/pb"
+	"cloud-disk/app/verification/cmd/rpc/internal/svc"
+	"cloud-disk/app/verification/cmd/rpc/pb"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
