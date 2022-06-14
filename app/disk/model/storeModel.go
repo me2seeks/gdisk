@@ -13,56 +13,56 @@ import (
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
-var _ FileFolderModel = (*customFileFolderModel)(nil)
+var _ StoreModel = (*customStoreModel)(nil)
 
 type (
-	// FileFolderModel is an interface to be customized, add more methods here,
-	// and implement the added methods in customFileFolderModel.
-	FileFolderModel interface {
-		fileFolderModel
+	// StoreModel is an interface to be customized, add more methods here,
+	// and implement the added methods in customStoreModel.
+	StoreModel interface {
+		storeModel
 		Trans(ctx context.Context, fn func(context context.Context, session sqlx.Session) error) error
 		RowBuilder() squirrel.SelectBuilder
 		CountBuilder(field string) squirrel.SelectBuilder
 		SumBuilder(field string) squirrel.SelectBuilder
-		DeleteSoft(ctx context.Context, session sqlx.Session, data *FileFolder) error
-		FindOneByQuery(ctx context.Context, rowBuilder squirrel.SelectBuilder) (*FileFolder, error)
+		DeleteSoft(ctx context.Context, session sqlx.Session, data *Store) error
+		FindOneByQuery(ctx context.Context, rowBuilder squirrel.SelectBuilder) (*Store, error)
 		FindSum(ctx context.Context, sumBuilder squirrel.SelectBuilder) (float64, error)
 		FindCount(ctx context.Context, countBuilder squirrel.SelectBuilder) (int64, error)
-		FindAll(ctx context.Context, rowBuilder squirrel.SelectBuilder, orderBy string) ([]*FileFolder, error)
-		FindPageListByPage(ctx context.Context, rowBuilder squirrel.SelectBuilder, page, pageSize int64, orderBy string) ([]*FileFolder, error)
-		FindPageListByIdDESC(ctx context.Context, rowBuilder squirrel.SelectBuilder, preMinId, pageSize int64) ([]*FileFolder, error)
-		FindPageListByIdASC(ctx context.Context, rowBuilder squirrel.SelectBuilder, preMaxId, pageSize int64) ([]*FileFolder, error)
+		FindAll(ctx context.Context, rowBuilder squirrel.SelectBuilder, orderBy string) ([]*Store, error)
+		FindPageListByPage(ctx context.Context, rowBuilder squirrel.SelectBuilder, page, pageSize int64, orderBy string) ([]*Store, error)
+		FindPageListByIdDESC(ctx context.Context, rowBuilder squirrel.SelectBuilder, preMinId, pageSize int64) ([]*Store, error)
+		FindPageListByIdASC(ctx context.Context, rowBuilder squirrel.SelectBuilder, preMaxId, pageSize int64) ([]*Store, error)
 	}
 
-	customFileFolderModel struct {
-		*defaultFileFolderModel
+	customStoreModel struct {
+		*defaultStoreModel
 	}
 )
 
-// NewFileFolderModel returns a model for the database table.
-func NewFileFolderModel(conn sqlx.SqlConn, c cache.CacheConf) FileFolderModel {
-	return &customFileFolderModel{
-		defaultFileFolderModel: newFileFolderModel(conn, c),
+// NewStoreModel returns a model for the database table.
+func NewStoreModel(conn sqlx.SqlConn, c cache.CacheConf) StoreModel {
+	return &customStoreModel{
+		defaultStoreModel: newStoreModel(conn, c),
 	}
 }
 
-func (m *defaultFileFolderModel) DeleteSoft(ctx context.Context, session sqlx.Session, data *FileFolder) error {
+func (m *defaultStoreModel) DeleteSoft(ctx context.Context, session sqlx.Session, data *Store) error {
 	data.DelState = globalkey.DelStateYes
 	data.DeleteTime = time.Now()
 	if err := m.UpdateWithVersion(ctx, session, data); err != nil {
-		return errors.Wrapf(xerr.NewErrMsg("删除数据失败"), "FileFolderModel delete err : %+v", err)
+		return errors.Wrapf(xerr.NewErrMsg("删除数据失败"), "StoreModel delete err : %+v", err)
 	}
 	return nil
 }
 
-func (m *defaultFileFolderModel) FindOneByQuery(ctx context.Context, rowBuilder squirrel.SelectBuilder) (*FileFolder, error) {
+func (m *defaultStoreModel) FindOneByQuery(ctx context.Context, rowBuilder squirrel.SelectBuilder) (*Store, error) {
 
 	query, values, err := rowBuilder.Where("del_state = ?", globalkey.DelStateNo).ToSql()
 	if err != nil {
 		return nil, err
 	}
 
-	var resp FileFolder
+	var resp Store
 	err = m.QueryRowNoCacheCtx(ctx, &resp, query, values...)
 	switch err {
 	case nil:
@@ -72,7 +72,7 @@ func (m *defaultFileFolderModel) FindOneByQuery(ctx context.Context, rowBuilder 
 	}
 }
 
-func (m *defaultFileFolderModel) FindSum(ctx context.Context, sumBuilder squirrel.SelectBuilder) (float64, error) {
+func (m *defaultStoreModel) FindSum(ctx context.Context, sumBuilder squirrel.SelectBuilder) (float64, error) {
 
 	query, values, err := sumBuilder.Where("del_state = ?", globalkey.DelStateNo).ToSql()
 	if err != nil {
@@ -89,7 +89,7 @@ func (m *defaultFileFolderModel) FindSum(ctx context.Context, sumBuilder squirre
 	}
 }
 
-func (m *defaultFileFolderModel) FindCount(ctx context.Context, countBuilder squirrel.SelectBuilder) (int64, error) {
+func (m *defaultStoreModel) FindCount(ctx context.Context, countBuilder squirrel.SelectBuilder) (int64, error) {
 
 	query, values, err := countBuilder.Where("del_state = ?", globalkey.DelStateNo).ToSql()
 	if err != nil {
@@ -106,7 +106,7 @@ func (m *defaultFileFolderModel) FindCount(ctx context.Context, countBuilder squ
 	}
 }
 
-func (m *defaultFileFolderModel) FindAll(ctx context.Context, rowBuilder squirrel.SelectBuilder, orderBy string) ([]*FileFolder, error) {
+func (m *defaultStoreModel) FindAll(ctx context.Context, rowBuilder squirrel.SelectBuilder, orderBy string) ([]*Store, error) {
 
 	if orderBy == "" {
 		rowBuilder = rowBuilder.OrderBy("id DESC")
@@ -119,7 +119,7 @@ func (m *defaultFileFolderModel) FindAll(ctx context.Context, rowBuilder squirre
 		return nil, err
 	}
 
-	var resp []*FileFolder
+	var resp []*Store
 	err = m.QueryRowsNoCacheCtx(ctx, &resp, query, values...)
 	switch err {
 	case nil:
@@ -129,7 +129,7 @@ func (m *defaultFileFolderModel) FindAll(ctx context.Context, rowBuilder squirre
 	}
 }
 
-func (m *defaultFileFolderModel) FindPageListByPage(ctx context.Context, rowBuilder squirrel.SelectBuilder, page, pageSize int64, orderBy string) ([]*FileFolder, error) {
+func (m *defaultStoreModel) FindPageListByPage(ctx context.Context, rowBuilder squirrel.SelectBuilder, page, pageSize int64, orderBy string) ([]*Store, error) {
 
 	if orderBy == "" {
 		rowBuilder = rowBuilder.OrderBy("id DESC")
@@ -147,7 +147,7 @@ func (m *defaultFileFolderModel) FindPageListByPage(ctx context.Context, rowBuil
 		return nil, err
 	}
 
-	var resp []*FileFolder
+	var resp []*Store
 	err = m.QueryRowsNoCacheCtx(ctx, &resp, query, values...)
 	switch err {
 	case nil:
@@ -157,7 +157,7 @@ func (m *defaultFileFolderModel) FindPageListByPage(ctx context.Context, rowBuil
 	}
 }
 
-func (m *defaultFileFolderModel) FindPageListByIdDESC(ctx context.Context, rowBuilder squirrel.SelectBuilder, preMinId, pageSize int64) ([]*FileFolder, error) {
+func (m *defaultStoreModel) FindPageListByIdDESC(ctx context.Context, rowBuilder squirrel.SelectBuilder, preMinId, pageSize int64) ([]*Store, error) {
 
 	if preMinId > 0 {
 		rowBuilder = rowBuilder.Where(" id < ? ", preMinId)
@@ -168,7 +168,7 @@ func (m *defaultFileFolderModel) FindPageListByIdDESC(ctx context.Context, rowBu
 		return nil, err
 	}
 
-	var resp []*FileFolder
+	var resp []*Store
 	err = m.QueryRowsNoCacheCtx(ctx, &resp, query, values...)
 	switch err {
 	case nil:
@@ -179,7 +179,7 @@ func (m *defaultFileFolderModel) FindPageListByIdDESC(ctx context.Context, rowBu
 }
 
 //按照id升序分页查询数据，不支持排序
-func (m *defaultFileFolderModel) FindPageListByIdASC(ctx context.Context, rowBuilder squirrel.SelectBuilder, preMaxId, pageSize int64) ([]*FileFolder, error) {
+func (m *defaultStoreModel) FindPageListByIdASC(ctx context.Context, rowBuilder squirrel.SelectBuilder, preMaxId, pageSize int64) ([]*Store, error) {
 
 	if preMaxId > 0 {
 		rowBuilder = rowBuilder.Where(" id > ? ", preMaxId)
@@ -190,7 +190,7 @@ func (m *defaultFileFolderModel) FindPageListByIdASC(ctx context.Context, rowBui
 		return nil, err
 	}
 
-	var resp []*FileFolder
+	var resp []*Store
 	err = m.QueryRowsNoCacheCtx(ctx, &resp, query, values...)
 	switch err {
 	case nil:
@@ -201,7 +201,7 @@ func (m *defaultFileFolderModel) FindPageListByIdASC(ctx context.Context, rowBui
 }
 
 // export logic
-func (m *defaultFileFolderModel) Trans(ctx context.Context, fn func(ctx context.Context, session sqlx.Session) error) error {
+func (m *defaultStoreModel) Trans(ctx context.Context, fn func(ctx context.Context, session sqlx.Session) error) error {
 
 	return m.TransactCtx(ctx, func(ctx context.Context, session sqlx.Session) error {
 		return fn(ctx, session)
@@ -210,16 +210,16 @@ func (m *defaultFileFolderModel) Trans(ctx context.Context, fn func(ctx context.
 }
 
 // export logic
-func (m *defaultFileFolderModel) RowBuilder() squirrel.SelectBuilder {
-	return squirrel.Select(fileFolderRows).From(m.table)
+func (m *defaultStoreModel) RowBuilder() squirrel.SelectBuilder {
+	return squirrel.Select(storeRows).From(m.table)
 }
 
 // export logic
-func (m *defaultFileFolderModel) CountBuilder(field string) squirrel.SelectBuilder {
+func (m *defaultStoreModel) CountBuilder(field string) squirrel.SelectBuilder {
 	return squirrel.Select("COUNT(" + field + ")").From(m.table)
 }
 
 // export logic
-func (m *defaultFileFolderModel) SumBuilder(field string) squirrel.SelectBuilder {
+func (m *defaultStoreModel) SumBuilder(field string) squirrel.SelectBuilder {
 	return squirrel.Select("IFNULL(SUM(" + field + "),0)").From(m.table)
 }

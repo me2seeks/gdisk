@@ -16,8 +16,8 @@ type ServiceContext struct {
 	UserRpc user.Usercenter
 
 	FileModel   model.FileModel
-	FolderModel model.FileFolderModel
-	StoreModel  model.FileStoreModel
+	FolderModel model.FolderModel
+	StoreModel  model.StoreModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -27,7 +27,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		UserRpc: user.NewUsercenter(zrpc.MustNewClient(c.UserRpcConf)),
 
 		FileModel:   model.NewFileModel(conn, c.Cache),
-		FolderModel: model.NewFileFolderModel(conn, c.Cache),
-		StoreModel:  model.NewFileStoreModel(conn, c.Cache),
+		FolderModel: model.NewFolderModel(conn, c.Cache),
+		StoreModel:  model.NewStoreModel(conn, c.Cache),
 	}
 }

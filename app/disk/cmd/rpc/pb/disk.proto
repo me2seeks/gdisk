@@ -4,30 +4,36 @@ option go_package = "./pb";
 
 package pb;
 
+message StoreDetail {
+  int64 id = 1;
+  int64 uid = 2;
+  int64 maxSize = 3 ;
+  int64 currentSize =4;
+  int64 delState =5;
+  int64 deleteTime = 6;
+}
+
 message StoreDetailReq {
   int64 uid = 1;
 }
 
 message StoreDetailResp {
-  int64 id = 1;
-  int64 maxSize= 2;
-  int64 currentSize =3;
+  StoreDetail store = 1;
 }
 
 message ChangeStoreReq {
   int64 uid = 1;
   int64 maxSize = 2 ;
   int64 currentSize =3;
+  int64 delState =4;
 }
 
 message ChangeStoreResp {
-  int64 maxSize = 1;
-  int64 currentSize =2;
 }
 
 service store {
-  //判断是否能存入
-  rpc StoreDetail(StoreDetailReq) returns(StoreDetailResp);
+  //store 详情
+  rpc DetailStore(StoreDetailReq) returns(StoreDetailResp);
 
   //改变store大小
   rpc ChangeStore(ChangeStoreReq) returns(ChangeStoreResp);

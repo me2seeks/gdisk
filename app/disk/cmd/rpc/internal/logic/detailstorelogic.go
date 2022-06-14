@@ -15,22 +15,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type StoreDetailLogic struct {
+type DetailStoreLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewStoreDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *StoreDetailLogic {
-	return &StoreDetailLogic{
+func NewDetailStoreLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DetailStoreLogic {
+	return &DetailStoreLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-// 判断是否能存入
-func (l *StoreDetailLogic) StoreDetail(in *pb.StoreDetailReq) (*pb.StoreDetailResp, error) {
+// store 详情
+func (l *DetailStoreLogic) DetailStore(in *pb.StoreDetailReq) (*pb.StoreDetailResp, error) {
 	_, err := l.svcCtx.UserRpc.GetUserInfo(l.ctx, &user.GetUserInfoReq{
 		Uid: in.Uid,
 	})
@@ -47,8 +47,10 @@ func (l *StoreDetailLogic) StoreDetail(in *pb.StoreDetailReq) (*pb.StoreDetailRe
 		}
 		return nil, errors.Wrapf(xerr.NewErrMsg("请联系管理员"), "ERROR: Failed to 获取用户仓库信息 uid: %d", in.Uid)
 	}
+
 	var pbStoreDetail pb.StoreDetailResp
-	_ = copier.Copy(&pbStoreDetail, storeDetail)
+	_ = copier.Copy(&pbStoreDetail.Store, storeDetail)
+	pbStoreDetail.Store.DeleteTime = storeDetail.DeleteTime.Unix()
 
 	return &pbStoreDetail, nil
 }

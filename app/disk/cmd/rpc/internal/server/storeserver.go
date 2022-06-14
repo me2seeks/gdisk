@@ -22,10 +22,10 @@ func NewStoreServer(svcCtx *svc.ServiceContext) *StoreServer {
 	}
 }
 
-// 判断是否能存入
-func (s *StoreServer) StoreDetail(ctx context.Context, in *pb.StoreDetailReq) (*pb.StoreDetailResp, error) {
-	l := logic.NewStoreDetailLogic(ctx, s.svcCtx)
-	return l.StoreDetail(in)
+// store 详情
+func (s *StoreServer) DetailStore(ctx context.Context, in *pb.StoreDetailReq) (*pb.StoreDetailResp, error) {
+	l := logic.NewDetailStoreLogic(ctx, s.svcCtx)
+	return l.DetailStore(in)
 }
 
 // 改变store大小

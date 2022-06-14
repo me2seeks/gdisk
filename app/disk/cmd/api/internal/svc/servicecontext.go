@@ -18,8 +18,8 @@ type ServiceContext struct {
 	StoreRpc store.Store
 
 	FileModel   model.FileModel
-	FolderModel model.FileFolderModel
-	StoreModel  model.FileStoreModel
+	FolderModel model.FolderModel
+	StoreModel  model.StoreModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -35,7 +35,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		StoreRpc: store.NewStore(zrpc.MustNewClient(c.DiskRpc)),
 
 		FileModel:   model.NewFileModel(conn, c.Cache),
-		FolderModel: model.NewFileFolderModel(conn, c.Cache),
-		StoreModel:  model.NewFileStoreModel(conn, c.Cache),
+		FolderModel: model.NewFolderModel(conn, c.Cache),
+		StoreModel:  model.NewStoreModel(conn, c.Cache),
 	}
 }

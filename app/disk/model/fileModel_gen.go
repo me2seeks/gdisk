@@ -48,14 +48,14 @@ type (
 		FileHash    string    `db:"file_hash"`     // 文件哈希值
 		FileStoreId int64     `db:"file_store_id"` // 文件仓库ID
 		FilePath    string    `db:"file_path"`     // 文件存储路径
-		DownloadNum int64     `db:"download_num"`  // 下载次数
-		UploadTime  time.Time `db:"upload_time"`   // 上传时间
 		Size        int64     `db:"size"`          // 文件大小
 		Postfix     string    `db:"postfix"`       // 文件后缀
-		DeleteTime  time.Time `db:"delete_time"`
-		DelState    int64     `db:"del_state"`
-		Version     int64     `db:"version"` // 乐观锁版本号
+		DownloadNum int64     `db:"download_num"`  // 下载次数
+		UploadTime  time.Time `db:"upload_time"`   // 上传时间
 		CreateTime  time.Time `db:"create_time"`
+		DelState    int64     `db:"del_state"`
+		DeleteTime  time.Time `db:"delete_time"`
+		Version     int64     `db:"version"` // 乐观锁版本号
 	}
 )
 
@@ -72,9 +72,9 @@ func (m *defaultFileModel) Insert(ctx context.Context, session sqlx.Session, dat
 	return m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, fileRowsExpectAutoSet)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.FileName, data.FileHash, data.FileStoreId, data.FilePath, data.DownloadNum, data.UploadTime, data.Size, data.Postfix, data.DeleteTime, data.DelState, data.Version)
+			return session.ExecCtx(ctx, query, data.FileName, data.FileHash, data.FileStoreId, data.FilePath, data.Size, data.Postfix, data.DownloadNum, data.UploadTime, data.DelState, data.DeleteTime, data.Version)
 		}
-		return conn.ExecCtx(ctx, query, data.FileName, data.FileHash, data.FileStoreId, data.FilePath, data.DownloadNum, data.UploadTime, data.Size, data.Postfix, data.DeleteTime, data.DelState, data.Version)
+		return conn.ExecCtx(ctx, query, data.FileName, data.FileHash, data.FileStoreId, data.FilePath, data.Size, data.Postfix, data.DownloadNum, data.UploadTime, data.DelState, data.DeleteTime, data.Version)
 	}, cloudDiskFileIdKey)
 }
 
@@ -100,9 +100,9 @@ func (m *defaultFileModel) Update(ctx context.Context, session sqlx.Session, dat
 	return m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, fileRowsWithPlaceHolder)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.FileName, data.FileHash, data.FileStoreId, data.FilePath, data.DownloadNum, data.UploadTime, data.Size, data.Postfix, data.DeleteTime, data.DelState, data.Version, data.Id)
+			return session.ExecCtx(ctx, query, data.FileName, data.FileHash, data.FileStoreId, data.FilePath, data.Size, data.Postfix, data.DownloadNum, data.UploadTime, data.DelState, data.DeleteTime, data.Version, data.Id)
 		}
-		return conn.ExecCtx(ctx, query, data.FileName, data.FileHash, data.FileStoreId, data.FilePath, data.DownloadNum, data.UploadTime, data.Size, data.Postfix, data.DeleteTime, data.DelState, data.Version, data.Id)
+		return conn.ExecCtx(ctx, query, data.FileName, data.FileHash, data.FileStoreId, data.FilePath, data.Size, data.Postfix, data.DownloadNum, data.UploadTime, data.DelState, data.DeleteTime, data.Version, data.Id)
 	}, cloudDiskFileIdKey)
 }
 
@@ -118,9 +118,9 @@ func (m *defaultFileModel) UpdateWithVersion(ctx context.Context, session sqlx.S
 	sqlResult, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ? and version = ? ", m.table, fileRowsWithPlaceHolder)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.FileName, data.FileHash, data.FileStoreId, data.FilePath, data.DownloadNum, data.UploadTime, data.Size, data.Postfix, data.DeleteTime, data.DelState, data.Version, data.Id, oldVersion)
+			return session.ExecCtx(ctx, query, data.FileName, data.FileHash, data.FileStoreId, data.FilePath, data.Size, data.Postfix, data.DownloadNum, data.UploadTime, data.DelState, data.DeleteTime, data.Version, data.Id, oldVersion)
 		}
-		return conn.ExecCtx(ctx, query, data.FileName, data.FileHash, data.FileStoreId, data.FilePath, data.DownloadNum, data.UploadTime, data.Size, data.Postfix, data.DeleteTime, data.DelState, data.Version, data.Id, oldVersion)
+		return conn.ExecCtx(ctx, query, data.FileName, data.FileHash, data.FileStoreId, data.FilePath, data.Size, data.Postfix, data.DownloadNum, data.UploadTime, data.DelState, data.DeleteTime, data.Version, data.Id, oldVersion)
 	}, cloudDiskFileIdKey)
 	if err != nil {
 		return err

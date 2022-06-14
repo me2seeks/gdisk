@@ -22,8 +22,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type StoreClient interface {
-	//判断是否能存入
-	StoreDetail(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error)
+	//store 详情
+	DetailStore(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error)
 	//改变store大小
 	ChangeStore(ctx context.Context, in *ChangeStoreReq, opts ...grpc.CallOption) (*ChangeStoreResp, error)
 }
@@ -36,9 +36,9 @@ func NewStoreClient(cc grpc.ClientConnInterface) StoreClient {
 	return &storeClient{cc}
 }
 
-func (c *storeClient) StoreDetail(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error) {
+func (c *storeClient) DetailStore(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error) {
 	out := new(StoreDetailResp)
-	err := c.cc.Invoke(ctx, "/pb.store/StoreDetail", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.store/DetailStore", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -58,8 +58,8 @@ func (c *storeClient) ChangeStore(ctx context.Context, in *ChangeStoreReq, opts 
 // All implementations must embed UnimplementedStoreServer
 // for forward compatibility
 type StoreServer interface {
-	//判断是否能存入
-	StoreDetail(context.Context, *StoreDetailReq) (*StoreDetailResp, error)
+	//store 详情
+	DetailStore(context.Context, *StoreDetailReq) (*StoreDetailResp, error)
 	//改变store大小
 	ChangeStore(context.Context, *ChangeStoreReq) (*ChangeStoreResp, error)
 	mustEmbedUnimplementedStoreServer()
@@ -69,8 +69,8 @@ type StoreServer interface {
 type UnimplementedStoreServer struct {
 }
 
-func (UnimplementedStoreServer) StoreDetail(context.Context, *StoreDetailReq) (*StoreDetailResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method StoreDetail not implemented")
+func (UnimplementedStoreServer) DetailStore(context.Context, *StoreDetailReq) (*StoreDetailResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DetailStore not implemented")
 }
 func (UnimplementedStoreServer) ChangeStore(context.Context, *ChangeStoreReq) (*ChangeStoreResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangeStore not implemented")
@@ -88,20 +88,20 @@ func RegisterStoreServer(s grpc.ServiceRegistrar, srv StoreServer) {
 	s.RegisterService(&Store_ServiceDesc, srv)
 }
 
-func _Store_StoreDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Store_DetailStore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(StoreDetailReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StoreServer).StoreDetail(ctx, in)
+		return srv.(StoreServer).DetailStore(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.store/StoreDetail",
+		FullMethod: "/pb.store/DetailStore",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StoreServer).StoreDetail(ctx, req.(*StoreDetailReq))
+		return srv.(StoreServer).DetailStore(ctx, req.(*StoreDetailReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -132,8 +132,8 @@ var Store_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*StoreServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "StoreDetail",
-			Handler:    _Store_StoreDetail_Handler,
+			MethodName: "DetailStore",
+			Handler:    _Store_DetailStore_Handler,
 		},
 		{
 			MethodName: "ChangeStore",

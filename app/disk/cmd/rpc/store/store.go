@@ -15,12 +15,13 @@ import (
 type (
 	ChangeStoreReq  = pb.ChangeStoreReq
 	ChangeStoreResp = pb.ChangeStoreResp
+	StoreDetail     = pb.StoreDetail
 	StoreDetailReq  = pb.StoreDetailReq
 	StoreDetailResp = pb.StoreDetailResp
 
 	Store interface {
-		// 判断是否能存入
-		StoreDetail(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error)
+		// store 详情
+		DetailStore(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error)
 		// 改变store大小
 		ChangeStore(ctx context.Context, in *ChangeStoreReq, opts ...grpc.CallOption) (*ChangeStoreResp, error)
 	}
@@ -36,10 +37,10 @@ func NewStore(cli zrpc.Client) Store {
 	}
 }
 
-// 判断是否能存入
-func (m *defaultStore) StoreDetail(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error) {
+// store 详情
+func (m *defaultStore) DetailStore(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error) {
 	client := pb.NewStoreClient(m.cli.Conn())
-	return client.StoreDetail(ctx, in, opts...)
+	return client.DetailStore(ctx, in, opts...)
 }
 
 // 改变store大小
