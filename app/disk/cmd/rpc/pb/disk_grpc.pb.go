@@ -18,88 +18,126 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// PaymentClient is the client API for Payment service.
+// StoreClient is the client API for Store service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type PaymentClient interface {
+type StoreClient interface {
 	//判断是否能存入
-	JudgeAllowed(ctx context.Context, in *JudgeReq, opts ...grpc.CallOption) (*JudgeResp, error)
+	StoreDetail(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error)
+	//改变store大小
+	ChangeStore(ctx context.Context, in *ChangeStoreReq, opts ...grpc.CallOption) (*ChangeStoreResp, error)
 }
 
-type paymentClient struct {
+type storeClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewPaymentClient(cc grpc.ClientConnInterface) PaymentClient {
-	return &paymentClient{cc}
+func NewStoreClient(cc grpc.ClientConnInterface) StoreClient {
+	return &storeClient{cc}
 }
 
-func (c *paymentClient) JudgeAllowed(ctx context.Context, in *JudgeReq, opts ...grpc.CallOption) (*JudgeResp, error) {
-	out := new(JudgeResp)
-	err := c.cc.Invoke(ctx, "/pb.payment/JudgeAllowed", in, out, opts...)
+func (c *storeClient) StoreDetail(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error) {
+	out := new(StoreDetailResp)
+	err := c.cc.Invoke(ctx, "/pb.store/StoreDetail", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// PaymentServer is the server API for Payment service.
-// All implementations must embed UnimplementedPaymentServer
+func (c *storeClient) ChangeStore(ctx context.Context, in *ChangeStoreReq, opts ...grpc.CallOption) (*ChangeStoreResp, error) {
+	out := new(ChangeStoreResp)
+	err := c.cc.Invoke(ctx, "/pb.store/ChangeStore", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// StoreServer is the server API for Store service.
+// All implementations must embed UnimplementedStoreServer
 // for forward compatibility
-type PaymentServer interface {
+type StoreServer interface {
 	//判断是否能存入
-	JudgeAllowed(context.Context, *JudgeReq) (*JudgeResp, error)
-	mustEmbedUnimplementedPaymentServer()
+	StoreDetail(context.Context, *StoreDetailReq) (*StoreDetailResp, error)
+	//改变store大小
+	ChangeStore(context.Context, *ChangeStoreReq) (*ChangeStoreResp, error)
+	mustEmbedUnimplementedStoreServer()
 }
 
-// UnimplementedPaymentServer must be embedded to have forward compatible implementations.
-type UnimplementedPaymentServer struct {
+// UnimplementedStoreServer must be embedded to have forward compatible implementations.
+type UnimplementedStoreServer struct {
 }
 
-func (UnimplementedPaymentServer) JudgeAllowed(context.Context, *JudgeReq) (*JudgeResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method JudgeAllowed not implemented")
+func (UnimplementedStoreServer) StoreDetail(context.Context, *StoreDetailReq) (*StoreDetailResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method StoreDetail not implemented")
 }
-func (UnimplementedPaymentServer) mustEmbedUnimplementedPaymentServer() {}
+func (UnimplementedStoreServer) ChangeStore(context.Context, *ChangeStoreReq) (*ChangeStoreResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangeStore not implemented")
+}
+func (UnimplementedStoreServer) mustEmbedUnimplementedStoreServer() {}
 
-// UnsafePaymentServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to PaymentServer will
+// UnsafeStoreServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to StoreServer will
 // result in compilation errors.
-type UnsafePaymentServer interface {
-	mustEmbedUnimplementedPaymentServer()
+type UnsafeStoreServer interface {
+	mustEmbedUnimplementedStoreServer()
 }
 
-func RegisterPaymentServer(s grpc.ServiceRegistrar, srv PaymentServer) {
-	s.RegisterService(&Payment_ServiceDesc, srv)
+func RegisterStoreServer(s grpc.ServiceRegistrar, srv StoreServer) {
+	s.RegisterService(&Store_ServiceDesc, srv)
 }
 
-func _Payment_JudgeAllowed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(JudgeReq)
+func _Store_StoreDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StoreDetailReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PaymentServer).JudgeAllowed(ctx, in)
+		return srv.(StoreServer).StoreDetail(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.payment/JudgeAllowed",
+		FullMethod: "/pb.store/StoreDetail",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PaymentServer).JudgeAllowed(ctx, req.(*JudgeReq))
+		return srv.(StoreServer).StoreDetail(ctx, req.(*StoreDetailReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Payment_ServiceDesc is the grpc.ServiceDesc for Payment service.
+func _Store_ChangeStore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ChangeStoreReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StoreServer).ChangeStore(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.store/ChangeStore",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StoreServer).ChangeStore(ctx, req.(*ChangeStoreReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// Store_ServiceDesc is the grpc.ServiceDesc for Store service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Payment_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "pb.payment",
-	HandlerType: (*PaymentServer)(nil),
+var Store_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "pb.store",
+	HandlerType: (*StoreServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "JudgeAllowed",
-			Handler:    _Payment_JudgeAllowed_Handler,
+			MethodName: "StoreDetail",
+			Handler:    _Store_StoreDetail_Handler,
+		},
+		{
+			MethodName: "ChangeStore",
+			Handler:    _Store_ChangeStore_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

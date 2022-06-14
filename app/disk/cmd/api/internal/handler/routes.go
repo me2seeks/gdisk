@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	file "cloud-disk/app/disk/cmd/api/internal/handler/file"
-	fileFolder "cloud-disk/app/disk/cmd/api/internal/handler/fileFolder"
+	folder "cloud-disk/app/disk/cmd/api/internal/handler/folder"
 	store "cloud-disk/app/disk/cmd/api/internal/handler/store"
 	"cloud-disk/app/disk/cmd/api/internal/svc"
 
@@ -40,22 +40,22 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodPost,
 				Path:    "/folder",
-				Handler: fileFolder.FoldercreateHandler(serverCtx),
+				Handler: folder.FoldercreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/folder/list",
-				Handler: fileFolder.FolderlistHandler(serverCtx),
+				Handler: folder.FolderlistHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/folder/move",
-				Handler: fileFolder.MoveHandler(serverCtx),
+				Handler: folder.MoveHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/folder/rename",
-				Handler: fileFolder.RenameHandler(serverCtx),
+				Handler: folder.RenameHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),

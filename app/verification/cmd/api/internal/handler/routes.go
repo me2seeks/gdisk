@@ -4,7 +4,7 @@ package handler
 import (
 	"net/http"
 
-	"trytry/app/verification/cmd/api/internal/svc"
+	"cloud-disk/app/verification/cmd/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )

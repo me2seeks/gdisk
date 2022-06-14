@@ -4,7 +4,7 @@ import (
 	"cloud-disk/app/order/cmd/rpc/order"
 	"cloud-disk/app/payment/cmd/api/internal/config"
 	"cloud-disk/app/payment/cmd/rpc/payment"
-	"cloud-disk/app/usercenter/cmd/rpc/usercenter"
+	"cloud-disk/app/user/cmd/rpc/user"
 	"github.com/zeromicro/go-zero/zrpc"
 )
 
@@ -13,7 +13,7 @@ type ServiceContext struct {
 
 	PaymentRpc    payment.Payment
 	OrderRpc      order.Order
-	UsercenterRpc usercenter.Usercenter
+	UsercenterRpc user.Usercenter
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -22,6 +22,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 
 		PaymentRpc:    payment.NewPayment(zrpc.MustNewClient(c.PaymentRpcConf)),
 		OrderRpc:      order.NewOrder(zrpc.MustNewClient(c.OrderRpcConf)),
-		UsercenterRpc: usercenter.NewUsercenter(zrpc.MustNewClient(c.UsercenterRpcConf)),
+		UsercenterRpc: user.NewUsercenter(zrpc.MustNewClient(c.UserRpcConf)),
 	}
 }

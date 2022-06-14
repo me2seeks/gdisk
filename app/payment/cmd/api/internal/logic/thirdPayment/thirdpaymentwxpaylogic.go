@@ -3,8 +3,8 @@ package thirdPayment
 import (
 	"cloud-disk/app/payment/cmd/rpc/payment"
 	"cloud-disk/app/payment/model"
-	"cloud-disk/app/usercenter/cmd/rpc/usercenter"
-	usercenterModel "cloud-disk/app/usercenter/model"
+	"cloud-disk/app/user/cmd/rpc/user"
+	usercenterModel "cloud-disk/app/user/model"
 	"cloud-disk/common/ctxdata"
 	"cloud-disk/common/xerr"
 	"context"
@@ -83,7 +83,7 @@ func (l *ThirdPaymentWxPayLogic) getHomestayPriceOrder(orderSn string) (int64, s
 func (l *ThirdPaymentWxPayLogic) createWxPayOrder(totalPrice int64, orderSn, serviceType, description string) (*jsapi.PrepayWithRequestPaymentResponse, error) {
 	//获取用户openid
 	userId := ctxdata.GetUidFromCtx(l.ctx)
-	userResp, err := l.svcCtx.UsercenterRpc.GetUserAuthByUserId(l.ctx, &usercenter.GetUserAuthByUserIdReq{
+	userResp, err := l.svcCtx.UsercenterRpc.GetUserAuthByUserId(l.ctx, &user.GetUserAuthByUserIdReq{
 		UserId:   userId,
 		AuthType: usercenterModel.UserAuthTypeSmallWX,
 	})

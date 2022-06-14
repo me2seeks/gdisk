@@ -20,17 +20,16 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type JudgeReq struct {
+type StoreDetailReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Uid      int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
-	NeedSize int64 `protobuf:"varint,2,opt,name=needSize,proto3" json:"needSize,omitempty"`
+	Uid int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
 }
 
-func (x *JudgeReq) Reset() {
-	*x = JudgeReq{}
+func (x *StoreDetailReq) Reset() {
+	*x = StoreDetailReq{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_disk_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -38,13 +37,13 @@ func (x *JudgeReq) Reset() {
 	}
 }
 
-func (x *JudgeReq) String() string {
+func (x *StoreDetailReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*JudgeReq) ProtoMessage() {}
+func (*StoreDetailReq) ProtoMessage() {}
 
-func (x *JudgeReq) ProtoReflect() protoreflect.Message {
+func (x *StoreDetailReq) ProtoReflect() protoreflect.Message {
 	mi := &file_disk_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -56,35 +55,30 @@ func (x *JudgeReq) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use JudgeReq.ProtoReflect.Descriptor instead.
-func (*JudgeReq) Descriptor() ([]byte, []int) {
+// Deprecated: Use StoreDetailReq.ProtoReflect.Descriptor instead.
+func (*StoreDetailReq) Descriptor() ([]byte, []int) {
 	return file_disk_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *JudgeReq) GetUid() int64 {
+func (x *StoreDetailReq) GetUid() int64 {
 	if x != nil {
 		return x.Uid
 	}
 	return 0
 }
 
-func (x *JudgeReq) GetNeedSize() int64 {
-	if x != nil {
-		return x.NeedSize
-	}
-	return 0
-}
-
-type JudgeResp struct {
+type StoreDetailResp struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	IsAllowed bool `protobuf:"varint,1,opt,name=isAllowed,proto3" json:"isAllowed,omitempty"`
+	Id          int64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	MaxSize     int64 `protobuf:"varint,2,opt,name=maxSize,proto3" json:"maxSize,omitempty"`
+	CurrentSize int64 `protobuf:"varint,3,opt,name=currentSize,proto3" json:"currentSize,omitempty"`
 }
 
-func (x *JudgeResp) Reset() {
-	*x = JudgeResp{}
+func (x *StoreDetailResp) Reset() {
+	*x = StoreDetailResp{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_disk_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -92,13 +86,13 @@ func (x *JudgeResp) Reset() {
 	}
 }
 
-func (x *JudgeResp) String() string {
+func (x *StoreDetailResp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*JudgeResp) ProtoMessage() {}
+func (*StoreDetailResp) ProtoMessage() {}
 
-func (x *JudgeResp) ProtoReflect() protoreflect.Message {
+func (x *StoreDetailResp) ProtoReflect() protoreflect.Message {
 	mi := &file_disk_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -110,33 +104,182 @@ func (x *JudgeResp) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use JudgeResp.ProtoReflect.Descriptor instead.
-func (*JudgeResp) Descriptor() ([]byte, []int) {
+// Deprecated: Use StoreDetailResp.ProtoReflect.Descriptor instead.
+func (*StoreDetailResp) Descriptor() ([]byte, []int) {
 	return file_disk_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *JudgeResp) GetIsAllowed() bool {
+func (x *StoreDetailResp) GetId() int64 {
 	if x != nil {
-		return x.IsAllowed
+		return x.Id
 	}
-	return false
+	return 0
+}
+
+func (x *StoreDetailResp) GetMaxSize() int64 {
+	if x != nil {
+		return x.MaxSize
+	}
+	return 0
+}
+
+func (x *StoreDetailResp) GetCurrentSize() int64 {
+	if x != nil {
+		return x.CurrentSize
+	}
+	return 0
+}
+
+type ChangeStoreReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Uid         int64 `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
+	MaxSize     int64 `protobuf:"varint,2,opt,name=maxSize,proto3" json:"maxSize,omitempty"`
+	CurrentSize int64 `protobuf:"varint,3,opt,name=currentSize,proto3" json:"currentSize,omitempty"`
+}
+
+func (x *ChangeStoreReq) Reset() {
+	*x = ChangeStoreReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_disk_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ChangeStoreReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChangeStoreReq) ProtoMessage() {}
+
+func (x *ChangeStoreReq) ProtoReflect() protoreflect.Message {
+	mi := &file_disk_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChangeStoreReq.ProtoReflect.Descriptor instead.
+func (*ChangeStoreReq) Descriptor() ([]byte, []int) {
+	return file_disk_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *ChangeStoreReq) GetUid() int64 {
+	if x != nil {
+		return x.Uid
+	}
+	return 0
+}
+
+func (x *ChangeStoreReq) GetMaxSize() int64 {
+	if x != nil {
+		return x.MaxSize
+	}
+	return 0
+}
+
+func (x *ChangeStoreReq) GetCurrentSize() int64 {
+	if x != nil {
+		return x.CurrentSize
+	}
+	return 0
+}
+
+type ChangeStoreResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	MaxSize     int64 `protobuf:"varint,1,opt,name=maxSize,proto3" json:"maxSize,omitempty"`
+	CurrentSize int64 `protobuf:"varint,2,opt,name=currentSize,proto3" json:"currentSize,omitempty"`
+}
+
+func (x *ChangeStoreResp) Reset() {
+	*x = ChangeStoreResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_disk_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ChangeStoreResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ChangeStoreResp) ProtoMessage() {}
+
+func (x *ChangeStoreResp) ProtoReflect() protoreflect.Message {
+	mi := &file_disk_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ChangeStoreResp.ProtoReflect.Descriptor instead.
+func (*ChangeStoreResp) Descriptor() ([]byte, []int) {
+	return file_disk_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ChangeStoreResp) GetMaxSize() int64 {
+	if x != nil {
+		return x.MaxSize
+	}
+	return 0
+}
+
+func (x *ChangeStoreResp) GetCurrentSize() int64 {
+	if x != nil {
+		return x.CurrentSize
+	}
+	return 0
 }
 
 var File_disk_proto protoreflect.FileDescriptor
 
 var file_disk_proto_rawDesc = []byte{
 	0x0a, 0x0a, 0x64, 0x69, 0x73, 0x6b, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x02, 0x70, 0x62,
-	0x22, 0x38, 0x0a, 0x08, 0x4a, 0x75, 0x64, 0x67, 0x65, 0x52, 0x65, 0x71, 0x12, 0x10, 0x0a, 0x03,
-	0x75, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x03, 0x75, 0x69, 0x64, 0x12, 0x1a,
-	0x0a, 0x08, 0x6e, 0x65, 0x65, 0x64, 0x53, 0x69, 0x7a, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03,
-	0x52, 0x08, 0x6e, 0x65, 0x65, 0x64, 0x53, 0x69, 0x7a, 0x65, 0x22, 0x29, 0x0a, 0x09, 0x4a, 0x75,
-	0x64, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x1c, 0x0a, 0x09, 0x69, 0x73, 0x41, 0x6c, 0x6c,
-	0x6f, 0x77, 0x65, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x09, 0x69, 0x73, 0x41, 0x6c,
-	0x6c, 0x6f, 0x77, 0x65, 0x64, 0x32, 0x36, 0x0a, 0x07, 0x70, 0x61, 0x79, 0x6d, 0x65, 0x6e, 0x74,
-	0x12, 0x2b, 0x0a, 0x0c, 0x4a, 0x75, 0x64, 0x67, 0x65, 0x41, 0x6c, 0x6c, 0x6f, 0x77, 0x65, 0x64,
-	0x12, 0x0c, 0x2e, 0x70, 0x62, 0x2e, 0x4a, 0x75, 0x64, 0x67, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x0d,
-	0x2e, 0x70, 0x62, 0x2e, 0x4a, 0x75, 0x64, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x42, 0x06, 0x5a,
-	0x04, 0x2e, 0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x22, 0x22, 0x0a, 0x0e, 0x53, 0x74, 0x6f, 0x72, 0x65, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52,
+	0x65, 0x71, 0x12, 0x10, 0x0a, 0x03, 0x75, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52,
+	0x03, 0x75, 0x69, 0x64, 0x22, 0x5d, 0x0a, 0x0f, 0x53, 0x74, 0x6f, 0x72, 0x65, 0x44, 0x65, 0x74,
+	0x61, 0x69, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x03, 0x52, 0x02, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x61, 0x78, 0x53, 0x69,
+	0x7a, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x07, 0x6d, 0x61, 0x78, 0x53, 0x69, 0x7a,
+	0x65, 0x12, 0x20, 0x0a, 0x0b, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x53, 0x69, 0x7a, 0x65,
+	0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0b, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x53,
+	0x69, 0x7a, 0x65, 0x22, 0x5e, 0x0a, 0x0e, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x53, 0x74, 0x6f,
+	0x72, 0x65, 0x52, 0x65, 0x71, 0x12, 0x10, 0x0a, 0x03, 0x75, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x03, 0x52, 0x03, 0x75, 0x69, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x61, 0x78, 0x53, 0x69,
+	0x7a, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x07, 0x6d, 0x61, 0x78, 0x53, 0x69, 0x7a,
+	0x65, 0x12, 0x20, 0x0a, 0x0b, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x53, 0x69, 0x7a, 0x65,
+	0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0b, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x53,
+	0x69, 0x7a, 0x65, 0x22, 0x4d, 0x0a, 0x0f, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x53, 0x74, 0x6f,
+	0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x61, 0x78, 0x53, 0x69, 0x7a,
+	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x07, 0x6d, 0x61, 0x78, 0x53, 0x69, 0x7a, 0x65,
+	0x12, 0x20, 0x0a, 0x0b, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x53, 0x69, 0x7a, 0x65, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0b, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x53, 0x69,
+	0x7a, 0x65, 0x32, 0x77, 0x0a, 0x05, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x12, 0x36, 0x0a, 0x0b, 0x53,
+	0x74, 0x6f, 0x72, 0x65, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x12, 0x12, 0x2e, 0x70, 0x62, 0x2e,
+	0x53, 0x74, 0x6f, 0x72, 0x65, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52, 0x65, 0x71, 0x1a, 0x13,
+	0x2e, 0x70, 0x62, 0x2e, 0x53, 0x74, 0x6f, 0x72, 0x65, 0x44, 0x65, 0x74, 0x61, 0x69, 0x6c, 0x52,
+	0x65, 0x73, 0x70, 0x12, 0x36, 0x0a, 0x0b, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x53, 0x74, 0x6f,
+	0x72, 0x65, 0x12, 0x12, 0x2e, 0x70, 0x62, 0x2e, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x53, 0x74,
+	0x6f, 0x72, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x13, 0x2e, 0x70, 0x62, 0x2e, 0x43, 0x68, 0x61, 0x6e,
+	0x67, 0x65, 0x53, 0x74, 0x6f, 0x72, 0x65, 0x52, 0x65, 0x73, 0x70, 0x42, 0x06, 0x5a, 0x04, 0x2e,
+	0x2f, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -151,16 +294,20 @@ func file_disk_proto_rawDescGZIP() []byte {
 	return file_disk_proto_rawDescData
 }
 
-var file_disk_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_disk_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_disk_proto_goTypes = []interface{}{
-	(*JudgeReq)(nil),  // 0: pb.JudgeReq
-	(*JudgeResp)(nil), // 1: pb.JudgeResp
+	(*StoreDetailReq)(nil),  // 0: pb.StoreDetailReq
+	(*StoreDetailResp)(nil), // 1: pb.StoreDetailResp
+	(*ChangeStoreReq)(nil),  // 2: pb.ChangeStoreReq
+	(*ChangeStoreResp)(nil), // 3: pb.ChangeStoreResp
 }
 var file_disk_proto_depIdxs = []int32{
-	0, // 0: pb.payment.JudgeAllowed:input_type -> pb.JudgeReq
-	1, // 1: pb.payment.JudgeAllowed:output_type -> pb.JudgeResp
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	0, // 0: pb.store.StoreDetail:input_type -> pb.StoreDetailReq
+	2, // 1: pb.store.ChangeStore:input_type -> pb.ChangeStoreReq
+	1, // 2: pb.store.StoreDetail:output_type -> pb.StoreDetailResp
+	3, // 3: pb.store.ChangeStore:output_type -> pb.ChangeStoreResp
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -173,7 +320,7 @@ func file_disk_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_disk_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*JudgeReq); i {
+			switch v := v.(*StoreDetailReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -185,7 +332,31 @@ func file_disk_proto_init() {
 			}
 		}
 		file_disk_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*JudgeResp); i {
+			switch v := v.(*StoreDetailResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_disk_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ChangeStoreReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_disk_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ChangeStoreResp); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -203,7 +374,7 @@ func file_disk_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_disk_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -23,17 +23,17 @@ services:
       - trytry
 
   #前端api + 业务rpc
-  trytry:
+  cloud_disk:
     image: lyumikael/gomodd:v1.0.0 # if you "macOs intel" or "linux amd"
     #image: lyumikael/go-modd-env:v1.0.0  # if you macOs m1
-    container_name: trytry
+    container_name: cloud_disk
     environment:
       # 时区上海
       TZ: Asia/Shanghai
       GOPROXY: https://goproxy.cn,direct
-    working_dir: /go/trytry
+    working_dir: /go/cloud_disk
     volumes:
-      - .:/go/trytry
+      - .:/go/cloud_disk
     privileged: true
     restart: always
     networks:

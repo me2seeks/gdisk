@@ -1,0 +1,70 @@
+syntax = "v1"
+
+info(
+    title: "type title here"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+type Folder {
+    Id    int64  `json:"id"`
+    UpdateTime int64 `json:"update_time"`
+}
+
+type FolderFile {
+    Id    int64  `json:"id"`
+    Size int64 `json:"size"`
+    Format string `json:"format"`
+    UpdateTime int64 `json:"update_time"`
+    CreateTime int64 `json:"create_time"`
+}
+
+
+type (
+    //创建文件夹
+    CreateFolderReq{
+        ParentFolderId string `json:"parentFolderId"`
+        FolderName string `json:"folderName"`
+    }
+    CreateFolderResp{
+        Id    int64  `json:"id"`
+    }
+)
+
+type (
+    //列出文件下的文件夹和文件
+    ListReq{
+        Path string  `json:"path"`
+    }
+    ListResp{
+        FolderList []Folder `json:"folderList"`
+        FileList []FolderFile `json:"fileList"`
+    }
+
+)
+
+//重复功能
+type (
+    //移动文件或者文件夹
+    MovedReq{
+        Id int64  `json:"id"`
+        IsFile bool `json:"isFile"`
+        SrcPath string `json:"srcPath"`
+        DestPath string  `json:"destPath"`
+    }
+    MovedResp{
+    }
+
+    //文件或文件夹重命名
+    RenamedReq{
+        Id int64  `json:"id"`
+        IsFile bool `json:"isFile"`
+        NewName string `json:"name"`
+    }
+    RenamedResp{
+    }
+)
+
+

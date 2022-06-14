@@ -44,13 +44,13 @@ type (
 
 	FileFolder struct {
 		Id             int64          `db:"id"`               // 文件夹ID
-		FileFolderName sql.NullString `db:"file_folder_name"` // 文件夹名称
-		ParentFolderId int64          `db:"parent_folder_id"` // 父文件夹ID
+		FileFolderName string         `db:"file_folder_name"` // 文件夹名称
 		FileStoreId    sql.NullInt64  `db:"file_store_id"`    // 所属文件仓库ID
-		Time           sql.NullString `db:"time"`             // 创建时间
+		CreateTime     sql.NullString `db:"create_time"`      // 创建时间
 		Version        int64          `db:"version"`          // 乐观锁版本号
 		DeleteTime     time.Time      `db:"delete_time"`
 		DelState       int64          `db:"del_state"`
+		FolderPath     string         `db:"folder_path"` // 文件夹路径
 	}
 )
 
@@ -65,11 +65,11 @@ func (m *defaultFileFolderModel) Insert(ctx context.Context, session sqlx.Sessio
 	data.DeleteTime = time.Unix(0, 0)
 	cloudDiskFileFolderIdKey := fmt.Sprintf("%s%v", cacheCloudDiskFileFolderIdPrefix, data.Id)
 	return m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?)", m.table, fileFolderRowsExpectAutoSet)
+		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?)", m.table, fileFolderRowsExpectAutoSet)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.FileFolderName, data.ParentFolderId, data.FileStoreId, data.Time, data.Version, data.DeleteTime, data.DelState)
+			return session.ExecCtx(ctx, query, data.FileFolderName, data.FileStoreId, data.Version, data.DeleteTime, data.DelState, data.FolderPath)
 		}
-		return conn.ExecCtx(ctx, query, data.FileFolderName, data.ParentFolderId, data.FileStoreId, data.Time, data.Version, data.DeleteTime, data.DelState)
+		return conn.ExecCtx(ctx, query, data.FileFolderName, data.FileStoreId, data.Version, data.DeleteTime, data.DelState, data.FolderPath)
 	}, cloudDiskFileFolderIdKey)
 }
 
@@ -95,9 +95,9 @@ func (m *defaultFileFolderModel) Update(ctx context.Context, session sqlx.Sessio
 	return m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, fileFolderRowsWithPlaceHolder)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.FileFolderName, data.ParentFolderId, data.FileStoreId, data.Time, data.Version, data.DeleteTime, data.DelState, data.Id)
+			return session.ExecCtx(ctx, query, data.FileFolderName, data.FileStoreId, data.Version, data.DeleteTime, data.DelState, data.FolderPath, data.Id)
 		}
-		return conn.ExecCtx(ctx, query, data.FileFolderName, data.ParentFolderId, data.FileStoreId, data.Time, data.Version, data.DeleteTime, data.DelState, data.Id)
+		return conn.ExecCtx(ctx, query, data.FileFolderName, data.FileStoreId, data.Version, data.DeleteTime, data.DelState, data.FolderPath, data.Id)
 	}, cloudDiskFileFolderIdKey)
 }
 
@@ -113,9 +113,9 @@ func (m *defaultFileFolderModel) UpdateWithVersion(ctx context.Context, session 
 	sqlResult, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ? and version = ? ", m.table, fileFolderRowsWithPlaceHolder)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.FileFolderName, data.ParentFolderId, data.FileStoreId, data.Time, data.Version, data.DeleteTime, data.DelState, data.Id, oldVersion)
+			return session.ExecCtx(ctx, query, data.FileFolderName, data.FileStoreId, data.Version, data.DeleteTime, data.DelState, data.FolderPath, data.Id, oldVersion)
 		}
-		return conn.ExecCtx(ctx, query, data.FileFolderName, data.ParentFolderId, data.FileStoreId, data.Time, data.Version, data.DeleteTime, data.DelState, data.Id, oldVersion)
+		return conn.ExecCtx(ctx, query, data.FileFolderName, data.FileStoreId, data.Version, data.DeleteTime, data.DelState, data.FolderPath, data.Id, oldVersion)
 	}, cloudDiskFileFolderIdKey)
 	if err != nil {
 		return err

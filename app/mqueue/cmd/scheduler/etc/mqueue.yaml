@@ -1,12 +1,12 @@
 Name: mqueue-scheduler
 Host: 0.0.0.0
-Port: 3003
+Port: 2007
 Mode: dev
 
 #监控
 Prometheus:
   Host: 0.0.0.0
-  Port: 4100
+  Port: 4016
   Path: /metrics
 
 #链路追踪

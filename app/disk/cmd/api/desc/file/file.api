@@ -12,7 +12,7 @@ info(
 type  File {
     Path string  `json:"path",default:"/"`
     FileName string `json:"fileName"`
-    Size int `json:"size"`
+    Size int64 `json:"size"`
 }
 
 type (

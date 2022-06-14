@@ -25,10 +25,10 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 	ctx := svc.NewServiceContext(c)
-	svr := server.NewPaymentServer(ctx)
+	svr := server.NewStoreServer(ctx)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
-		pb.RegisterPaymentServer(grpcServer, svr)
+		pb.RegisterStoreServer(grpcServer, svr)
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)

@@ -10,12 +10,12 @@ import (
 type Config struct {
 	service.ServiceConf
 
-	Redis redis.RedisConf
+	Redis redis.RedisKeyConf
 
 	// kq : pub sub
 	PaymentUpdateStatusConf kq.KqConf
 
 	// rpc
-	OrderRpcConf      zrpc.RpcClientConf
-	UsercenterRpcConf zrpc.RpcClientConf
+	OrderRpcConf zrpc.RpcClientConf
+	UserRpcConf  zrpc.RpcClientConf
 }

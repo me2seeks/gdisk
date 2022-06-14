@@ -34,7 +34,7 @@ WxPayConf:
 #Monitoring
 Prometheus:
   Host: 0.0.0.0
-  Port: 4009
+  Port: 4011
   Path: /metrics
 
 #Link Tracking

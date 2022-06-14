@@ -4,7 +4,7 @@ package types
 type File struct {
 	Path     string `json:"path",default:"/"`
 	FileName string `json:"fileName"`
-	Size     int    `json:"size"`
+	Size     int64    `json:"size"`
 }
 
 type UploadCertificateReq struct {

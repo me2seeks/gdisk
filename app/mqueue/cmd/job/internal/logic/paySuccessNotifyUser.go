@@ -4,8 +4,8 @@ import (
 	"cloud-disk/app/mqueue/cmd/job/internal/svc"
 	"cloud-disk/app/mqueue/cmd/job/jobtype"
 	"cloud-disk/app/order/model"
-	"cloud-disk/app/usercenter/cmd/rpc/usercenter"
-	usercenterModel "cloud-disk/app/usercenter/model"
+	"cloud-disk/app/user/cmd/rpc/user"
+	usercenterModel "cloud-disk/app/user/model"
 	"cloud-disk/common/globalkey"
 	"cloud-disk/common/tool"
 	"cloud-disk/common/wxminisub"
@@ -43,7 +43,7 @@ func (l *PaySuccessNotifyUserHandler) ProcessTask(ctx context.Context, t *asynq.
 	}
 
 	// 1、get user openid
-	usercenterResp, err := l.svcCtx.UsercenterRpc.GetUserAuthByUserId(ctx, &usercenter.GetUserAuthByUserIdReq{
+	usercenterResp, err := l.svcCtx.UsercenterRpc.GetUserAuthByUserId(ctx, &user.GetUserAuthByUserIdReq{
 		UserId:   p.Order.UserId,
 		AuthType: usercenterModel.UserAuthTypeSmallWX,
 	})

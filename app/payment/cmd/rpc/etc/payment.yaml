@@ -5,7 +5,7 @@ ListenOn: 127.0.0.1:2005
 #监控
 Prometheus:
   Host: 0.0.0.0
-  Port: 4010
+  Port: 4012
   Path: /metrics
 
 #链路追踪

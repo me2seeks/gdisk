@@ -1,12 +1,12 @@
 Name: mqueue-job
 Host: 0.0.0.0
-Port: 3002
+Port: 1007
 Mode: dev
 
 #监控
 Prometheus:
   Host: 0.0.0.0
-  Port: 4099
+  Port: 4015
   Path: /metrics
 
 #Link Tracking

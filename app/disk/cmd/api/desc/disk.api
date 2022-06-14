@@ -10,8 +10,8 @@ info(
 
 import (
 	"file/file.api"
-	"fileFolder/fileFolder.api"
-	"fileStore/fileStore.api"
+	"folder/folder.api"
+	"store/store.api"
 )
 
 //need login
@@ -37,7 +37,7 @@ service disk {
 
 @server(
 	prefix: disk/v1
-	group: fileFolder
+	group: folder
 	jwt: JwtAuth
 )
 service disk {
