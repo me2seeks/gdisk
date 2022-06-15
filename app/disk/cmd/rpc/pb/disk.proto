@@ -13,6 +13,32 @@ message StoreDetail {
   int64 deleteTime = 6;
 }
 
+message FileDetail {
+  int64 id = 1 ;
+  string fileName =2 ;
+  string fileHash = 3 ;
+  int64 userId = 4 ;
+  string filePath = 5 ;
+  int64 size = 6 ;
+  string postfix = 7 ;
+  int64 downloadNumber = 8 ;
+  int64 updateTime =9 ;
+  int64 deleteState =10 ;
+  int64 deleteTime =11 ;
+  int64 createTime =12 ;
+}
+
+message FolderDetail {
+  int64 id = 1 ;
+  string folderName =2 ;
+  int64 userId = 3 ;
+  string folderPath = 4 ;
+  int64 updateTime = 5 ;
+  int64 deleteState = 6 ;
+  int64 deleteTime = 7 ;
+  int64 createTime = 8 ;
+}
+
 message StoreDetailReq {
   int64 uid = 1;
 }
@@ -31,10 +57,23 @@ message ChangeStoreReq {
 message ChangeStoreResp {
 }
 
-service store {
+message ListFolderReq {
+  int64 uid = 1;
+  string path =2 ;
+}
+
+message ListFolderResp {
+  repeated FileDetail files =1;
+  repeated FolderDetail folders =2;
+}
+
+service disk {
   //store 详情
   rpc DetailStore(StoreDetailReq) returns(StoreDetailResp);
 
-  //改变store大小
+  //修改store大小
   rpc ChangeStore(ChangeStoreReq) returns(ChangeStoreResp);
+
+  //获取路径下的文件和文件夹
+  rpc ListFolders(ListFolderReq) returns(ListFolderResp);
 }

@@ -18,126 +18,164 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// StoreClient is the client API for Store service.
+// DiskClient is the client API for Disk service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type StoreClient interface {
+type DiskClient interface {
 	//store 详情
 	DetailStore(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error)
-	//改变store大小
+	//修改store大小
 	ChangeStore(ctx context.Context, in *ChangeStoreReq, opts ...grpc.CallOption) (*ChangeStoreResp, error)
+	//获取路径下的文件和文件夹
+	ListFolders(ctx context.Context, in *ListFolderReq, opts ...grpc.CallOption) (*ListFolderResp, error)
 }
 
-type storeClient struct {
+type diskClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewStoreClient(cc grpc.ClientConnInterface) StoreClient {
-	return &storeClient{cc}
+func NewDiskClient(cc grpc.ClientConnInterface) DiskClient {
+	return &diskClient{cc}
 }
 
-func (c *storeClient) DetailStore(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error) {
+func (c *diskClient) DetailStore(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error) {
 	out := new(StoreDetailResp)
-	err := c.cc.Invoke(ctx, "/pb.store/DetailStore", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.disk/DetailStore", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *storeClient) ChangeStore(ctx context.Context, in *ChangeStoreReq, opts ...grpc.CallOption) (*ChangeStoreResp, error) {
+func (c *diskClient) ChangeStore(ctx context.Context, in *ChangeStoreReq, opts ...grpc.CallOption) (*ChangeStoreResp, error) {
 	out := new(ChangeStoreResp)
-	err := c.cc.Invoke(ctx, "/pb.store/ChangeStore", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.disk/ChangeStore", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// StoreServer is the server API for Store service.
-// All implementations must embed UnimplementedStoreServer
+func (c *diskClient) ListFolders(ctx context.Context, in *ListFolderReq, opts ...grpc.CallOption) (*ListFolderResp, error) {
+	out := new(ListFolderResp)
+	err := c.cc.Invoke(ctx, "/pb.disk/ListFolders", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// DiskServer is the server API for Disk service.
+// All implementations must embed UnimplementedDiskServer
 // for forward compatibility
-type StoreServer interface {
+type DiskServer interface {
 	//store 详情
 	DetailStore(context.Context, *StoreDetailReq) (*StoreDetailResp, error)
-	//改变store大小
+	//修改store大小
 	ChangeStore(context.Context, *ChangeStoreReq) (*ChangeStoreResp, error)
-	mustEmbedUnimplementedStoreServer()
+	//获取路径下的文件和文件夹
+	ListFolders(context.Context, *ListFolderReq) (*ListFolderResp, error)
+	mustEmbedUnimplementedDiskServer()
 }
 
-// UnimplementedStoreServer must be embedded to have forward compatible implementations.
-type UnimplementedStoreServer struct {
+// UnimplementedDiskServer must be embedded to have forward compatible implementations.
+type UnimplementedDiskServer struct {
 }
 
-func (UnimplementedStoreServer) DetailStore(context.Context, *StoreDetailReq) (*StoreDetailResp, error) {
+func (UnimplementedDiskServer) DetailStore(context.Context, *StoreDetailReq) (*StoreDetailResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DetailStore not implemented")
 }
-func (UnimplementedStoreServer) ChangeStore(context.Context, *ChangeStoreReq) (*ChangeStoreResp, error) {
+func (UnimplementedDiskServer) ChangeStore(context.Context, *ChangeStoreReq) (*ChangeStoreResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangeStore not implemented")
 }
-func (UnimplementedStoreServer) mustEmbedUnimplementedStoreServer() {}
+func (UnimplementedDiskServer) ListFolders(context.Context, *ListFolderReq) (*ListFolderResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListFolders not implemented")
+}
+func (UnimplementedDiskServer) mustEmbedUnimplementedDiskServer() {}
 
-// UnsafeStoreServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to StoreServer will
+// UnsafeDiskServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to DiskServer will
 // result in compilation errors.
-type UnsafeStoreServer interface {
-	mustEmbedUnimplementedStoreServer()
+type UnsafeDiskServer interface {
+	mustEmbedUnimplementedDiskServer()
 }
 
-func RegisterStoreServer(s grpc.ServiceRegistrar, srv StoreServer) {
-	s.RegisterService(&Store_ServiceDesc, srv)
+func RegisterDiskServer(s grpc.ServiceRegistrar, srv DiskServer) {
+	s.RegisterService(&Disk_ServiceDesc, srv)
 }
 
-func _Store_DetailStore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Disk_DetailStore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(StoreDetailReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StoreServer).DetailStore(ctx, in)
+		return srv.(DiskServer).DetailStore(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.store/DetailStore",
+		FullMethod: "/pb.disk/DetailStore",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StoreServer).DetailStore(ctx, req.(*StoreDetailReq))
+		return srv.(DiskServer).DetailStore(ctx, req.(*StoreDetailReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Store_ChangeStore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Disk_ChangeStore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ChangeStoreReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(StoreServer).ChangeStore(ctx, in)
+		return srv.(DiskServer).ChangeStore(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.store/ChangeStore",
+		FullMethod: "/pb.disk/ChangeStore",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(StoreServer).ChangeStore(ctx, req.(*ChangeStoreReq))
+		return srv.(DiskServer).ChangeStore(ctx, req.(*ChangeStoreReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Store_ServiceDesc is the grpc.ServiceDesc for Store service.
+func _Disk_ListFolders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFolderReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DiskServer).ListFolders(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.disk/ListFolders",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DiskServer).ListFolders(ctx, req.(*ListFolderReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// Disk_ServiceDesc is the grpc.ServiceDesc for Disk service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Store_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "pb.store",
-	HandlerType: (*StoreServer)(nil),
+var Disk_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "pb.disk",
+	HandlerType: (*DiskServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "DetailStore",
-			Handler:    _Store_DetailStore_Handler,
+			Handler:    _Disk_DetailStore_Handler,
 		},
 		{
 			MethodName: "ChangeStore",
-			Handler:    _Store_ChangeStore_Handler,
+			Handler:    _Disk_ChangeStore_Handler,
+		},
+		{
+			MethodName: "ListFolders",
+			Handler:    _Disk_ListFolders_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

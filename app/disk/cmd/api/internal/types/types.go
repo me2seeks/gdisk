@@ -30,15 +30,20 @@ type CallbackResp struct {
 
 type Folder struct {
 	Id         int64 `json:"id"`
-	UpdateTime int64 `json:"update_time"`
+	FolderName int64 `json:"folderName"`
+	UpdateTime int64 `json:"updateTime"`
+	CreateTime int64 `json:"createTime"`
 }
 
-type FolderFile struct {
-	Id         int64  `json:"id"`
-	Size       int64  `json:"size"`
-	Postfix    string `json:"format"`
-	UpdateTime int64  `json:"update_time"`
-	CreateTime int64  `json:"create_time"`
+type File struct {
+	Id             int64  `json:"id"`
+	FileName       string `json:"fileName"`
+	FilePath       string `json:"filePath"`
+	Size           int64  `json:"size"`
+	Postfix        string `json:"postfix"`
+	DownloadNumber int64  `json:"downloadNumber"`
+	UpdateTime     int64  `json:"updateTime"`
+	CreateTime     int64  `json:"createTime"`
 }
 
 type CreateFolderReq struct {
@@ -55,8 +60,8 @@ type ListReq struct {
 }
 
 type ListResp struct {
-	FolderList []Folder     `json:"folderList"`
-	FileList   []FolderFile `json:"fileList"`
+	FolderList []Folder `json:"folderList"`
+	FileList   []File   `json:"fileList"`
 }
 
 type MovedReq struct {

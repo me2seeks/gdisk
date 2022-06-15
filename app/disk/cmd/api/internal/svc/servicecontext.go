@@ -2,7 +2,7 @@ package svc
 
 import (
 	"cloud-disk/app/disk/cmd/api/internal/config"
-	"cloud-disk/app/disk/cmd/rpc/store"
+	"cloud-disk/app/disk/cmd/rpc/disk"
 	"cloud-disk/app/disk/model"
 	"cloud-disk/app/user/cmd/rpc/user"
 	"github.com/zeromicro/go-zero/core/stores/redis"
@@ -14,8 +14,8 @@ type ServiceContext struct {
 	Config      config.Config
 	RedisClient *redis.Redis
 
-	UserRpc  user.Usercenter
-	StoreRpc store.Store
+	UserRpc user.Usercenter
+	DiskRpc disk.Disk
 
 	FileModel   model.FileModel
 	FolderModel model.FolderModel
@@ -32,7 +32,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		}),
 
 		UserRpc:  user.NewUsercenter(zrpc.MustNewClient(c.UserRpc)),
-		StoreRpc: store.NewStore(zrpc.MustNewClient(c.DiskRpc)),
+		StoreRpc: disk.NewDisk(zrpc.MustNewClient(c.DiskRpc)),
 
 		FileModel:   model.NewFileModel(conn, c.Cache),
 		FolderModel: model.NewFolderModel(conn, c.Cache),
