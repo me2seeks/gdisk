@@ -9,21 +9,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type DownloadCertificateLogic struct {
+type DownloadLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewDownloadCertificateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DownloadCertificateLogic {
-	return &DownloadCertificateLogic{
+func NewDownloadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DownloadLogic {
+	return &DownloadLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *DownloadCertificateLogic) DownloadCertificate(req *types.DownloadCertificateReq) (resp *types.DownloadCertificateResp, err error) {
+func (l *DownloadLogic) Download(req *types.DownloadCertificateReq) (resp *types.DownloadCertificateResp, err error) {
 	// todo: add your logic here and delete this line
 
 	return

@@ -1,8 +1,6 @@
 package file
 
 import (
-	"cloud-disk/app/disk/cmd/api/internal/svc"
-	"cloud-disk/app/disk/cmd/api/internal/types"
 	"cloud-disk/app/disk/cmd/rpc/pb"
 	"cloud-disk/app/disk/cmd/rpc/store"
 	"cloud-disk/app/disk/model"
@@ -13,26 +11,30 @@ import (
 	"context"
 	"github.com/Masterminds/squirrel"
 	"github.com/pkg/errors"
-	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"path"
+
+	"cloud-disk/app/disk/cmd/api/internal/svc"
+	"cloud-disk/app/disk/cmd/api/internal/types"
+
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type UploadCertificateLogic struct {
+type UploadLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewUploadCertificateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UploadCertificateLogic {
-	return &UploadCertificateLogic{
+func NewUploadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UploadLogic {
+	return &UploadLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *UploadCertificateLogic) UploadCertificate(req *types.UploadCertificateReq) (*types.UploadCertificateResp, error) {
+func (l *UploadLogic) Upload(req *types.UploadCertificateReq) (*types.UploadCertificateResp, error) {
 	var needSize int64 = 0
 	uId := ctxdata.GetUidFromCtx(l.ctx)
 
@@ -40,7 +42,7 @@ func (l *UploadCertificateLogic) UploadCertificate(req *types.UploadCertificateR
 		Uid: uId,
 	})
 	if err != nil {
-		return nil, errors.Wrapf(xerr.NewErrCode(xerr.SERVER_COMMON_ERROR), "ERROR RPC Store.StoreDetail")
+		return nil, err
 	}
 
 	for _, file := range req.Files {
@@ -77,11 +79,12 @@ func (l *UploadCertificateLogic) UploadCertificate(req *types.UploadCertificateR
 
 			//插入数据库
 			_, err = l.svcCtx.FileModel.Insert(l.ctx, session, &model.File{
-				FileName:    file.FileName,
-				FileStoreId: storeDetail.Store.Id,
-				FilePath:    file.Path,
-				Size:        file.Size,
-				Postfix:     path.Ext(file.FileName),
+				UserId:   uId,
+				FileName: file.FileName,
+				StoreId:  storeDetail.Store.Id,
+				FilePath: file.Path,
+				Size:     file.Size,
+				Postfix:  path.Ext(file.FileName),
 			})
 			if err != nil {
 				return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR  FileModel.Insert err: %v", err)
@@ -91,6 +94,8 @@ func (l *UploadCertificateLogic) UploadCertificate(req *types.UploadCertificateR
 	}); err != nil {
 		return nil, err
 	}
+
+	//延迟删除
 
 	//上传凭证
 	certificate := upload.UploadCertificate(needSize)

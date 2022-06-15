@@ -9,7 +9,7 @@ info(
 )
 
 
-type  File {
+type  FileDetail {
     Path string  `json:"path",default:"/"`
     FileName string `json:"fileName"`
     Size int64 `json:"size"`
@@ -18,7 +18,7 @@ type  File {
 type (
     //上传凭证
     UploadCertificateReq{
-        files []File `json:"files"`
+        files []FileDetail `json:"files"`
     }
     UploadCertificateResp{
         Certificate string  `json:"certificate""`

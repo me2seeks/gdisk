@@ -11,7 +11,7 @@ import (
 	"cloud-disk/app/disk/cmd/api/internal/types"
 )
 
-func StoreHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func DetailHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.StoreDetailReq
 		if err := httpx.Parse(r, &req); err != nil {
@@ -19,8 +19,8 @@ func StoreHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			return
 		}
 
-		l := store.NewStoreLogic(r.Context(), svcCtx)
-		resp, err := l.Store(&req)
+		l := store.NewDetailLogic(r.Context(), svcCtx)
+		resp, err := l.Detail(&req)
 		result.HttpResult(r, w, resp, err)
 	}
 }

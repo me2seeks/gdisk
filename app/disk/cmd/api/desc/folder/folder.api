@@ -16,7 +16,7 @@ type Folder {
 type FolderFile {
     Id    int64  `json:"id"`
     Size int64 `json:"size"`
-    Format string `json:"format"`
+    Postfix string `json:"format"`
     UpdateTime int64 `json:"update_time"`
     CreateTime int64 `json:"create_time"`
 }
@@ -25,11 +25,11 @@ type FolderFile {
 type (
     //创建文件夹
     CreateFolderReq{
-        ParentFolderId string `json:"parentFolderId"`
+        Path string `json:"path"`
         FolderName string `json:"folderName"`
     }
     CreateFolderResp{
-        Id    int64  `json:"id"`
+        CreateTime int64 `json:"create_time"`
     }
 )
 
@@ -51,20 +51,13 @@ type (
     MovedReq{
         Id int64  `json:"id"`
         IsFile bool `json:"isFile"`
+        Name string `json:"name"`
         SrcPath string `json:"srcPath"`
         DestPath string  `json:"destPath"`
     }
     MovedResp{
     }
 
-    //文件或文件夹重命名
-    RenamedReq{
-        Id int64  `json:"id"`
-        IsFile bool `json:"isFile"`
-        NewName string `json:"name"`
-    }
-    RenamedResp{
-    }
 )
 
 

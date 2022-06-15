@@ -18,12 +18,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodPost,
 				Path:    "/certificate/upload",
-				Handler: file.UploadCertificateHandler(serverCtx),
+				Handler: file.UploadHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/certificate/download",
-				Handler: file.DownloadCertificateHandler(serverCtx),
+				Handler: file.DownloadHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
@@ -40,22 +40,17 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodPost,
 				Path:    "/folder",
-				Handler: folder.FoldercreateHandler(serverCtx),
+				Handler: folder.CreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/folder/list",
-				Handler: folder.FolderlistHandler(serverCtx),
+				Handler: folder.ListHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/folder/move",
 				Handler: folder.MoveHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/folder/rename",
-				Handler: folder.RenameHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
@@ -67,7 +62,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodPost,
 				Path:    "/store",
-				Handler: store.StoreHandler(serverCtx),
+				Handler: store.DetailHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
