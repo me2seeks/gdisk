@@ -6,6 +6,5 @@ import (
 )
 
 func main() {
-	test := oss.UploadCertificate(1024)
-	fmt.Println(test)
+	fmt.Println(oss.DownloadUrl("9is6dUkRNWDU97051vNt"))
 }

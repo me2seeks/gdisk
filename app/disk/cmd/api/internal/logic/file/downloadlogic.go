@@ -1,6 +1,7 @@
 package file
 
 import (
+	"cloud-disk/common/oss"
 	"context"
 
 	"cloud-disk/app/disk/cmd/api/internal/svc"
@@ -23,8 +24,14 @@ func NewDownloadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Download
 	}
 }
 
-func (l *DownloadLogic) Download(req *types.DownloadCertificateReq) (resp *types.DownloadCertificateResp, err error) {
-	// todo: add your logic here and delete this line
+func (l *DownloadLogic) Download(req *types.DownloadCertificateReq) (*types.DownloadCertificateResp, error) {
 
-	return
+	fileDetail, err := l.svcCtx.FileModel.FindOne(l.ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
+	downloadUrl := oss.DownloadUrl(fileDetail.FileHash)
+	return &types.DownloadCertificateResp{
+		DownloadUrl: downloadUrl,
+	}, nil
 }

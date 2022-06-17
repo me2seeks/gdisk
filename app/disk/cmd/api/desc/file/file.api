@@ -26,10 +26,10 @@ type (
 
     //下载凭证
     DownloadCertificateReq{
-
+        Id int64  `json:"id"`
     }
     DownloadCertificateResp {
-        Certificate string `json:"certificate""`
+        DownloadUrl string  `json:"downloadUrl"`
     }
 
     //上传回调

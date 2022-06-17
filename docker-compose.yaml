@@ -19,8 +19,7 @@ services:
       - ./data/nginx/log:/var/log/nginx
     networks:
       - backend
-    depends_on:
-      - trytry
+
 
   #前端api + 业务rpc
   cloud_disk:

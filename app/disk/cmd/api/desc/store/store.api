@@ -12,7 +12,7 @@ type (
     StoreDetailReq{
     }
     StoreDetailResp{
-        CurrentSize int64   `json:"current_size"`
-        MaxSize int64 `json:"max_size"`
+        CurrentSize int64   `json:"currentSize"`
+        MaxSize int64 `json:"maxSize"`
     }
 )

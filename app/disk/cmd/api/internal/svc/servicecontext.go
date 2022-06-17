@@ -31,8 +31,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			r.Pass = c.Redis.Pass
 		}),
 
-		UserRpc:  user.NewUsercenter(zrpc.MustNewClient(c.UserRpc)),
-		StoreRpc: disk.NewDisk(zrpc.MustNewClient(c.DiskRpc)),
+		UserRpc: user.NewUsercenter(zrpc.MustNewClient(c.UserRpc)),
+		DiskRpc: disk.NewDisk(zrpc.MustNewClient(c.DiskRpc)),
 
 		FileModel:   model.NewFileModel(conn, c.Cache),
 		FolderModel: model.NewFolderModel(conn, c.Cache),

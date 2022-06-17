@@ -1,21 +1,19 @@
 package file
 
 import (
+	"cloud-disk/app/disk/cmd/api/internal/svc"
+	"cloud-disk/app/disk/cmd/api/internal/types"
+	"cloud-disk/app/disk/cmd/rpc/disk"
 	"cloud-disk/app/disk/cmd/rpc/pb"
-	"cloud-disk/app/disk/cmd/rpc/store"
 	"cloud-disk/app/disk/model"
 	"cloud-disk/common/ctxdata"
+	"cloud-disk/common/oss"
 	"cloud-disk/common/tool"
-	"cloud-disk/common/upload"
 	"cloud-disk/common/xerr"
 	"context"
 	"github.com/Masterminds/squirrel"
 	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
-	"path"
-
-	"cloud-disk/app/disk/cmd/api/internal/svc"
-	"cloud-disk/app/disk/cmd/api/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -38,7 +36,7 @@ func (l *UploadLogic) Upload(req *types.UploadCertificateReq) (*types.UploadCert
 	var needSize int64 = 0
 	uId := ctxdata.GetUidFromCtx(l.ctx)
 
-	storeDetail, err := l.svcCtx.StoreRpc.DetailStore(l.ctx, &store.StoreDetailReq{
+	storeDetail, err := l.svcCtx.DiskRpc.DetailStore(l.ctx, &disk.StoreDetailReq{
 		Uid: uId,
 	})
 	if err != nil {
@@ -69,7 +67,7 @@ func (l *UploadLogic) Upload(req *types.UploadCertificateReq) (*types.UploadCert
 			}
 
 			//更改用户容量
-			_, err = l.svcCtx.StoreRpc.ChangeStore(l.ctx, &pb.ChangeStoreReq{
+			_, err = l.svcCtx.DiskRpc.UpdateStore(l.ctx, &pb.UpdateStoreReq{
 				Uid:         uId,
 				CurrentSize: storeDetail.Store.CurrentSize + needSize,
 			})
@@ -84,7 +82,7 @@ func (l *UploadLogic) Upload(req *types.UploadCertificateReq) (*types.UploadCert
 				StoreId:  storeDetail.Store.Id,
 				FilePath: file.Path,
 				Size:     file.Size,
-				Postfix:  path.Ext(file.FileName),
+				Postfix:  tool.GetSuffix(file.FileName),
 			})
 			if err != nil {
 				return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR  FileModel.Insert err: %v", err)
@@ -98,7 +96,7 @@ func (l *UploadLogic) Upload(req *types.UploadCertificateReq) (*types.UploadCert
 	//延迟删除
 
 	//上传凭证
-	certificate := upload.UploadCertificate(needSize)
+	certificate := oss.UploadCertificate(needSize)
 	return &types.UploadCertificateResp{
 		Certificate: certificate,
 	}, nil

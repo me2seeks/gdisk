@@ -1,4 +1,4 @@
-package upload
+package oss
 
 import (
 	"context"
@@ -45,7 +45,7 @@ func UploadToQiNiu(key string, data []byte) (string, error) {
 func UploadCertificate(max int64) string {
 	putPolicy := storage.PutPolicy{
 		Scope:            Bucket,
-		CallbackURL:      "http://api.example.com/qiniu/upload/callback",
+		CallbackURL:      "http://api.example.com/qiniu/oss/callback",
 		CallbackBody:     `{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"path":"$(x:path)","uid":"$(x:uid)"}`,
 		CallbackBodyType: "application/json",
 		FsizeLimit:       max,
@@ -55,4 +55,11 @@ func UploadCertificate(max int64) string {
 	putPolicy.Expires = 1800
 
 	return upToken
+}
+
+//下载url
+func DownloadUrl(hash string) string {
+	mac := qbox.NewMac(AK, SK)
+	privateDownloadUrl := storage.MakePrivateURLv2(mac, Url, hash, 30)
+	return privateDownloadUrl
 }

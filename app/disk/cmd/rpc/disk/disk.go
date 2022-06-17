@@ -13,23 +13,31 @@ import (
 )
 
 type (
-	ChangeStoreReq  = pb.ChangeStoreReq
-	ChangeStoreResp = pb.ChangeStoreResp
-	FileDetail      = pb.FileDetail
-	FolderDetail    = pb.FolderDetail
-	ListFolderReq   = pb.ListFolderReq
-	ListFolderResp  = pb.ListFolderResp
-	StoreDetail     = pb.StoreDetail
-	StoreDetailReq  = pb.StoreDetailReq
-	StoreDetailResp = pb.StoreDetailResp
+	FileDetail       = pb.FileDetail
+	FolderDetail     = pb.FolderDetail
+	ListFolderReq    = pb.ListFolderReq
+	ListFolderResp   = pb.ListFolderResp
+	StoreDetail      = pb.StoreDetail
+	StoreDetailReq   = pb.StoreDetailReq
+	StoreDetailResp  = pb.StoreDetailResp
+	UpdateFileReq    = pb.UpdateFileReq
+	UpdateFileResp   = pb.UpdateFileResp
+	UpdateFolderReq  = pb.UpdateFolderReq
+	UpdateFolderResp = pb.UpdateFolderResp
+	UpdateStoreReq   = pb.UpdateStoreReq
+	UpdateStoreResp  = pb.UpdateStoreResp
 
 	Disk interface {
 		// store 详情
 		DetailStore(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error)
 		// 修改store大小
-		ChangeStore(ctx context.Context, in *ChangeStoreReq, opts ...grpc.CallOption) (*ChangeStoreResp, error)
+		UpdateStore(ctx context.Context, in *UpdateStoreReq, opts ...grpc.CallOption) (*UpdateStoreResp, error)
 		// 获取路径下的文件和文件夹
 		ListFolders(ctx context.Context, in *ListFolderReq, opts ...grpc.CallOption) (*ListFolderResp, error)
+		// 更新file信息
+		UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error)
+		// 更新folder信息
+		UpdateFolder(ctx context.Context, in *UpdateFolderReq, opts ...grpc.CallOption) (*UpdateFolderResp, error)
 	}
 
 	defaultDisk struct {
@@ -50,13 +58,25 @@ func (m *defaultDisk) DetailStore(ctx context.Context, in *StoreDetailReq, opts 
 }
 
 // 修改store大小
-func (m *defaultDisk) ChangeStore(ctx context.Context, in *ChangeStoreReq, opts ...grpc.CallOption) (*ChangeStoreResp, error) {
+func (m *defaultDisk) UpdateStore(ctx context.Context, in *UpdateStoreReq, opts ...grpc.CallOption) (*UpdateStoreResp, error) {
 	client := pb.NewDiskClient(m.cli.Conn())
-	return client.ChangeStore(ctx, in, opts...)
+	return client.UpdateStore(ctx, in, opts...)
 }
 
 // 获取路径下的文件和文件夹
 func (m *defaultDisk) ListFolders(ctx context.Context, in *ListFolderReq, opts ...grpc.CallOption) (*ListFolderResp, error) {
 	client := pb.NewDiskClient(m.cli.Conn())
 	return client.ListFolders(ctx, in, opts...)
+}
+
+// 更新file信息
+func (m *defaultDisk) UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error) {
+	client := pb.NewDiskClient(m.cli.Conn())
+	return client.UpdateFile(ctx, in, opts...)
+}
+
+// 更新folder信息
+func (m *defaultDisk) UpdateFolder(ctx context.Context, in *UpdateFolderReq, opts ...grpc.CallOption) (*UpdateFolderResp, error) {
+	client := pb.NewDiskClient(m.cli.Conn())
+	return client.UpdateFolder(ctx, in, opts...)
 }

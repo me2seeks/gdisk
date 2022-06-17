@@ -16,10 +16,11 @@ type UploadCertificateResp struct {
 }
 
 type DownloadCertificateReq struct {
+	Id int64 `json:"id"`
 }
 
 type DownloadCertificateResp struct {
-	Certificate string `json:"certificate""`
+	DownloadUrl string `json:"downloadUrl"`
 }
 
 type CallbackReq struct {
@@ -38,7 +39,6 @@ type Folder struct {
 type File struct {
 	Id             int64  `json:"id"`
 	FileName       string `json:"fileName"`
-	FilePath       string `json:"filePath"`
 	Size           int64  `json:"size"`
 	Postfix        string `json:"postfix"`
 	DownloadNumber int64  `json:"downloadNumber"`
@@ -47,16 +47,17 @@ type File struct {
 }
 
 type CreateFolderReq struct {
-	Path       string `json:"path"`
+	Pid        int64  `json:"pid"`
 	FolderName string `json:"folderName"`
 }
 
 type CreateFolderResp struct {
+	ID         int64 `json:"id"`
 	CreateTime int64 `json:"create_time"`
 }
 
 type ListReq struct {
-	Path string `json:"path"`
+	Pid int64 `json:"pid"`
 }
 
 type ListResp struct {
@@ -65,11 +66,10 @@ type ListResp struct {
 }
 
 type MovedReq struct {
-	Id       int64  `json:"id"`
-	IsFile   bool   `json:"isFile"`
-	Name     string `json:"name"`
-	SrcPath  string `json:"srcPath"`
-	DestPath string `json:"destPath"`
+	Id     int64  `json:"id"`
+	IsFile bool   `json:"isFile"`
+	Name   string `json:"name"`
+	ToPid  int64  `json:"toPid"`
 }
 
 type MovedResp struct {
@@ -79,6 +79,6 @@ type StoreDetailReq struct {
 }
 
 type StoreDetailResp struct {
-	CurrentSize int64 `json:"current_size"`
-	MaxSize     int64 `json:"max_size"`
+	CurrentSize int64 `json:"currentSize"`
+	MaxSize     int64 `json:"maxSize"`
 }

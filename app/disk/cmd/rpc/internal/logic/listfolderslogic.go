@@ -38,13 +38,13 @@ func (l *ListFoldersLogic) ListFolders(in *pb.ListFolderReq) (*pb.ListFolderResp
 
 	err := mr.Finish(func() error {
 		builder := l.svcCtx.FolderModel.RowBuilder().Where(squirrel.Eq{
-			"user_id":     in.Uid,
-			"folder_path": in.Path,
-			"del_state":   globalkey.DelStateNo,
+			"user_id":          in.Uid,
+			"parent_folder_id": in.Pid,
+			"del_state":        globalkey.DelStateNo,
 		})
 		pointerFolders, err := l.svcCtx.FolderModel.FindAll(l.ctx, builder, "desc")
 		if err != nil || err != model.ErrNotFound {
-			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR failed to FolderModel.FindAll uid: %d path: %s err: %v", in.Uid, in.Path, err)
+			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR failed to FolderModel.FindAll uid: %d pid: %d err: %v", in.Uid, in.Pid, err)
 		}
 		for i, folder := range pointerFolders {
 			copier.Copy(&folders[i], folder)
@@ -53,13 +53,13 @@ func (l *ListFoldersLogic) ListFolders(in *pb.ListFolderReq) (*pb.ListFolderResp
 		return nil
 	}, func() error {
 		builder := l.svcCtx.FileModel.RowBuilder().Where(squirrel.Eq{
-			"user_id":   in.Uid,
-			"file_path": in.Path,
-			"del_state": globalkey.DelStateNo,
+			"user_id":          in.Uid,
+			"parent_folder_id": in.Pid,
+			"del_state":        globalkey.DelStateNo,
 		})
 		pointerFiles, err := l.svcCtx.FileModel.FindAll(l.ctx, builder, "desc")
 		if err != nil || err != model.ErrNotFound {
-			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR failed to FileModel.FindAll uid: %d path: %s err: %v", in.Uid, in.Path, err)
+			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR failed to FileModel.FindAll uid: %d pid: %d err: %v", in.Uid, in.Pid, err)
 		}
 
 		for i, file := range pointerFiles {

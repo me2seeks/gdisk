@@ -6,7 +6,9 @@ filebeat.inputs:
 
 filebeat.config:
   modules:
+    #用于配置加载的全局模式
     path: ${path.config}/modules.d/*.yml
+    #是否启用配置重载
     reload.enabled: false
 
 processors:
@@ -17,7 +19,7 @@ output.kafka:
   enabled: true
   hosts: ["kafka:9092"]
   #要提前创建topic
-  topic: "trytry-log"
+  topic: "cloud-disk-log"
   partition.hash:
     reachable_only: true
   compression: gzip

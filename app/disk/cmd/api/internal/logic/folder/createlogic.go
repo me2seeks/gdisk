@@ -1,7 +1,7 @@
 package folder
 
 import (
-	"cloud-disk/app/disk/cmd/rpc/store"
+	"cloud-disk/app/disk/cmd/rpc/disk"
 	"cloud-disk/app/disk/model"
 	"cloud-disk/common/ctxdata"
 	"cloud-disk/common/xerr"
@@ -31,7 +31,7 @@ func NewCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateLogi
 
 func (l *CreateLogic) Create(req *types.CreateFolderReq) (*types.CreateFolderResp, error) {
 	uId := ctxdata.GetUidFromCtx(l.ctx)
-	storeDetail, err := l.svcCtx.StoreRpc.DetailStore(l.ctx, &store.StoreDetailReq{
+	storeDetail, err := l.svcCtx.DiskRpc.DetailStore(l.ctx, &disk.StoreDetailReq{
 		Uid: uId,
 	})
 	if err != nil {

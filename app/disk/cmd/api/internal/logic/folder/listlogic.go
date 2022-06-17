@@ -31,8 +31,8 @@ func (l *ListLogic) List(req *types.ListReq) (*types.ListResp, error) {
 	var files []types.File
 
 	result, err := l.svcCtx.DiskRpc.ListFolders(l.ctx, &pb.ListFolderReq{
-		Uid:  uId,
-		Path: req.Path,
+		Uid: uId,
+		Pid: req.Pid,
 	})
 	if err != nil {
 		return nil, err

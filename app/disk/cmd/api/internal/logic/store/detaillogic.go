@@ -1,7 +1,12 @@
 package store
 
 import (
+	"cloud-disk/app/disk/cmd/rpc/pb"
+	"cloud-disk/common/ctxdata"
+	"cloud-disk/common/globalkey"
+	"cloud-disk/common/xerr"
 	"context"
+	"github.com/pkg/errors"
 
 	"cloud-disk/app/disk/cmd/api/internal/svc"
 	"cloud-disk/app/disk/cmd/api/internal/types"
@@ -23,8 +28,21 @@ func NewDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DetailLogi
 	}
 }
 
-func (l *DetailLogic) Detail(req *types.StoreDetailReq) (resp *types.StoreDetailResp, err error) {
-	// todo: add your logic here and delete this line
+func (l *DetailLogic) Detail(req *types.StoreDetailReq) (*types.StoreDetailResp, error) {
+	uid := ctxdata.GetUidFromCtx(l.ctx)
+	storeDetail, err := l.svcCtx.DiskRpc.DetailStore(l.ctx, &pb.StoreDetailReq{
+		Uid: uid,
+	})
+	if err != nil {
+		return nil, err
+	}
+	if storeDetail.Store.DelState == globalkey.DelStateYes {
+		return nil, errors.Wrapf(xerr.NewErrMsg("仓库已被删除 请联系管理员"), "ERROR: Failed to 获取用户仓库信息 uid: %d", uid)
+	}
 
-	return
+	return &types.StoreDetailResp{
+		CurrentSize: storeDetail.Store.CurrentSize,
+		MaxSize:     storeDetail.Store.MaxSize,
+	}, nil
+
 }

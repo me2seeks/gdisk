@@ -19,7 +19,6 @@ type Folder {
 type File {
     Id    int64  `json:"id"`
     FileName string `json:"fileName"`
-    FilePath string `json:"filePath"`
     Size int64 `json:"size"`
     Postfix string  `json:"postfix"`
     DownloadNumber int64 `json:"downloadNumber"`
@@ -31,10 +30,11 @@ type File {
 type (
     //创建文件夹
     CreateFolderReq{
-        Path string `json:"path"`
+        Pid int64 `json:"pid"`
         FolderName string `json:"folderName"`
     }
     CreateFolderResp{
+        ID int64 `json:"id"`
         CreateTime int64 `json:"create_time"`
     }
 )
@@ -42,7 +42,7 @@ type (
 type (
     //列出文件下的文件夹和文件
     ListReq{
-        Path string  `json:"path"`
+        Pid int64 `json:"pid"`
     }
     ListResp{
         FolderList []Folder `json:"folderList"`
@@ -58,12 +58,10 @@ type (
         Id int64  `json:"id"`
         IsFile bool `json:"isFile"`
         Name string `json:"name"`
-        SrcPath string `json:"srcPath"`
-        DestPath string  `json:"destPath"`
+        ToPid int64  `json:"toPid"`
     }
     MovedResp{
     }
-
 )
 
 

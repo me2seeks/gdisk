@@ -43,16 +43,16 @@ type (
 	}
 
 	Folder struct {
-		Id         int64     `db:"id"`          // 文件夹ID
-		FolderName string    `db:"folder_name"` // 文件夹名称
-		UserId     int64     `db:"user_id"`     // 用户id
-		StoreId    int64     `db:"store_id"`    // 所属文件仓库ID
-		FolderPath string    `db:"folder_path"` // 文件夹路径
-		CreateTime time.Time `db:"create_time"` // 创建时间
-		UpdateTime time.Time `db:"update_time"`
-		DelState   int64     `db:"del_state"`
-		DeleteTime time.Time `db:"delete_time"`
-		Version    int64     `db:"version"` // 乐观锁版本号
+		Id             int64     `db:"id"`               // 文件夹ID
+		FolderName     string    `db:"folder_name"`      // 文件夹名称
+		UserId         int64     `db:"user_id"`          // 用户id
+		StoreId        int64     `db:"store_id"`         // 所属文件仓库ID
+		ParentFolderId int64     `db:"parent_folder_id"` // 父文件ID
+		CreateTime     time.Time `db:"create_time"`      // 创建时间
+		UpdateTime     time.Time `db:"update_time"`
+		DelState       int64     `db:"del_state"`
+		DeleteTime     time.Time `db:"delete_time"`
+		Version        int64     `db:"version"` // 乐观锁版本号
 	}
 )
 
@@ -69,9 +69,9 @@ func (m *defaultFolderModel) Insert(ctx context.Context, session sqlx.Session, d
 	return m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?)", m.table, folderRowsExpectAutoSet)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.FolderName, data.UserId, data.StoreId, data.FolderPath, data.DelState, data.DeleteTime, data.Version)
+			return session.ExecCtx(ctx, query, data.FolderName, data.UserId, data.StoreId, data.ParentFolderId, data.DelState, data.DeleteTime, data.Version)
 		}
-		return conn.ExecCtx(ctx, query, data.FolderName, data.UserId, data.StoreId, data.FolderPath, data.DelState, data.DeleteTime, data.Version)
+		return conn.ExecCtx(ctx, query, data.FolderName, data.UserId, data.StoreId, data.ParentFolderId, data.DelState, data.DeleteTime, data.Version)
 	}, cloudDiskFolderIdKey)
 }
 
@@ -97,9 +97,9 @@ func (m *defaultFolderModel) Update(ctx context.Context, session sqlx.Session, d
 	return m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, folderRowsWithPlaceHolder)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.FolderName, data.UserId, data.StoreId, data.FolderPath, data.DelState, data.DeleteTime, data.Version, data.Id)
+			return session.ExecCtx(ctx, query, data.FolderName, data.UserId, data.StoreId, data.ParentFolderId, data.DelState, data.DeleteTime, data.Version, data.Id)
 		}
-		return conn.ExecCtx(ctx, query, data.FolderName, data.UserId, data.StoreId, data.FolderPath, data.DelState, data.DeleteTime, data.Version, data.Id)
+		return conn.ExecCtx(ctx, query, data.FolderName, data.UserId, data.StoreId, data.ParentFolderId, data.DelState, data.DeleteTime, data.Version, data.Id)
 	}, cloudDiskFolderIdKey)
 }
 
@@ -115,9 +115,9 @@ func (m *defaultFolderModel) UpdateWithVersion(ctx context.Context, session sqlx
 	sqlResult, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ? and version = ? ", m.table, folderRowsWithPlaceHolder)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.FolderName, data.UserId, data.StoreId, data.FolderPath, data.DelState, data.DeleteTime, data.Version, data.Id, oldVersion)
+			return session.ExecCtx(ctx, query, data.FolderName, data.UserId, data.StoreId, data.ParentFolderId, data.DelState, data.DeleteTime, data.Version, data.Id, oldVersion)
 		}
-		return conn.ExecCtx(ctx, query, data.FolderName, data.UserId, data.StoreId, data.FolderPath, data.DelState, data.DeleteTime, data.Version, data.Id, oldVersion)
+		return conn.ExecCtx(ctx, query, data.FolderName, data.UserId, data.StoreId, data.ParentFolderId, data.DelState, data.DeleteTime, data.Version, data.Id, oldVersion)
 	}, cloudDiskFolderIdKey)
 	if err != nil {
 		return err

@@ -1,7 +1,7 @@
 package logic
 
 import (
-	"cloud-disk/common/upload"
+	"cloud-disk/common/oss"
 	"cloud-disk/common/verify"
 	"context"
 	"fmt"
@@ -32,7 +32,7 @@ func (l *VerifyimageLogic) VerifyImage(in *pb.VerifyImageReq) (*pb.VerifyImageRe
 	data := verify.Instance().GetImageByte(captchaId)
 
 	//将图片上传到七牛云并获取url
-	url, err := upload.UploadToQiNiu(captchaId, data)
+	url, err := oss.UploadToQiNiu(captchaId, data)
 	if err != nil {
 		return nil, err
 	}
