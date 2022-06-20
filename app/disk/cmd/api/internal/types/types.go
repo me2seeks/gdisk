@@ -2,7 +2,7 @@
 package types
 
 type FileDetail struct {
-	Path     string `json:"path",default:"/"`
+	Pid      int64  `json:"pid",default:"0"`
 	FileName string `json:"fileName"`
 	Size     int64  `json:"size"`
 }
@@ -27,6 +27,14 @@ type CallbackReq struct {
 }
 
 type CallbackResp struct {
+}
+
+type KindReq struct {
+	Kind string `json:"kind"`
+}
+
+type KindResp struct {
+	Files []FileDetail `json:"files"`
 }
 
 type Folder struct {

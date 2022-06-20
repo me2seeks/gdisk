@@ -3,6 +3,7 @@ Host: 0.0.0.0
 Port: 1001
 Mode: dev
 
+
 #jwtAuth
 JwtAuth:
   AccessSecret: ae0536f9-1024-4606-8e13-5a19ed505da0
@@ -32,13 +33,14 @@ WxMiniConf:
 
 Redis:
   Host: 127.0.0.1:6379
-  Key: rpc:user
+  Key: api:user
   Type: node
   Pass: "000000"
 
 
-UserCenterRpc:
-  Endpoints:
-    - 127.0.0.1:2001
-  NonBlock: true
+UserRpcConf:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: user.rpc
 

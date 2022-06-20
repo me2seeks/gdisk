@@ -84,6 +84,14 @@ message ListFolderResp {
   repeated FolderDetail folders =2;
 }
 
+message CreateStoreReq {
+  int64 uid = 1;
+}
+
+message CreateStoreResp {
+
+}
+
 service disk {
   //store 详情
   rpc DetailStore(StoreDetailReq) returns(StoreDetailResp);
@@ -99,4 +107,6 @@ service disk {
 
   //更新folder信息
   rpc UpdateFolder(UpdateFolderReq) returns(UpdateFolderResp);
+
+  //分享
 }

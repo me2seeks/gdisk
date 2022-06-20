@@ -11,12 +11,12 @@ type Config struct {
 		AccessSecret string
 		AccessExpire int64
 	}
-	WxMiniConf WxMiniConf
-	UserRpc    zrpc.RpcClientConf
-	TravelRpc  zrpc.RpcClientConf
-	Redis      struct {
+	Redis struct {
 		Pass string
 		Host string
 		Type string
 	}
+	WxMiniConf WxMiniConf
+
+	UserRpcConf zrpc.RpcClientConf
 }

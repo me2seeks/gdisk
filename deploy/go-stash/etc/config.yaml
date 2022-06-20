@@ -11,7 +11,7 @@ Clusters:
     Filters:
       - Action: drop
         Conditions:
-          - Key: k8s_container_name
+          - Key: status
             Value: "-rpc"
             Type: contains
           - Key: level

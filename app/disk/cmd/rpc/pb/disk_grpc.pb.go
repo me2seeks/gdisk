@@ -32,6 +32,8 @@ type DiskClient interface {
 	UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error)
 	//更新folder信息
 	UpdateFolder(ctx context.Context, in *UpdateFolderReq, opts ...grpc.CallOption) (*UpdateFolderResp, error)
+	//获取种类型的文件
+	ListKind(ctx context.Context, in *ListKindReq, opts ...grpc.CallOption) (*ListKindResp, error)
 }
 
 type diskClient struct {
@@ -87,6 +89,15 @@ func (c *diskClient) UpdateFolder(ctx context.Context, in *UpdateFolderReq, opts
 	return out, nil
 }
 
+func (c *diskClient) ListKind(ctx context.Context, in *ListKindReq, opts ...grpc.CallOption) (*ListKindResp, error) {
+	out := new(ListKindResp)
+	err := c.cc.Invoke(ctx, "/pb.disk/ListKind", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DiskServer is the server API for Disk service.
 // All implementations must embed UnimplementedDiskServer
 // for forward compatibility
@@ -101,6 +112,8 @@ type DiskServer interface {
 	UpdateFile(context.Context, *UpdateFileReq) (*UpdateFileResp, error)
 	//更新folder信息
 	UpdateFolder(context.Context, *UpdateFolderReq) (*UpdateFolderResp, error)
+	//获取种类型的文件
+	ListKind(context.Context, *ListKindReq) (*ListKindResp, error)
 	mustEmbedUnimplementedDiskServer()
 }
 
@@ -122,6 +135,9 @@ func (UnimplementedDiskServer) UpdateFile(context.Context, *UpdateFileReq) (*Upd
 }
 func (UnimplementedDiskServer) UpdateFolder(context.Context, *UpdateFolderReq) (*UpdateFolderResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateFolder not implemented")
+}
+func (UnimplementedDiskServer) ListKind(context.Context, *ListKindReq) (*ListKindResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListKind not implemented")
 }
 func (UnimplementedDiskServer) mustEmbedUnimplementedDiskServer() {}
 
@@ -226,6 +242,24 @@ func _Disk_UpdateFolder_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Disk_ListKind_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListKindReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DiskServer).ListKind(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.disk/ListKind",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DiskServer).ListKind(ctx, req.(*ListKindReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Disk_ServiceDesc is the grpc.ServiceDesc for Disk service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -252,6 +286,10 @@ var Disk_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateFolder",
 			Handler:    _Disk_UpdateFolder_Handler,
+		},
+		{
+			MethodName: "ListKind",
+			Handler:    _Disk_ListKind_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

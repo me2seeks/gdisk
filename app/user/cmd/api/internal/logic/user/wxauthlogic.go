@@ -4,7 +4,7 @@ import (
 	"cloud-disk/app/user/cmd/api/internal/svc"
 	"cloud-disk/app/user/cmd/api/internal/types"
 	"cloud-disk/app/user/cmd/rpc/user"
-	usercenterModel "cloud-disk/app/user/model"
+	userModel "cloud-disk/app/user/model"
 	"cloud-disk/common/xerr"
 	"context"
 	"fmt"
@@ -53,8 +53,8 @@ func (l *WxAuthLogic) WxAuth(req *types.WXMiniAuthReq) (*types.WXMiniAuthResp, e
 
 	//3、绑定用户或者创建用户
 	var userId int64
-	rpcRsp, err := l.svcCtx.UsercenterRpc.GetUserAuthByAuthKey(l.ctx, &user.GetUserAuthByAuthKeyReq{
-		AuthType: usercenterModel.UserAuthTypeSmallWX,
+	rpcRsp, err := l.svcCtx.UserRpc.GetUserAuthByAuthKey(l.ctx, &user.GetUserAuthByAuthKeyReq{
+		AuthType: userModel.UserAuthTypeSmallWX,
 		AuthKey:  authResult.OpenID,
 	})
 	if err != nil {
@@ -66,14 +66,14 @@ func (l *WxAuthLogic) WxAuth(req *types.WXMiniAuthReq) (*types.WXMiniAuthResp, e
 		//Wechat-Mini Decrypted data
 		Phone := userData.PhoneNumber
 		nickName := fmt.Sprintf("cloud-disk%s", Phone[7:]) //防止昵称有重复无法注册
-		registerRsp, err := l.svcCtx.UsercenterRpc.Register(l.ctx, &user.RegisterReq{
+		registerRsp, err := l.svcCtx.UserRpc.Register(l.ctx, &user.RegisterReq{
 			AuthKey:  authResult.OpenID,
-			AuthType: usercenterModel.UserAuthTypeSmallWX,
+			AuthType: userModel.UserAuthTypeSmallWX,
 			Phone:    Phone,
 			Nickname: nickName,
 		})
 		if err != nil {
-			return nil, errors.Wrapf(ErrWxMiniAuthFailError, "UsercenterRpc.Register err :%v, authResult : %+v", err, authResult)
+			return nil, errors.Wrapf(ErrWxMiniAuthFailError, "UserRpc.Register err :%v, authResult : %+v", err, authResult)
 		}
 
 		return &types.WXMiniAuthResp{
@@ -84,11 +84,11 @@ func (l *WxAuthLogic) WxAuth(req *types.WXMiniAuthReq) (*types.WXMiniAuthResp, e
 
 	} else {
 		userId = rpcRsp.UserAuth.UserId
-		tokenResp, err := l.svcCtx.UsercenterRpc.GenerateToken(l.ctx, &user.GenerateTokenReq{
+		tokenResp, err := l.svcCtx.UserRpc.GenerateToken(l.ctx, &user.GenerateTokenReq{
 			UserId: userId,
 		})
 		if err != nil {
-			return nil, errors.Wrapf(ErrWxMiniAuthFailError, "usercenterRpc.GenerateToken err :%v, userId : %d", err, userId)
+			return nil, errors.Wrapf(ErrWxMiniAuthFailError, "userRpc.GenerateToken err :%v, userId : %d", err, userId)
 		}
 		return &types.WXMiniAuthResp{
 			AccessToken:  tokenResp.AccessToken,

@@ -26,6 +26,7 @@ Log:
   Level: error
 
 VerificationRpc:
-  Endpoints:
-    - 127.0.0.1:2002
-  NonBlock: true
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: verification.rpc

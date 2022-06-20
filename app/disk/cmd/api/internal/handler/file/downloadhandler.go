@@ -1,9 +1,10 @@
 package file
 
 import (
+	"github.com/zeromicro/go-zero/rest/httpx"
 	"net/http"
 
-	"trytry/common/result"
+	"cloud-disk/common/result"
 
 	"cloud-disk/app/disk/cmd/api/internal/logic/file"
 	"cloud-disk/app/disk/cmd/api/internal/svc"

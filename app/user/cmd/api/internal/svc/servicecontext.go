@@ -9,17 +9,17 @@ import (
 )
 
 type ServiceContext struct {
-	Config        config.Config
-	UsercenterRpc user.Usercenter
-	RedisClient   *redis.Redis
+	Config      config.Config
+	UserRpc     user.User
+	RedisClient *redis.Redis
 
 	SetUidToCtxMiddleware rest.Middleware
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
-		Config:        c,
-		UsercenterRpc: user.NewUsercenter(zrpc.MustNewClient(c.UserRpc)),
+		Config:  c,
+		UserRpc: user.NewUser(zrpc.MustNewClient(c.UserRpcConf)),
 		RedisClient: redis.New(c.Redis.Host, func(r *redis.Redis) {
 			r.Type = c.Redis.Type
 			r.Pass = c.Redis.Pass

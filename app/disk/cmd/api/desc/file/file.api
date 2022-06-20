@@ -10,7 +10,7 @@ info(
 
 
 type  FileDetail {
-    Path string  `json:"path",default:"/"`
+    Pid int64  `json:"pid",default:"0"`
     FileName string `json:"fileName"`
     Size int64 `json:"size"`
 }
@@ -39,6 +39,12 @@ type (
     CallbackResp {
     }
 
+    KindReq {
+        Kind string `json:"kind"`
+    }
+    KindResp {
+        Files []FileDetail `json:"files"`
+    }
 )
 
 

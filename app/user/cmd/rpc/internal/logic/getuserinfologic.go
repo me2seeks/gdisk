@@ -39,7 +39,7 @@ func (l *GetUserInfoLogic) GetUserInfo(in *pb.GetUserInfoReq) (*pb.GetUserInfoRe
 	if userInfo == nil {
 		return nil, errors.Wrapf(ErrUserNoExistsError, "id: %d", in.Uid)
 	}
-	var respUser user.User
+	var respUser user.UserDetail
 	_ = copier.Copy(&respUser, userInfo)
 	return &pb.GetUserInfoResp{
 		User: &respUser,

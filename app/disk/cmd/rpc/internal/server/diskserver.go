@@ -51,3 +51,9 @@ func (s *DiskServer) UpdateFolder(ctx context.Context, in *pb.UpdateFolderReq) (
 	l := logic.NewUpdateFolderLogic(ctx, s.svcCtx)
 	return l.UpdateFolder(in)
 }
+
+// 获取种类型的文件
+func (s *DiskServer) ListKind(ctx context.Context, in *pb.ListKindReq) (*pb.ListKindResp, error) {
+	l := logic.NewListKindLogic(ctx, s.svcCtx)
+	return l.ListKind(in)
+}

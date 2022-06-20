@@ -32,14 +32,14 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (*types.RegisterResp, e
 		return nil, errors.Wrapf(nil, "验证码错误")
 	}
 
-	registerResp, err := l.svcCtx.UsercenterRpc.Register(l.ctx, &user.RegisterReq{
+	registerResp, err := l.svcCtx.UserRpc.Register(l.ctx, &user.RegisterReq{
 		Phone:    req.Phone,
 		Password: req.Password,
 		AuthKey:  req.Phone,
 		AuthType: model.UserAuthTypeSystem,
 	})
 	if err != nil {
-		return nil, errors.Wrapf(err, "UsercenterRpc.Register err req: %+v", req)
+		return nil, errors.Wrapf(err, "UserRpc.Register err req: %+v", req)
 	}
 	var resp types.RegisterResp
 	_ = copier.Copy(&resp, registerResp)

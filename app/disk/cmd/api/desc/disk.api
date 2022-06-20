@@ -33,6 +33,10 @@ service disk {
 	@doc "上传回调"
 	@handler callback
 	post /certificate/callback (CallbackReq) returns (CallbackResp)
+	
+	@doc "获取某类型的文件列表"
+	@handler kind
+	post /kind (KindReq) returns (KindResp)
 }
 
 @server(

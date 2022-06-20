@@ -34,31 +34,31 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 func (l *RegisterLogic) Register(in *pb.RegisterReq) (*pb.RegisterResp, error) {
 	userInfo, err := l.svcCtx.UserModel.FindOneByPhone(l.ctx, in.Phone)
 	if err != nil && err != model.ErrNotFound {
-		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "verify:%s,err:%v", in.Phone, err)
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR: RPC[user] UserModel.FindOneByPhone verify:%s,err:%v", in.Phone, err)
 	}
 	if userInfo != nil {
-		return nil, errors.Wrapf(ErrUserAlreadyRegisterError, "verify:%s,err:%v", in.Phone, err)
+		return nil, errors.Wrapf(ErrUserAlreadyRegisterError, "ERROR: RPC[user]  用户已存在 :%s,err:%v", in.Phone, err)
 	}
 
 	var userId int64
 	if err := l.svcCtx.UserModel.Trans(l.ctx, func(ctx context.Context, session sqlx.Session) error {
-		user := new(model.User)
-		user.Phone = in.Phone
-		user.Nickname = in.Nickname
-		if len(user.Nickname) == 0 {
-			user.Nickname = tool.Krand(8, tool.KC_RAND_KIND_ALL)
+		u := new(model.User)
+		u.Phone = in.Phone
+		u.Nickname = in.Nickname
+		if len(u.Nickname) == 0 {
+			u.Nickname = tool.Krand(8, tool.KC_RAND_KIND_ALL)
 		}
 		if len(in.Password) > 0 {
-			user.Password = tool.Md5ByString(in.Password)
+			u.Password = tool.Md5ByString(in.Password)
 		}
 
-		insertResult, err := l.svcCtx.UserModel.Insert(l.ctx, session, user)
+		insertResult, err := l.svcCtx.UserModel.Insert(l.ctx, session, u)
 		if err != nil {
-			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "Register pb user Insert failed:%v,user:%+v", err, user)
+			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR: RPC[user] UserModel.Insert err::%v,u:%+v", err, u)
 		}
 		lastId, err := insertResult.LastInsertId()
 		if err != nil {
-			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "Register pb user insertResult.LastInsertId failed:%v,user:%+v", err, user)
+			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR: RPC[user] insertResult.LastInsertId:%v,u:%+v", err, u)
 		}
 		userId = lastId
 
@@ -67,7 +67,7 @@ func (l *RegisterLogic) Register(in *pb.RegisterReq) (*pb.RegisterResp, error) {
 		userAuth.AuthKey = in.AuthKey
 		userAuth.AuthType = in.AuthType
 		if _, err := l.svcCtx.UserAuthModel.Insert(l.ctx, session, userAuth); err != nil {
-			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "Register pb user_auth Insert failed: %v", err)
+			return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR: RPC[user] user_auth Insert err: %v", err)
 		}
 		return nil
 	}); err != nil {
@@ -79,7 +79,7 @@ func (l *RegisterLogic) Register(in *pb.RegisterReq) (*pb.RegisterResp, error) {
 		UserId: userId,
 	})
 	if err != nil {
-		return nil, errors.Wrapf(ErrGenerateTokenError, "Generate user identity failed: %d", userId)
+		return nil, errors.Wrapf(ErrGenerateTokenError, "ERROR: RPC[user] 获取token错误: %d", userId)
 	}
 
 	return &pb.RegisterResp{

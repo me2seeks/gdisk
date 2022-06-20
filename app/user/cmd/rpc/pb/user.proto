@@ -5,7 +5,7 @@ package pb;
 option go_package= "./pb";
 
 //model
-message User {
+message UserDetail {
   int64 id = 1;
   string phone = 2;
   string nickname =3;
@@ -52,7 +52,7 @@ message GetUserInfoReq{
   int64 uid = 1;
 }
 message GetUserInfoResp{
-  User user =1;
+  UserDetail user =1;
 }
 
 message GetUserAuthByAuthKeyReq {
@@ -81,7 +81,7 @@ message GenerateTokenResp {
 }
 
 //service
-service usercenter {
+service user {
   rpc login(LoginReq) returns(LoginResp);
   rpc register(RegisterReq) returns(RegisterResp);
   rpc getUserInfo(GetUserInfoReq) returns(GetUserInfoResp);

@@ -54,8 +54,8 @@ func (l *UploadLogic) Upload(req *types.UploadCertificateReq) (*types.UploadCert
 		for _, file := range req.Files {
 			//检验该路径下是否有同名并处理
 			builder := l.svcCtx.FileModel.RowBuilder().Where(squirrel.Eq{
-				"file_name": file.FileName,
-				"file_path": file.Path,
+				"file_name":        file.FileName,
+				"parent_folder_id": file.Pid,
 			})
 			_, err := l.svcCtx.FileModel.FindOneByQuery(l.ctx, builder)
 			switch err {
@@ -77,12 +77,12 @@ func (l *UploadLogic) Upload(req *types.UploadCertificateReq) (*types.UploadCert
 
 			//插入数据库
 			_, err = l.svcCtx.FileModel.Insert(l.ctx, session, &model.File{
-				UserId:   uId,
-				FileName: file.FileName,
-				StoreId:  storeDetail.Store.Id,
-				FilePath: file.Path,
-				Size:     file.Size,
-				Postfix:  tool.GetSuffix(file.FileName),
+				UserId:         uId,
+				FileName:       file.FileName,
+				StoreId:        storeDetail.Store.Id,
+				ParentFolderId: file.Pid,
+				Size:           file.Size,
+				Postfix:        tool.GetSuffix(file.FileName),
 			})
 			if err != nil {
 				return errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR  FileModel.Insert err: %v", err)

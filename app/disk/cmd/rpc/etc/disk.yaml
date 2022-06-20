@@ -1,7 +1,11 @@
-Name: disk.rpc
+Name: disk-rpc
 ListenOn: 127.0.0.1:2006
 Mode: dev
 
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+  Key: disk.rpc
 
 #jwtAuth
 JwtAuth:
@@ -27,7 +31,7 @@ Log:
 
 Redis:
   Host: 127.0.0.1:6379
-  Key: disk:user
+  Key: rpc:disk
   Type: node
   Pass: "000000"
 
@@ -39,8 +43,10 @@ Cache:
     Pass: "000000"
 
 UserRpcConf:
-  Endpoints:
-    - 127.0.0.1:2001
-  NonBlock: true
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: user.rpc
+
 
 

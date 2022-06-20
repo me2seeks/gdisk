@@ -1,26 +1,25 @@
-package folder
+package file
 
 import (
-	"github.com/zeromicro/go-zero/rest/httpx"
 	"net/http"
 
-	"cloud-disk/common/result"
+	"trytry/common/result"
 
-	"cloud-disk/app/disk/cmd/api/internal/logic/folder"
+	"cloud-disk/app/disk/cmd/api/internal/logic/file"
 	"cloud-disk/app/disk/cmd/api/internal/svc"
 	"cloud-disk/app/disk/cmd/api/internal/types"
 )
 
-func RenameHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func KindHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.RenamedReq
+		var req types.KindReq
 		if err := httpx.Parse(r, &req); err != nil {
 			result.ParamErrorResult(r, w, err)
 			return
 		}
 
-		l := folder.NewRenameLogic(r.Context(), svcCtx)
-		resp, err := l.Rename(&req)
+		l := file.NewKindLogic(r.Context(), svcCtx)
+		resp, err := l.Kind(&req)
 		result.HttpResult(r, w, resp, err)
 	}
 }

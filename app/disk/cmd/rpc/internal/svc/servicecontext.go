@@ -13,7 +13,7 @@ type ServiceContext struct {
 	Config      config.Config
 	RedisClient *redis.Redis
 
-	UserRpc user.Usercenter
+	UserRpc user.User
 
 	FileModel   model.FileModel
 	FolderModel model.FolderModel
@@ -24,7 +24,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	conn := sqlx.NewMysql(c.DB.DataSource)
 	return &ServiceContext{
 		Config:  c,
-		UserRpc: user.NewUsercenter(zrpc.MustNewClient(c.UserRpcConf)),
+		UserRpc: user.NewUser(zrpc.MustNewClient(c.UserRpcConf)),
 
 		FileModel:   model.NewFileModel(conn, c.Cache),
 		FolderModel: model.NewFolderModel(conn, c.Cache),

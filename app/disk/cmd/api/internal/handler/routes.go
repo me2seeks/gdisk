@@ -30,6 +30,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/certificate/callback",
 				Handler: file.CallbackHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/kind",
+				Handler: file.KindHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
 		rest.WithPrefix("/disk/v1"),

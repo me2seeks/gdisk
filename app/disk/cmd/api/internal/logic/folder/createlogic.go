@@ -39,7 +39,7 @@ func (l *CreateLogic) Create(req *types.CreateFolderReq) (*types.CreateFolderRes
 	}
 
 	var folder = new(model.Folder)
-	folder.FolderPath = req.Path
+	folder.ParentFolderId = req.Pid
 	folder.CreateTime = time.Now()
 	folder.FolderName = req.FolderName
 	folder.StoreId = storeDetail.Store.Id

@@ -13,10 +13,14 @@ import (
 )
 
 type (
+	CreateStoreReq   = pb.CreateStoreReq
+	CreateStoreResp  = pb.CreateStoreResp
 	FileDetail       = pb.FileDetail
 	FolderDetail     = pb.FolderDetail
 	ListFolderReq    = pb.ListFolderReq
 	ListFolderResp   = pb.ListFolderResp
+	ListKindReq      = pb.ListKindReq
+	ListKindResp     = pb.ListKindResp
 	StoreDetail      = pb.StoreDetail
 	StoreDetailReq   = pb.StoreDetailReq
 	StoreDetailResp  = pb.StoreDetailResp
@@ -38,6 +42,8 @@ type (
 		UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error)
 		// 更新folder信息
 		UpdateFolder(ctx context.Context, in *UpdateFolderReq, opts ...grpc.CallOption) (*UpdateFolderResp, error)
+		// 获取种类型的文件
+		ListKind(ctx context.Context, in *ListKindReq, opts ...grpc.CallOption) (*ListKindResp, error)
 	}
 
 	defaultDisk struct {
@@ -79,4 +85,10 @@ func (m *defaultDisk) UpdateFile(ctx context.Context, in *UpdateFileReq, opts ..
 func (m *defaultDisk) UpdateFolder(ctx context.Context, in *UpdateFolderReq, opts ...grpc.CallOption) (*UpdateFolderResp, error) {
 	client := pb.NewDiskClient(m.cli.Conn())
 	return client.UpdateFolder(ctx, in, opts...)
+}
+
+// 获取种类型的文件
+func (m *defaultDisk) ListKind(ctx context.Context, in *ListKindReq, opts ...grpc.CallOption) (*ListKindResp, error) {
+	client := pb.NewDiskClient(m.cli.Conn())
+	return client.ListKind(ctx, in, opts...)
 }

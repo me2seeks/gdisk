@@ -2,12 +2,10 @@ Name: verification.rpc
 ListenOn: 0.0.0.0:2002
 Mode: dev
 
-
-
-#Etcd:
-#  Hosts:
-#    - 127.0.0.1:2379
-#  Key: verification.rpc
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+  Key: verification.rpc
 
 #jwtAuth
 JwtAuth:
