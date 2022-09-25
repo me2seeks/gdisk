@@ -11,30 +11,30 @@ info(
 import "user/user.api"
 
 @server(
-	prefix: /user/v1
+	prefix: /user
 	group: user
 )
 service user {
 	@doc "注册"
 	@handler register
-	post /user (RegisterReq) returns (RegisterResp)
+	post / (RegisterReq) returns (RegisterResp)
 	
 	@doc "登入"
 	@handler login
-	post /user/login (LoginReq) returns (LoginResp)
+	post /login (LoginReq) returns (LoginResp)
 }
 
 @server(
-	prefix: /user/v1
+	prefix: /user
 	jwt: JwtAuth
 	group: user
 )
 service user {
 	@doc "用户信息"
 	@handler detail
-	post /user/detail (UserInfoReq) returns (UserInfoResp)
+	post /detail (UserInfoReq) returns (UserInfoResp)
 	
 	@doc "wx Auth"
 	@handler wxAuth
-	post /user/wxMiniAuth (WXMiniAuthReq) returns (WXMiniAuthResp)
+	post /wxMiniAuth (WXMiniAuthReq) returns (WXMiniAuthResp)
 }

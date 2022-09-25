@@ -15,7 +15,7 @@ import(
 //==============================> payment v1 <========================================
 //no need login
 @server(
-	prefix: payment/v1
+	prefix: /payment
 	group: thirdPayment
 )
 service payment {
@@ -27,7 +27,7 @@ service payment {
 
 //need login
 @server(
-	prefix: payment/v1
+	prefix: /payment
 	group: thirdPayment
 	jwt: JwtAuth
 )

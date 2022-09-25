@@ -16,7 +16,7 @@ import (
 
 //need login
 @server(
-	prefix: disk/v1
+	prefix: /disk
 	group: file
 	jwt: JwtAuth
 )
@@ -40,7 +40,7 @@ service disk {
 }
 
 @server(
-	prefix: disk/v1
+	prefix: /disk
 	group: folder
 	jwt: JwtAuth
 )
@@ -61,7 +61,7 @@ service disk {
 }
 
 @server(
-	prefix: disk/v1
+	prefix: /disk
 	group: store
 	jwt: JwtAuth
 )
