@@ -19,7 +19,7 @@ type User {
 
 type (
     RegisterReq {
-        phone   string `json:"verify"`
+        email   string `json:"email"`
         Password string `json:"password"`
         Captcha string `json:"captcha"`
     }
@@ -32,7 +32,7 @@ type (
 
 type (
     LoginReq{
-        phone   string `json:"verify"`
+        email   string `json:"email"`
         Password string `json:"password"`
     }
     LoginResp {

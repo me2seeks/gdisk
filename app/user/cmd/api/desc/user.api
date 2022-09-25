@@ -17,7 +17,7 @@ import "user/user.api"
 service user {
 	@doc "注册"
 	@handler register
-	post / (RegisterReq) returns (RegisterResp)
+	post /register (RegisterReq) returns (RegisterResp)
 	
 	@doc "登入"
 	@handler login

@@ -11,7 +11,7 @@ type User struct {
 }
 
 type RegisterReq struct {
-	Phone    string `json:"verify"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 	Captcha  string `json:"captcha"`
 }
@@ -23,7 +23,7 @@ type RegisterResp struct {
 }
 
 type LoginReq struct {
-	Phone    string `json:"verify"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 

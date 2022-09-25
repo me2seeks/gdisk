@@ -28,14 +28,14 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 
 func (l *RegisterLogic) Register(req *types.RegisterReq) (*types.RegisterResp, error) {
 	//验证
-	if res, _ := l.svcCtx.RedisClient.Get(req.Phone); req.Captcha != res {
+	if res, _ := l.svcCtx.RedisClient.Get(req.Email); req.Captcha != res {
 		return nil, errors.Wrapf(nil, "验证码错误")
 	}
 
 	registerResp, err := l.svcCtx.UserRpc.Register(l.ctx, &user.RegisterReq{
-		Phone:    req.Phone,
+		Phone:    req.Email,
 		Password: req.Password,
-		AuthKey:  req.Phone,
+		AuthKey:  req.Email,
 		AuthType: model.UserAuthTypeSystem,
 	})
 	if err != nil {
