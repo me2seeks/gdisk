@@ -4,7 +4,7 @@ Mode: dev
 
 Etcd:
   Hosts:
-    - 127.0.0.1:2379
+    - etcd:2379
   Key: disk.rpc
 
 #jwtAuth
@@ -21,7 +21,7 @@ Prometheus:
 #Link Tracking
 Telemetry:
   Name: disk-rpc
-  Endpoint: http://127.0.0.1:14268/api/traces
+  Endpoint: http://jaeger:14268/api/traces
   Sampler: 1.0
   Batcher: jaeger
 
@@ -30,22 +30,22 @@ Log:
   Level: error
 
 Redis:
-  Host: 127.0.0.1:6379
+  Host: redis:6379
   Key: rpc:disk
   Type: node
   Pass: "000000"
 
 DB:
-  DataSource: root:000000@tcp(127.0.0.1:3306)/cloud_disk?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+  DataSource: root:000000@tcp(mysql:3306)/cloud_disk?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 
 Cache:
-  - Host: 127.0.0.1:6379
+  - Host: etcd:6379
     Pass: "000000"
 
 UserRpcConf:
   Etcd:
     Hosts:
-      - 127.0.0.1:2379
+      - etcd:2379
     Key: user.rpc
 
 

@@ -14,15 +14,15 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/verification/email",
+				Path:    "/email",
 				Handler: verifyemailHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/verification/image",
+				Path:    "/image",
 				Handler: verifyimageHandler(serverCtx),
 			},
 		},
-		rest.WithPrefix("/v1"),
+		rest.WithPrefix("/verification"),
 	)
 }

@@ -27,15 +27,15 @@ type (
 )
 
 @server(
-	prefix: v1
+	prefix: /verification
 	
 )
 service verification {
 	@doc "验证邮箱"
 	@handler verifyemail
-	post /verification/email (VerifyEmailReq) returns (VerifyEmailResp)
+	post /email (VerifyEmailReq) returns (VerifyEmailResp)
 	
 	@doc "验证图"
 	@handler verifyimage
-	post /verification/image (VerifyImageReq) returns (VerifyImageResp)
+	post /image (VerifyImageReq) returns (VerifyImageResp)
 }
