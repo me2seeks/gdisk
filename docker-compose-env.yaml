@@ -73,17 +73,15 @@ services:
     networks:
         - backend
 
-#  #搜集kafka业务日志、存储prometheus监控数据
-  elasticsearch:
+  #搜集kafka业务日志、存储prometheus监控数据
+  elasticsearch: 
     image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
     container_name: elasticsearch
     user: root
     environment:
       - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - TZ=${TZ}
-    volumes:
-      - ./data/elasticsearch/data:/usr/share/elasticsearch/data
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+      - TZ=Asia/Shanghai
     restart: always
     ports:
     - 9200:9200

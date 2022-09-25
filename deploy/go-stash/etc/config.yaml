@@ -5,7 +5,7 @@ Clusters:
         Brokers:
           - "kafka:9092"
         Topics:
-          - cloud-disk-log
+          - trytry-log
         Group: pro
         Consumers: 16
     Filters:
@@ -41,5 +41,5 @@ Clusters:
     Output:
       ElasticSearch:
         Hosts:
-          - "http://elasticsearch:9200"
-        Index: "cloud-disk-{{yyyy-MM-dd}}"
+        - "http://elasticsearch:9200"
+        Index: "trytry-{{yyyy-MM-dd}}"
