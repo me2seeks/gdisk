@@ -28,8 +28,6 @@ func (l *VerifyemailLogic) Verifyemail(req *types.VerifyEmailReq) (resp *types.V
 
 	_, err = l.svcCtx.VerificationRpc.VerifyEmail(l.ctx, &verification.VerifyEmailReq{
 		Email: req.Email,
-		Key:   req.Key,
-		Value: req.Value,
 	})
 	if err != nil {
 		return nil, errors.Wrapf(err, "req: %+v", req)

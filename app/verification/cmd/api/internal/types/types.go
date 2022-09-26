@@ -3,8 +3,6 @@ package types
 
 type VerifyEmailReq struct {
 	Email string `json:"email"`
-	Key   string `json:"key"`
-	Value string `json:"value"`
 }
 
 type VerifyEmailResp struct {

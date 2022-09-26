@@ -7,7 +7,6 @@ import (
 	"cloud-disk/common/verify"
 	"cloud-disk/common/xerr"
 	"context"
-	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -27,9 +26,11 @@ func NewVerifyEmailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Verif
 
 func (l *VerifyemailLogic) VerifyEmail(in *pb.VerifyEmailReq) (*pb.VerifyEmailResp, error) {
 
-	if !verify.Instance().Verify(in.Key, in.Value) {
-		return nil, errors.Wrapf(xerr.NewErrCode(xerr.VERIFY_ERROR), "verify:%s", in.Email)
-	}
+	//图片验证
+	//if !verify.Instance().Verify(in.Key, in.Value) {
+	//	return nil, errors.Wrapf(xerr.NewErrCode(xerr.VERIFY_ERROR), "verify:%s", in.Email)
+	//}
+
 	value := tool.Krand(6, tool.KC_RAND_KIND_ALL)
 
 	//将验证码放入Redis 并设置过期时间10分钟
@@ -38,7 +39,7 @@ func (l *VerifyemailLogic) VerifyEmail(in *pb.VerifyEmailReq) (*pb.VerifyEmailRe
 		return nil, xerr.NewErrCodeMsg(xerr.SERVER_COMMON_ERROR, xerr.MapErrMsg(xerr.SERVER_COMMON_ERROR))
 	}
 
-	//发邮箱发的慢
+	//发邮件  之后将邮箱和授权码放外面
 	err = verify.SendMail("chinaskillproject@163.com", in.Email, "验证码", "验证码:"+value, "JUBMSUDZGUVSHKYF")
 	if err != nil {
 		return nil, err

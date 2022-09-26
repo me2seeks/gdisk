@@ -7,8 +7,9 @@ option go_package= "./pb";
 //req resp
 message VerifyEmailReq{
   string email =1;
-  string key =2;
-  string value =3;
+//  验证图片
+//  string key =2;
+//  string value =3;
 }
 message VerifyEmailResp {
 }

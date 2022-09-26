@@ -11,8 +11,9 @@ info(
 type (
 	VerifyEmailReq {
 		Email string `json:"email"`
-		Key   string `json:"key"`
-		Value string `json:"value"`
+		//	    验证图片
+		//		Key   string `json:"key"`
+		//		Value string `json:"value"`
 	}
 	VerifyEmailResp {
 	}
