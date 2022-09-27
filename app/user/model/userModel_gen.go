@@ -26,14 +26,14 @@ var (
 	userRowsWithPlaceHolder = strings.Join(stringx.Remove(userFieldNames, "`id`", "`create_time`", "`update_time`"), "=?,") + "=?"
 
 	cacheCloudDiskUserIdPrefix    = "cache:cloudDisk:user:id:"
-	cacheCloudDiskUserPhonePrefix = "cache:cloudDisk:user:phone:"
+	cacheCloudDiskUserEmailPrefix = "cache:cloudDisk:user:email:"
 )
 
 type (
 	userModel interface {
 		Insert(ctx context.Context, session sqlx.Session, data *User) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*User, error)
-		FindOneByPhone(ctx context.Context, phone string) (*User, error)
+		FindOneByEmail(ctx context.Context, email string) (*User, error)
 		Update(ctx context.Context, session sqlx.Session, data *User) (sql.Result, error)
 		UpdateWithVersion(ctx context.Context, session sqlx.Session, data *User) error
 		Delete(ctx context.Context, session sqlx.Session, id int64) error
@@ -45,18 +45,19 @@ type (
 	}
 
 	User struct {
-		Id         int64     `db:"id"`
-		Email      string    `db:"email"`
-		Password   string    `db:"password"`
-		Nickname   string    `db:"nickname"`
-		Sex        int64     `db:"sex"` // 性别 0:男 1:女
-		Avatar     string    `db:"avatar"`
-		Info       string    `db:"info"`
-		DeleteTime time.Time `db:"delete_time"`
-		DelState   int64     `db:"del_state"`
-		CreateTime time.Time `db:"create_time"`
-		UpdateTime time.Time `db:"update_time"`
-		Version    int64     `db:"version"` // 版本号
+		Id         int64          `db:"id"`
+		Identity   sql.NullString `db:"identity"`
+		Email      string         `db:"email"`
+		Password   string         `db:"password"`
+		Name       string         `db:"name"`
+		Sex        int64          `db:"sex"` // 性别 0:男 1:女
+		Avatar     string         `db:"avatar"`
+		Info       string         `db:"info"`
+		DeleteTime time.Time      `db:"delete_time"`
+		DelState   int64          `db:"del_state"`
+		CreateTime time.Time      `db:"create_time"`
+		UpdateTime time.Time      `db:"update_time"`
+		Version    int64          `db:"version"` // 版本号
 	}
 )
 
@@ -69,15 +70,15 @@ func newUserModel(conn sqlx.SqlConn, c cache.CacheConf) *defaultUserModel {
 
 func (m *defaultUserModel) Insert(ctx context.Context, session sqlx.Session, data *User) (sql.Result, error) {
 	data.DeleteTime = time.Unix(0, 0)
+	cloudDiskUserEmailKey := fmt.Sprintf("%s%v", cacheCloudDiskUserEmailPrefix, data.Email)
 	cloudDiskUserIdKey := fmt.Sprintf("%s%v", cacheCloudDiskUserIdPrefix, data.Id)
-	cloudDiskUserPhoneKey := fmt.Sprintf("%s%v", cacheCloudDiskUserPhonePrefix, data.Email)
 	return m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
-		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
+		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.Email, data.Password, data.Nickname, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version)
+			return session.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version)
 		}
-		return conn.ExecCtx(ctx, query, data.Email, data.Password, data.Nickname, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version)
-	}, cloudDiskUserIdKey, cloudDiskUserPhoneKey)
+		return conn.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version)
+	}, cloudDiskUserEmailKey, cloudDiskUserIdKey)
 }
 
 func (m *defaultUserModel) FindOne(ctx context.Context, id int64) (*User, error) {
@@ -97,12 +98,12 @@ func (m *defaultUserModel) FindOne(ctx context.Context, id int64) (*User, error)
 	}
 }
 
-func (m *defaultUserModel) FindOneByPhone(ctx context.Context, phone string) (*User, error) {
-	cloudDiskUserPhoneKey := fmt.Sprintf("%s%v", cacheCloudDiskUserPhonePrefix, phone)
+func (m *defaultUserModel) FindOneByEmail(ctx context.Context, email string) (*User, error) {
+	cloudDiskUserEmailKey := fmt.Sprintf("%s%v", cacheCloudDiskUserEmailPrefix, email)
 	var resp User
-	err := m.QueryRowIndexCtx(ctx, &resp, cloudDiskUserPhoneKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
-		query := fmt.Sprintf("select %s from %s where `phone` = ? and del_state = ? limit 1", userRows, m.table)
-		if err := conn.QueryRowCtx(ctx, &resp, query, phone, globalkey.DelStateNo); err != nil {
+	err := m.QueryRowIndexCtx(ctx, &resp, cloudDiskUserEmailKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
+		query := fmt.Sprintf("select %s from %s where `email` = ? and del_state = ? limit 1", userRows, m.table)
+		if err := conn.QueryRowCtx(ctx, &resp, query, email, globalkey.DelStateNo); err != nil {
 			return nil, err
 		}
 		return resp.Id, nil
@@ -118,15 +119,15 @@ func (m *defaultUserModel) FindOneByPhone(ctx context.Context, phone string) (*U
 }
 
 func (m *defaultUserModel) Update(ctx context.Context, session sqlx.Session, data *User) (sql.Result, error) {
+	cloudDiskUserEmailKey := fmt.Sprintf("%s%v", cacheCloudDiskUserEmailPrefix, data.Email)
 	cloudDiskUserIdKey := fmt.Sprintf("%s%v", cacheCloudDiskUserIdPrefix, data.Id)
-	cloudDiskUserPhoneKey := fmt.Sprintf("%s%v", cacheCloudDiskUserPhonePrefix, data.Email)
 	return m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userRowsWithPlaceHolder)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.Email, data.Password, data.Nickname, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version, data.Id)
+			return session.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version, data.Id)
 		}
-		return conn.ExecCtx(ctx, query, data.Email, data.Password, data.Nickname, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version, data.Id)
-	}, cloudDiskUserIdKey, cloudDiskUserPhoneKey)
+		return conn.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version, data.Id)
+	}, cloudDiskUserEmailKey, cloudDiskUserIdKey)
 }
 
 func (m *defaultUserModel) UpdateWithVersion(ctx context.Context, session sqlx.Session, data *User) error {
@@ -137,15 +138,15 @@ func (m *defaultUserModel) UpdateWithVersion(ctx context.Context, session sqlx.S
 	var sqlResult sql.Result
 	var err error
 
+	cloudDiskUserEmailKey := fmt.Sprintf("%s%v", cacheCloudDiskUserEmailPrefix, data.Email)
 	cloudDiskUserIdKey := fmt.Sprintf("%s%v", cacheCloudDiskUserIdPrefix, data.Id)
-	cloudDiskUserPhoneKey := fmt.Sprintf("%s%v", cacheCloudDiskUserPhonePrefix, data.Email)
 	sqlResult, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ? and version = ? ", m.table, userRowsWithPlaceHolder)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.Email, data.Password, data.Nickname, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version, data.Id, oldVersion)
+			return session.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version, data.Id, oldVersion)
 		}
-		return conn.ExecCtx(ctx, query, data.Email, data.Password, data.Nickname, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version, data.Id, oldVersion)
-	}, cloudDiskUserIdKey, cloudDiskUserPhoneKey)
+		return conn.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version, data.Id, oldVersion)
+	}, cloudDiskUserEmailKey, cloudDiskUserIdKey)
 	if err != nil {
 		return err
 	}
@@ -166,15 +167,15 @@ func (m *defaultUserModel) Delete(ctx context.Context, session sqlx.Session, id 
 		return err
 	}
 
+	cloudDiskUserEmailKey := fmt.Sprintf("%s%v", cacheCloudDiskUserEmailPrefix, data.Email)
 	cloudDiskUserIdKey := fmt.Sprintf("%s%v", cacheCloudDiskUserIdPrefix, id)
-	cloudDiskUserPhoneKey := fmt.Sprintf("%s%v", cacheCloudDiskUserPhonePrefix, data.Email)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
 		if session != nil {
 			return session.ExecCtx(ctx, query, id)
 		}
 		return conn.ExecCtx(ctx, query, id)
-	}, cloudDiskUserIdKey, cloudDiskUserPhoneKey)
+	}, cloudDiskUserEmailKey, cloudDiskUserIdKey)
 	return err
 }
 

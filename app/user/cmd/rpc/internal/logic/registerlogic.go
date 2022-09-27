@@ -32,21 +32,21 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 }
 
 func (l *RegisterLogic) Register(in *pb.RegisterReq) (*pb.RegisterResp, error) {
-	userInfo, err := l.svcCtx.UserModel.FindOneByPhone(l.ctx, in.Phone)
+	userInfo, err := l.svcCtx.UserModel.FindOneByEmail(l.ctx, in.Email)
 	if err != nil && err != model.ErrNotFound {
-		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR: RPC[user] UserModel.FindOneByPhone verify:%s,err:%v", in.Phone, err)
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR: RPC[user] UserModel.FindOneByPhone verify:%s,err:%v", in.Email, err)
 	}
 	if userInfo != nil {
-		return nil, errors.Wrapf(ErrUserAlreadyRegisterError, "ERROR: RPC[user]  用户已存在 :%s,err:%v", in.Phone, err)
+		return nil, errors.Wrapf(ErrUserAlreadyRegisterError, "ERROR: RPC[user]  用户已存在 :%s,err:%v", in.Email, err)
 	}
 
 	var userId int64
 	if err := l.svcCtx.UserModel.Trans(l.ctx, func(ctx context.Context, session sqlx.Session) error {
 		u := new(model.User)
-		u.Phone = in.Phone
-		u.Nickname = in.Nickname
-		if len(u.Nickname) == 0 {
-			u.Nickname = tool.Krand(8, tool.KC_RAND_KIND_ALL)
+		u.Email = in.Email
+		u.Name = in.Nickname
+		if len(u.Name) == 0 {
+			u.Name = tool.Krand(8, tool.KC_RAND_KIND_ALL)
 		}
 		if len(in.Password) > 0 {
 			u.Password = tool.Md5ByString(in.Password)

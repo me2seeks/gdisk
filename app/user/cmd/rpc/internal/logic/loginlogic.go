@@ -33,7 +33,7 @@ func (l *LoginLogic) Login(in *pb.LoginReq) (*user.LoginResp, error) {
 	var err error
 	switch in.AuthType {
 	case model.UserAuthTypeSystem:
-		userId, err = l.loginByMobile(in.AuthKey, in.Password)
+		userId, err = l.loginByemail(in.AuthKey, in.Password)
 	default:
 		return nil, xerr.NewErrCode(xerr.SERVER_COMMON_ERROR)
 	}
@@ -56,14 +56,14 @@ func (l *LoginLogic) Login(in *pb.LoginReq) (*user.LoginResp, error) {
 	}, nil
 }
 
-func (l *LoginLogic) loginByMobile(mobile, password string) (int64, error) {
+func (l *LoginLogic) loginByemail(email, password string) (int64, error) {
 
-	user, err := l.svcCtx.UserModel.FindOneByPhone(l.ctx, mobile)
+	user, err := l.svcCtx.UserModel.FindOneByEmail(l.ctx, email)
 	if err != nil && err != model.ErrNotFound {
-		return 0, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR 根据手机号查询用户信息失败，mobile:%s,err:%v", mobile, err)
+		return 0, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR 根据手机号查询用户信息失败，email:%s,err:%v", email, err)
 	}
 	if user == nil {
-		return 0, errors.Wrapf(ErrUserNoExistsError, "mobile:%s", mobile)
+		return 0, errors.Wrapf(ErrUserNoExistsError, "email:%s", email)
 	}
 	if tool.Md5ByString(password) == user.Password {
 		return 0, errors.Wrap(ErrUsernamePwdError, "密码匹配错误")

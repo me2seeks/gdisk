@@ -11,8 +11,8 @@ var CodeExpire = 300
 // TencentSecretKey 腾讯云对象存储
 var TencentSecretKey = os.Getenv("TencentSecretKey")
 var TencentSecretID = os.Getenv("TencentSecretID")
-var CosBucket = "https://gcloud-1303456836.cos.ap-chengdu.myqcloud.com"
-var CosFolderName = "gcloud"
+var CosBucket = "https://buffet-1306963147.cos.ap-shanghai.myqcloud.com"
+var CosFolderName = "buffet"
 var AvatarBaseUrl = CosBucket + "/" + CosFolderName + "/avatars/"
 
 // PageSize 分页的默认参数

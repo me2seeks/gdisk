@@ -4,9 +4,9 @@ package handler
 import (
 	"net/http"
 
-	file "cloud-disk/app/disk/cmd/api/internal/handler/file"
-	folder "cloud-disk/app/disk/cmd/api/internal/handler/folder"
-	store "cloud-disk/app/disk/cmd/api/internal/handler/store"
+	File "cloud-disk/app/disk/cmd/api/internal/handler/File"
+	PublicPoll "cloud-disk/app/disk/cmd/api/internal/handler/PublicPoll"
+	Share "cloud-disk/app/disk/cmd/api/internal/handler/Share"
 	"cloud-disk/app/disk/cmd/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -17,60 +17,97 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/certificate/upload",
-				Handler: file.UploadHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/certificate/download",
-				Handler: file.DownloadHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/certificate/callback",
-				Handler: file.CallbackHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/kind",
-				Handler: file.KindHandler(serverCtx),
+				Path:    "/public/file/save",
+				Handler: PublicPoll.PublicFileSaveHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
-		rest.WithPrefix("/disk/v1"),
 	)
 
 	server.AddRoutes(
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/folder",
-				Handler: folder.CreateHandler(serverCtx),
+				Path:    "/share/basic/create",
+				Handler: Share.ShareBasicCreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/folder/list",
-				Handler: folder.ListHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/folder/move",
-				Handler: folder.MoveHandler(serverCtx),
+				Path:    "/share/basic/save",
+				Handler: Share.ShareBasicSaveHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
-		rest.WithPrefix("/disk/v1"),
 	)
 
 	server.AddRoutes(
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/store",
-				Handler: store.DetailHandler(serverCtx),
+				Path:    "/refresh/authorization",
+				Handler: File.RefreshAuthorizationHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/ws/message",
+				Handler: File.WebsocketMessageHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/file/upload",
+				Handler: File.FileUploadHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/repository/save",
+				Handler: File.UserRepositorySaveHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/user/file/list",
+				Handler: File.UserFileListHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/file/name/update",
+				Handler: File.UserFileNameUpdateHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/folder/create",
+				Handler: File.UserFolderCreateHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodDelete,
+				Path:    "/user/file/delete",
+				Handler: File.UserFileDeleteHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPut,
+				Path:    "/user/file/move",
+				Handler: File.UserFileMoveHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/file/download",
+				Handler: File.FileDownloadHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/file/upload/prepare",
+				Handler: File.FileUploadPrepareHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/file/upload/chunk",
+				Handler: File.FileUploadChunkHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/file/upload/chunk/complete",
+				Handler: File.FileUploadChunkCompleteHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
-		rest.WithPrefix("/disk/v1"),
 	)
 }

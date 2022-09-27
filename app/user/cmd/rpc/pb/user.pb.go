@@ -185,7 +185,7 @@ type RegisterReq struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Phone    string `protobuf:"bytes,1,opt,name=phone,proto3" json:"phone,omitempty"`
+	Email    string `protobuf:"bytes,1,opt,name=email,proto3" json:"eamil,omitempty"`
 	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 	Nickname string `protobuf:"bytes,3,opt,name=nickname,proto3" json:"nickname,omitempty"`
 	AuthKey  string `protobuf:"bytes,4,opt,name=authKey,proto3" json:"authKey,omitempty"`
@@ -226,7 +226,7 @@ func (*RegisterReq) Descriptor() ([]byte, []int) {
 
 func (x *RegisterReq) GetPhone() string {
 	if x != nil {
-		return x.Phone
+		return x.Email
 	}
 	return ""
 }

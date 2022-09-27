@@ -23,6 +23,7 @@ require (
 )
 
 require (
+	github.com/8treenet/gcache v1.1.11 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bradfitz/gomemcache v0.0.0-20220106215444-fb4bf637b56d // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
@@ -35,6 +36,7 @@ require (
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
+	github.com/go-redis/redis v6.15.6+incompatible // indirect
 	github.com/go-redis/redis/v8 v8.11.6-0.20220405070650-99c79f7041fc // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
@@ -45,6 +47,9 @@ require (
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/gnostic v0.5.5 // indirect
+	github.com/jinzhu/gorm v1.9.12 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/justinas/alice v1.2.0 // indirect
 	github.com/klauspost/compress v1.14.2 // indirect
@@ -65,6 +70,7 @@ require (
 	github.com/prometheus/common v0.32.1 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
+	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/segmentio/kafka-go v0.4.32 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
@@ -99,6 +105,8 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0 // indirect
+	gorm.io/driver/mysql v1.3.6 // indirect
+	gorm.io/gorm v1.23.10 // indirect
 	k8s.io/api v0.22.9 // indirect
 	k8s.io/apimachinery v0.22.9 // indirect
 	k8s.io/client-go v0.22.9 // indirect

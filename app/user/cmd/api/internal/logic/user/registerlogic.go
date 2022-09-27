@@ -33,7 +33,7 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (*types.RegisterResp, e
 	}
 
 	registerResp, err := l.svcCtx.UserRpc.Register(l.ctx, &user.RegisterReq{
-		Phone:    req.Email,
+		Email:    req.Email,
 		Password: req.Password,
 		AuthKey:  req.Email,
 		AuthType: model.UserAuthTypeSystem,

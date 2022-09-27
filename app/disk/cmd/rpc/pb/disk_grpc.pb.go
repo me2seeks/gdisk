@@ -22,18 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DiskClient interface {
-	//store 详情
-	DetailStore(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error)
-	//修改store大小
-	UpdateStore(ctx context.Context, in *UpdateStoreReq, opts ...grpc.CallOption) (*UpdateStoreResp, error)
-	//获取路径下的文件和文件夹
-	ListFolders(ctx context.Context, in *ListFolderReq, opts ...grpc.CallOption) (*ListFolderResp, error)
-	//更新file信息
-	UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error)
-	//更新folder信息
-	UpdateFolder(ctx context.Context, in *UpdateFolderReq, opts ...grpc.CallOption) (*UpdateFolderResp, error)
-	//获取种类型的文件
-	ListKind(ctx context.Context, in *ListKindReq, opts ...grpc.CallOption) (*ListKindResp, error)
+	FileUploadPrepare(ctx context.Context, in *FileUploadPrepareRep, opts ...grpc.CallOption) (*FileUploadPrepareRrsp, error)
 }
 
 type diskClient struct {
@@ -44,54 +33,9 @@ func NewDiskClient(cc grpc.ClientConnInterface) DiskClient {
 	return &diskClient{cc}
 }
 
-func (c *diskClient) DetailStore(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error) {
-	out := new(StoreDetailResp)
-	err := c.cc.Invoke(ctx, "/pb.disk/DetailStore", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *diskClient) UpdateStore(ctx context.Context, in *UpdateStoreReq, opts ...grpc.CallOption) (*UpdateStoreResp, error) {
-	out := new(UpdateStoreResp)
-	err := c.cc.Invoke(ctx, "/pb.disk/UpdateStore", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *diskClient) ListFolders(ctx context.Context, in *ListFolderReq, opts ...grpc.CallOption) (*ListFolderResp, error) {
-	out := new(ListFolderResp)
-	err := c.cc.Invoke(ctx, "/pb.disk/ListFolders", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *diskClient) UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error) {
-	out := new(UpdateFileResp)
-	err := c.cc.Invoke(ctx, "/pb.disk/UpdateFile", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *diskClient) UpdateFolder(ctx context.Context, in *UpdateFolderReq, opts ...grpc.CallOption) (*UpdateFolderResp, error) {
-	out := new(UpdateFolderResp)
-	err := c.cc.Invoke(ctx, "/pb.disk/UpdateFolder", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *diskClient) ListKind(ctx context.Context, in *ListKindReq, opts ...grpc.CallOption) (*ListKindResp, error) {
-	out := new(ListKindResp)
-	err := c.cc.Invoke(ctx, "/pb.disk/ListKind", in, out, opts...)
+func (c *diskClient) FileUploadPrepare(ctx context.Context, in *FileUploadPrepareRep, opts ...grpc.CallOption) (*FileUploadPrepareRrsp, error) {
+	out := new(FileUploadPrepareRrsp)
+	err := c.cc.Invoke(ctx, "/pb.disk/FileUploadPrepare", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -102,18 +46,7 @@ func (c *diskClient) ListKind(ctx context.Context, in *ListKindReq, opts ...grpc
 // All implementations must embed UnimplementedDiskServer
 // for forward compatibility
 type DiskServer interface {
-	//store 详情
-	DetailStore(context.Context, *StoreDetailReq) (*StoreDetailResp, error)
-	//修改store大小
-	UpdateStore(context.Context, *UpdateStoreReq) (*UpdateStoreResp, error)
-	//获取路径下的文件和文件夹
-	ListFolders(context.Context, *ListFolderReq) (*ListFolderResp, error)
-	//更新file信息
-	UpdateFile(context.Context, *UpdateFileReq) (*UpdateFileResp, error)
-	//更新folder信息
-	UpdateFolder(context.Context, *UpdateFolderReq) (*UpdateFolderResp, error)
-	//获取种类型的文件
-	ListKind(context.Context, *ListKindReq) (*ListKindResp, error)
+	FileUploadPrepare(context.Context, *FileUploadPrepareRep) (*FileUploadPrepareRrsp, error)
 	mustEmbedUnimplementedDiskServer()
 }
 
@@ -121,23 +54,8 @@ type DiskServer interface {
 type UnimplementedDiskServer struct {
 }
 
-func (UnimplementedDiskServer) DetailStore(context.Context, *StoreDetailReq) (*StoreDetailResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DetailStore not implemented")
-}
-func (UnimplementedDiskServer) UpdateStore(context.Context, *UpdateStoreReq) (*UpdateStoreResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateStore not implemented")
-}
-func (UnimplementedDiskServer) ListFolders(context.Context, *ListFolderReq) (*ListFolderResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListFolders not implemented")
-}
-func (UnimplementedDiskServer) UpdateFile(context.Context, *UpdateFileReq) (*UpdateFileResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateFile not implemented")
-}
-func (UnimplementedDiskServer) UpdateFolder(context.Context, *UpdateFolderReq) (*UpdateFolderResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateFolder not implemented")
-}
-func (UnimplementedDiskServer) ListKind(context.Context, *ListKindReq) (*ListKindResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListKind not implemented")
+func (UnimplementedDiskServer) FileUploadPrepare(context.Context, *FileUploadPrepareRep) (*FileUploadPrepareRrsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FileUploadPrepare not implemented")
 }
 func (UnimplementedDiskServer) mustEmbedUnimplementedDiskServer() {}
 
@@ -152,110 +70,20 @@ func RegisterDiskServer(s grpc.ServiceRegistrar, srv DiskServer) {
 	s.RegisterService(&Disk_ServiceDesc, srv)
 }
 
-func _Disk_DetailStore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(StoreDetailReq)
+func _Disk_FileUploadPrepare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FileUploadPrepareRep)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DiskServer).DetailStore(ctx, in)
+		return srv.(DiskServer).FileUploadPrepare(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.disk/DetailStore",
+		FullMethod: "/pb.disk/FileUploadPrepare",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DiskServer).DetailStore(ctx, req.(*StoreDetailReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Disk_UpdateStore_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateStoreReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DiskServer).UpdateStore(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/pb.disk/UpdateStore",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DiskServer).UpdateStore(ctx, req.(*UpdateStoreReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Disk_ListFolders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListFolderReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DiskServer).ListFolders(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/pb.disk/ListFolders",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DiskServer).ListFolders(ctx, req.(*ListFolderReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Disk_UpdateFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateFileReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DiskServer).UpdateFile(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/pb.disk/UpdateFile",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DiskServer).UpdateFile(ctx, req.(*UpdateFileReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Disk_UpdateFolder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateFolderReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DiskServer).UpdateFolder(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/pb.disk/UpdateFolder",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DiskServer).UpdateFolder(ctx, req.(*UpdateFolderReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Disk_ListKind_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListKindReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DiskServer).ListKind(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/pb.disk/ListKind",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DiskServer).ListKind(ctx, req.(*ListKindReq))
+		return srv.(DiskServer).FileUploadPrepare(ctx, req.(*FileUploadPrepareRep))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -268,28 +96,8 @@ var Disk_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*DiskServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "DetailStore",
-			Handler:    _Disk_DetailStore_Handler,
-		},
-		{
-			MethodName: "UpdateStore",
-			Handler:    _Disk_UpdateStore_Handler,
-		},
-		{
-			MethodName: "ListFolders",
-			Handler:    _Disk_ListFolders_Handler,
-		},
-		{
-			MethodName: "UpdateFile",
-			Handler:    _Disk_UpdateFile_Handler,
-		},
-		{
-			MethodName: "UpdateFolder",
-			Handler:    _Disk_UpdateFolder_Handler,
-		},
-		{
-			MethodName: "ListKind",
-			Handler:    _Disk_ListKind_Handler,
+			MethodName: "FileUploadPrepare",
+			Handler:    _Disk_FileUploadPrepare_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

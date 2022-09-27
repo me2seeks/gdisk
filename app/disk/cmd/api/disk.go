@@ -10,6 +10,7 @@ import (
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
+	"trytry/common/middleware"
 )
 
 var configFile = flag.String("f", "etc/disk.yaml", "the config file")

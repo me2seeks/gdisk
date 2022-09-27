@@ -1,7 +1,10 @@
-package osspackage
+package oss
 
 import (
+	"bytes"
 	"cloud-disk/app/define"
+	"cloud-disk/common/uuid"
+	"context"
 	"github.com/tencentyun/cos-go-sdk-v5"
 	"io"
 	"net/http"
@@ -27,7 +30,7 @@ func CosUpload(r *http.Request) (string, error) {
 		return "", err
 	}
 
-	fileName := UUID() + path.Ext(fileHeader.Filename)
+	fileName := uuid.UUID() + path.Ext(fileHeader.Filename)
 	key := define.CosFolderName + "/" + fileName
 
 	_, err = client.Object.Put(
@@ -52,7 +55,7 @@ func CosInitPart(ext string) (string, string, error) {
 		},
 	})
 
-	key := define.CosFolderName + "/" + UUID() + ext
+	key := define.CosFolderName + "/" + uuid.UUID() + ext
 	v, _, err := client.Object.InitiateMultipartUpload(context.Background(), key, nil)
 	if err != nil {
 		return "", "", err

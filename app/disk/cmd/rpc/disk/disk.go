@@ -13,37 +13,11 @@ import (
 )
 
 type (
-	CreateStoreReq   = pb.CreateStoreReq
-	CreateStoreResp  = pb.CreateStoreResp
-	FileDetail       = pb.FileDetail
-	FolderDetail     = pb.FolderDetail
-	ListFolderReq    = pb.ListFolderReq
-	ListFolderResp   = pb.ListFolderResp
-	ListKindReq      = pb.ListKindReq
-	ListKindResp     = pb.ListKindResp
-	StoreDetail      = pb.StoreDetail
-	StoreDetailReq   = pb.StoreDetailReq
-	StoreDetailResp  = pb.StoreDetailResp
-	UpdateFileReq    = pb.UpdateFileReq
-	UpdateFileResp   = pb.UpdateFileResp
-	UpdateFolderReq  = pb.UpdateFolderReq
-	UpdateFolderResp = pb.UpdateFolderResp
-	UpdateStoreReq   = pb.UpdateStoreReq
-	UpdateStoreResp  = pb.UpdateStoreResp
+	FileUploadPrepareRep  = pb.FileUploadPrepareRep
+	FileUploadPrepareRrsp = pb.FileUploadPrepareRrsp
 
 	Disk interface {
-		// store 详情
-		DetailStore(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error)
-		// 修改store大小
-		UpdateStore(ctx context.Context, in *UpdateStoreReq, opts ...grpc.CallOption) (*UpdateStoreResp, error)
-		// 获取路径下的文件和文件夹
-		ListFolders(ctx context.Context, in *ListFolderReq, opts ...grpc.CallOption) (*ListFolderResp, error)
-		// 更新file信息
-		UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error)
-		// 更新folder信息
-		UpdateFolder(ctx context.Context, in *UpdateFolderReq, opts ...grpc.CallOption) (*UpdateFolderResp, error)
-		// 获取种类型的文件
-		ListKind(ctx context.Context, in *ListKindReq, opts ...grpc.CallOption) (*ListKindResp, error)
+		FileUploadPrepare(ctx context.Context, in *FileUploadPrepareRep, opts ...grpc.CallOption) (*FileUploadPrepareRrsp, error)
 	}
 
 	defaultDisk struct {
@@ -57,38 +31,7 @@ func NewDisk(cli zrpc.Client) Disk {
 	}
 }
 
-// store 详情
-func (m *defaultDisk) DetailStore(ctx context.Context, in *StoreDetailReq, opts ...grpc.CallOption) (*StoreDetailResp, error) {
+func (m *defaultDisk) FileUploadPrepare(ctx context.Context, in *FileUploadPrepareRep, opts ...grpc.CallOption) (*FileUploadPrepareRrsp, error) {
 	client := pb.NewDiskClient(m.cli.Conn())
-	return client.DetailStore(ctx, in, opts...)
-}
-
-// 修改store大小
-func (m *defaultDisk) UpdateStore(ctx context.Context, in *UpdateStoreReq, opts ...grpc.CallOption) (*UpdateStoreResp, error) {
-	client := pb.NewDiskClient(m.cli.Conn())
-	return client.UpdateStore(ctx, in, opts...)
-}
-
-// 获取路径下的文件和文件夹
-func (m *defaultDisk) ListFolders(ctx context.Context, in *ListFolderReq, opts ...grpc.CallOption) (*ListFolderResp, error) {
-	client := pb.NewDiskClient(m.cli.Conn())
-	return client.ListFolders(ctx, in, opts...)
-}
-
-// 更新file信息
-func (m *defaultDisk) UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error) {
-	client := pb.NewDiskClient(m.cli.Conn())
-	return client.UpdateFile(ctx, in, opts...)
-}
-
-// 更新folder信息
-func (m *defaultDisk) UpdateFolder(ctx context.Context, in *UpdateFolderReq, opts ...grpc.CallOption) (*UpdateFolderResp, error) {
-	client := pb.NewDiskClient(m.cli.Conn())
-	return client.UpdateFolder(ctx, in, opts...)
-}
-
-// 获取种类型的文件
-func (m *defaultDisk) ListKind(ctx context.Context, in *ListKindReq, opts ...grpc.CallOption) (*ListKindResp, error) {
-	client := pb.NewDiskClient(m.cli.Conn())
-	return client.ListKind(ctx, in, opts...)
+	return client.FileUploadPrepare(ctx, in, opts...)
 }
