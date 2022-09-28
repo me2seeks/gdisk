@@ -16,6 +16,8 @@ type Config struct {
 		Host string
 		Type string
 	}
-
+	DB struct {
+		DataSource string
+	}
 	DiskRpcConf zrpc.RpcClientConf
 }

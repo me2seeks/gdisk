@@ -1,9 +1,10 @@
 package Share
 
 import (
+	"github.com/zeromicro/go-zero/rest/httpx"
 	"net/http"
 
-	"trytry/common/result"
+	"cloud-disk/common/result"
 
 	"cloud-disk/app/disk/cmd/api/internal/logic/Share"
 	"cloud-disk/app/disk/cmd/api/internal/svc"
@@ -19,7 +20,7 @@ func ShareBasicSaveHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := Share.NewShareBasicSaveLogic(r.Context(), svcCtx)
-		resp, err := l.ShareBasicSave(&req)
+		resp, err := l.ShareBasicSave(&req, r.Header.Get("UserIdentity"))
 		result.HttpResult(r, w, resp, err)
 	}
 }

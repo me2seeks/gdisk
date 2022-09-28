@@ -25,7 +25,7 @@ func NewFileUploadPrepareLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 }
 
 func (l *FileUploadPrepareLogic) FileUploadPrepare(in *pb.FileUploadPrepareRep) (*pb.FileUploadPrepareRrsp, error) {
-	rp := new(models.RepositoryPool)
+	rp := new(model.RepositoryPool)
 	resp := new(pb.FileUploadPrepareRrsp)
 
 	l.svcCtx.Engine.

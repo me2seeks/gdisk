@@ -127,7 +127,7 @@ message  FileUploadPrepareRep {
   string name = 2;
   string ext = 3;
 }
-message FileUploadPrepareRrsp {
+message FileUploadPrepareResp {
   string identity = 1;
   string uploadId = 2 ;
   string key = 3 ;

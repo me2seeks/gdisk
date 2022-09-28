@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	File "cloud-disk/app/disk/cmd/api/internal/handler/File"
-	PublicPoll "cloud-disk/app/disk/cmd/api/internal/handler/PublicPoll"
 	Share "cloud-disk/app/disk/cmd/api/internal/handler/Share"
 	"cloud-disk/app/disk/cmd/api/internal/svc"
 
@@ -13,17 +12,6 @@ import (
 )
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
-	server.AddRoutes(
-		[]rest.Route{
-			{
-				Method:  http.MethodPost,
-				Path:    "/public/file/save",
-				Handler: PublicPoll.PublicFileSaveHandler(serverCtx),
-			},
-		},
-		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
-	)
-
 	server.AddRoutes(
 		[]rest.Route{
 			{
@@ -42,16 +30,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		[]rest.Route{
-			{
-				Method:  http.MethodPost,
-				Path:    "/refresh/authorization",
-				Handler: File.RefreshAuthorizationHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/ws/message",
-				Handler: File.WebsocketMessageHandler(serverCtx),
-			},
+
 			{
 				Method:  http.MethodPost,
 				Path:    "/file/upload",
@@ -86,11 +65,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPut,
 				Path:    "/user/file/move",
 				Handler: File.UserFileMoveHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/file/download",
-				Handler: File.FileDownloadHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,

@@ -1,6 +1,7 @@
 package File
 
 import (
+	"cloud-disk/app/disk/model"
 	"context"
 
 	"cloud-disk/app/disk/cmd/api/internal/svc"
@@ -23,8 +24,16 @@ func NewUserFileDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Us
 	}
 }
 
-func (l *UserFileDeleteLogic) UserFileDelete(req *types.UserFileDeleteRequest) (resp *types.UserFileDeleteReply, err error) {
-	// todo: add your logic here and delete this line
+func (l *UserFileDeleteLogic) UserFileDelete(req *types.UserFileDeleteRequest, userIdentity string) (resp *types.UserFileDeleteReply, err error) {
+	//TODO 定时任务
+	err = l.svcCtx.Engine.
+		Where("user_identity = ? AND identity = ?", userIdentity, req.Identity).
+		Delete(new(model.UserRepository)).Error
+
+	resp = new(types.UserFileDeleteReply)
+	if err != nil {
+		return
+	}
 
 	return
 }

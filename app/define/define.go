@@ -1,7 +1,5 @@
 package define
 
-import "os"
-
 // CodeLength 验证码长度
 var CodeLength = 6
 
@@ -9,8 +7,8 @@ var CodeLength = 6
 var CodeExpire = 300
 
 // TencentSecretKey 腾讯云对象存储
-var TencentSecretKey = os.Getenv("TencentSecretKey")
-var TencentSecretID = os.Getenv("TencentSecretID")
+var TencentSecretKey = "xgAQYVEcmlX7f197tVu77ybzAD4h8NPK"
+var TencentSecretID = "AKIDMaeYIqBKGzUmrjQxGLDvQgkbFfqnW1HO"
 var CosBucket = "https://buffet-1306963147.cos.ap-shanghai.myqcloud.com"
 var CosFolderName = "buffet"
 var AvatarBaseUrl = CosBucket + "/" + CosFolderName + "/avatars/"

@@ -33,19 +33,18 @@ info(
 //	post /kind (KindReq) returns (KindResp)
 //}
 
-@server(
-	group: PublicPoll
-	jwt: JwtAuth
-)
-service disk{
-	@handler PublicFileSave
-	post /public/file/save(PublicRepositorySaveRequest) returns (PublicRepositorySaveReply)
-	
-}
+//@server(
+//	group: PublicPoll
+//	jwt: JwtAuth
+//)
+//service disk{
+//	@handler PublicFileSave
+//	post /public/file/save(PublicRepositorySaveRequest) returns (PublicRepositorySaveReply)
+//
+//}
 
 @server(
 	group: Share
-	jwt: JwtAuth
 )
 service disk{
 	// 分享 - 创建分享记录
@@ -64,14 +63,7 @@ service disk{
 	jwt: JwtAuth
 )
 service disk {
-	
-	// 刷新token
-	@handler RefreshAuthorization
-	post /refresh/authorization(RefreshAuthorizationRequest) returns (RefreshAuthorizationReply)
-	
-	@handler WebsocketMessage
-	get /ws/message(WebsocketMessageRequest) returns (WebsocketMessageReply)
-	
+
 	// 文件上传
 	@handler FileUpload
 	post /file/upload(FileUploadRequest) returns (FileUploadReply)

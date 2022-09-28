@@ -3,6 +3,8 @@ package svc
 import (
 	"cloud-disk/app/disk/cmd/api/internal/config"
 	"cloud-disk/app/disk/cmd/rpc/disk"
+	"cloud-disk/app/disk/model"
+	"github.com/jinzhu/gorm"
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/zrpc"
 )
@@ -11,6 +13,7 @@ type ServiceContext struct {
 	Config      config.Config
 	DiskRpc     disk.Disk
 	RedisClient *redis.Redis
+	Engine      *gorm.DB // gorm
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -21,5 +24,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			r.Type = c.Redis.Type
 			r.Pass = c.Redis.Pass
 		}),
+		Engine: model.Init(c.DB.DataSource),
 	}
 }

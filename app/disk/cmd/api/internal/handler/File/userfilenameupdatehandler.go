@@ -1,9 +1,10 @@
 package File
 
 import (
+	"github.com/zeromicro/go-zero/rest/httpx"
 	"net/http"
 
-	"trytry/common/result"
+	"cloud-disk/common/result"
 
 	"cloud-disk/app/disk/cmd/api/internal/logic/File"
 	"cloud-disk/app/disk/cmd/api/internal/svc"
@@ -19,7 +20,7 @@ func UserFileNameUpdateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := File.NewUserFileNameUpdateLogic(r.Context(), svcCtx)
-		resp, err := l.UserFileNameUpdate(&req)
+		resp, err := l.UserFileNameUpdate(&req, r.Header.Get("UserIdentity"))
 		result.HttpResult(r, w, resp, err)
 	}
 }

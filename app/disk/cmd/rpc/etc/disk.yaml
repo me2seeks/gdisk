@@ -2,10 +2,10 @@ Name: disk-rpc
 ListenOn: 127.0.0.1:2006
 Mode: dev
 
-Etcd:
-  Hosts:
-    - etcd:2379
-  Key: disk.rpc
+#Etcd:
+#  Hosts:
+#    - 43.143.125.75:2379
+#  Key: disk.rpc
 
 #jwtAuth
 JwtAuth:
@@ -36,17 +36,17 @@ Redis:
   Pass: "000000"
 
 DB:
-  DataSource: root:000000@tcp(mysql:3306)/cloud_disk?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+  DataSource: root:000000@tcp(43.143.125.75:3306)/cloud_disk?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 
 Cache:
-  - Host: etcd:6379
+  - Host: 43.143.125.75:6379
     Pass: "000000"
 
-UserRpcConf:
-  Etcd:
-    Hosts:
-      - etcd:2379
-    Key: user.rpc
+#UserRpcConf:
+#  Etcd:
+#    Hosts:
+#      - etcd:2379
+#    Key: user.rpc
 
 
 
