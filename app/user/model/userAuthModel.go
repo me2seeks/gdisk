@@ -2,6 +2,8 @@ package model
 
 import (
 	"context"
+	"fmt"
+	"github.com/zeromicro/go-zero/core/stores/sqlc"
 	"time"
 
 	"cloud-disk/common/globalkey"
@@ -32,12 +34,33 @@ type (
 		FindPageListByPage(ctx context.Context, rowBuilder squirrel.SelectBuilder, page, pageSize int64, orderBy string) ([]*UserAuth, error)
 		FindPageListByIdDESC(ctx context.Context, rowBuilder squirrel.SelectBuilder, preMinId, pageSize int64) ([]*UserAuth, error)
 		FindPageListByIdASC(ctx context.Context, rowBuilder squirrel.SelectBuilder, preMaxId, pageSize int64) ([]*UserAuth, error)
+		FindOneByIdentityAuthType(ctx context.Context, Identity string, authType string) (*UserAuth, error)
 	}
 
 	customUserAuthModel struct {
 		*defaultUserAuthModel
 	}
 )
+
+func (c customUserAuthModel) FindOneByIdentityAuthType(ctx context.Context, Identity string, authType string) (*UserAuth, error) {
+	cloudDiskUserAuthIdentityAuthTypeKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthIdentityAuthTypePrefix, Identity, authType)
+	var resp UserAuth
+	err := c.QueryRowIndexCtx(ctx, &resp, cloudDiskUserAuthIdentityAuthTypeKey, c.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
+		query := fmt.Sprintf("select %s from %s where `user_id` = ? and `auth_type` = ? and del_state = ? limit 1", userAuthRows, c.table)
+		if err := conn.QueryRowCtx(ctx, &resp, query, Identity, authType, globalkey.DelStateNo); err != nil {
+			return nil, err
+		}
+		return resp.Id, nil
+	}, c.queryPrimary)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
 
 // NewUserAuthModel returns a model for the database table.
 func NewUserAuthModel(conn sqlx.SqlConn, c cache.CacheConf) UserAuthModel {
@@ -223,3 +246,6 @@ func (m *defaultUserAuthModel) CountBuilder(field string) squirrel.SelectBuilder
 func (m *defaultUserAuthModel) SumBuilder(field string) squirrel.SelectBuilder {
 	return squirrel.Select("IFNULL(SUM(" + field + "),0)").From(m.table)
 }
+
+
+

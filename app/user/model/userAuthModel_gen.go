@@ -35,7 +35,6 @@ type (
 		Insert(ctx context.Context, session sqlx.Session, data *UserAuth) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*UserAuth, error)
 		FindOneByAuthTypeAuthKey(ctx context.Context, authType string, authKey string) (*UserAuth, error)
-		FindOneByIdentityAuthType(ctx context.Context, Identity string, authType string) (*UserAuth, error)
 		Update(ctx context.Context, session sqlx.Session, data *UserAuth) (sql.Result, error)
 		UpdateWithVersion(ctx context.Context, session sqlx.Session, data *UserAuth) error
 		Delete(ctx context.Context, session sqlx.Session, id int64) error
@@ -103,26 +102,6 @@ func (m *defaultUserAuthModel) FindOneByAuthTypeAuthKey(ctx context.Context, aut
 	err := m.QueryRowIndexCtx(ctx, &resp, cloudDiskUserAuthAuthTypeAuthKeyKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
 		query := fmt.Sprintf("select %s from %s where `auth_type` = ? and `auth_key` = ? and del_state = ? limit 1", userAuthRows, m.table)
 		if err := conn.QueryRowCtx(ctx, &resp, query, authType, authKey, globalkey.DelStateNo); err != nil {
-			return nil, err
-		}
-		return resp.Id, nil
-	}, m.queryPrimary)
-	switch err {
-	case nil:
-		return &resp, nil
-	case sqlc.ErrNotFound:
-		return nil, ErrNotFound
-	default:
-		return nil, err
-	}
-}
-
-func (m *defaultUserAuthModel) FindOneByIdentityAuthType(ctx context.Context, Identity int64, authType string) (*UserAuth, error) {
-	cloudDiskUserAuthIdentityAuthTypeKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthIdentityAuthTypePrefix, Identity, authType)
-	var resp UserAuth
-	err := m.QueryRowIndexCtx(ctx, &resp, cloudDiskUserAuthIdentityAuthTypeKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
-		query := fmt.Sprintf("select %s from %s where `user_id` = ? and `auth_type` = ? and del_state = ? limit 1", userAuthRows, m.table)
-		if err := conn.QueryRowCtx(ctx, &resp, query, Identity, authType, globalkey.DelStateNo); err != nil {
 			return nil, err
 		}
 		return resp.Id, nil

@@ -32,7 +32,7 @@ service user {
 service user {
 	@doc "用户信息"
 	@handler detail
-	post /detail (UserInfoReq) returns (UserInfoResp)
+	get /detail (UserInfoReq) returns (UserInfoResp)
 	
 	@doc "wx Auth"
 	@handler wxAuth
