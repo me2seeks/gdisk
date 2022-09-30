@@ -26,7 +26,7 @@ type UserClient interface {
 	Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterResp, error)
 	GetUserInfo(ctx context.Context, in *GetUserInfoReq, opts ...grpc.CallOption) (*GetUserInfoResp, error)
 	GetUserAuthByAuthKey(ctx context.Context, in *GetUserAuthByAuthKeyReq, opts ...grpc.CallOption) (*GetUserAuthByAuthKeyResp, error)
-	GetUserAuthByUserId(ctx context.Context, in *GetUserAuthByUserIdReq, opts ...grpc.CallOption) (*GetUserAuthByUserIdResp, error)
+	GetUserAuthByIdentity(ctx context.Context, in *GetUserAuthByIdentityReq, opts ...grpc.CallOption) (*GetUserAuthByIdentityResp, error)
 	GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*GenerateTokenResp, error)
 }
 
@@ -74,9 +74,9 @@ func (c *userClient) GetUserAuthByAuthKey(ctx context.Context, in *GetUserAuthBy
 	return out, nil
 }
 
-func (c *userClient) GetUserAuthByUserId(ctx context.Context, in *GetUserAuthByUserIdReq, opts ...grpc.CallOption) (*GetUserAuthByUserIdResp, error) {
-	out := new(GetUserAuthByUserIdResp)
-	err := c.cc.Invoke(ctx, "/pb.user/getUserAuthByUserId", in, out, opts...)
+func (c *userClient) GetUserAuthByIdentity(ctx context.Context, in *GetUserAuthByIdentityReq, opts ...grpc.CallOption) (*GetUserAuthByIdentityResp, error) {
+	out := new(GetUserAuthByIdentityResp)
+	err := c.cc.Invoke(ctx, "/pb.user/getUserAuthByIdentity", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +100,7 @@ type UserServer interface {
 	Register(context.Context, *RegisterReq) (*RegisterResp, error)
 	GetUserInfo(context.Context, *GetUserInfoReq) (*GetUserInfoResp, error)
 	GetUserAuthByAuthKey(context.Context, *GetUserAuthByAuthKeyReq) (*GetUserAuthByAuthKeyResp, error)
-	GetUserAuthByUserId(context.Context, *GetUserAuthByUserIdReq) (*GetUserAuthByUserIdResp, error)
+	GetUserAuthByIdentity(context.Context, *GetUserAuthByIdentityReq) (*GetUserAuthByIdentityResp, error)
 	GenerateToken(context.Context, *GenerateTokenReq) (*GenerateTokenResp, error)
 	mustEmbedUnimplementedUserServer()
 }
@@ -121,8 +121,8 @@ func (UnimplementedUserServer) GetUserInfo(context.Context, *GetUserInfoReq) (*G
 func (UnimplementedUserServer) GetUserAuthByAuthKey(context.Context, *GetUserAuthByAuthKeyReq) (*GetUserAuthByAuthKeyResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserAuthByAuthKey not implemented")
 }
-func (UnimplementedUserServer) GetUserAuthByUserId(context.Context, *GetUserAuthByUserIdReq) (*GetUserAuthByUserIdResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserAuthByUserId not implemented")
+func (UnimplementedUserServer) GetUserAuthByIdentity(context.Context, *GetUserAuthByIdentityReq) (*GetUserAuthByIdentityResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserAuthByIdentity not implemented")
 }
 func (UnimplementedUserServer) GenerateToken(context.Context, *GenerateTokenReq) (*GenerateTokenResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateToken not implemented")
@@ -212,20 +212,20 @@ func _User_GetUserAuthByAuthKey_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_GetUserAuthByUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUserAuthByUserIdReq)
+func _User_GetUserAuthByIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserAuthByIdentityReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).GetUserAuthByUserId(ctx, in)
+		return srv.(UserServer).GetUserAuthByIdentity(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.user/getUserAuthByUserId",
+		FullMethod: "/pb.user/getUserAuthByIdentity",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GetUserAuthByUserId(ctx, req.(*GetUserAuthByUserIdReq))
+		return srv.(UserServer).GetUserAuthByIdentity(ctx, req.(*GetUserAuthByIdentityReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -272,8 +272,8 @@ var User_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _User_GetUserAuthByAuthKey_Handler,
 		},
 		{
-			MethodName: "getUserAuthByUserId",
-			Handler:    _User_GetUserAuthByUserId_Handler,
+			MethodName: "getUserAuthByIdentity",
+			Handler:    _User_GetUserAuthByIdentity_Handler,
 		},
 		{
 			MethodName: "generateToken",

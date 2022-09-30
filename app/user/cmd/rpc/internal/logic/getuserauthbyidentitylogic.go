@@ -14,30 +14,29 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type GetUserAuthByUserIdLogic struct {
+type GetUserAuthByIdentityLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
 }
 
-func NewGetUserAuthByUserIdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUserAuthByUserIdLogic {
-	return &GetUserAuthByUserIdLogic{
+func NewGetUserAuthByIdentityLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetUserAuthByIdentityLogic {
+	return &GetUserAuthByIdentityLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
 		Logger: logx.WithContext(ctx),
 	}
 }
 
-func (l *GetUserAuthByUserIdLogic) GetUserAuthByUserId(in *pb.GetUserAuthByUserIdReq) (*pb.GetUserAuthByUserIdResp, error) {
-
-	userAuth, err := l.svcCtx.UserAuthModel.FindOneByUserIdAuthType(l.ctx, in.UserId, in.AuthType)
+func (l *GetUserAuthByIdentityLogic) GetUserAuthByIdentity(in *pb.GetUserAuthByIdentityReq) (*pb.GetUserAuthByIdentityResp, error) {
+	userAuth, err := l.svcCtx.UserAuthModel.FindOneByIdentityAuthType(l.ctx, in.Identity, in.AuthType)
 	if err != nil && err != model.ErrNotFound {
 		return nil, errors.Wrapf(xerr.NewErrMsg("get user auth  failed"), "err : %v , in : %+v", err, in)
 	}
 
 	var respUserAuth user.UserAuth
 	_ = copier.Copy(&respUserAuth, userAuth)
-	return &pb.GetUserAuthByUserIdResp{
+	return &pb.GetUserAuthByIdentityResp{
 		UserAuth: &respUserAuth,
 	}, nil
 }

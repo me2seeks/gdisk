@@ -13,27 +13,27 @@ import (
 )
 
 type (
-	GenerateTokenReq         = pb.GenerateTokenReq
-	GenerateTokenResp        = pb.GenerateTokenResp
-	GetUserAuthByAuthKeyReq  = pb.GetUserAuthByAuthKeyReq
-	GetUserAuthByAuthKeyResp = pb.GetUserAuthByAuthKeyResp
-	GetUserAuthByUserIdReq   = pb.GetUserAuthByUserIdReq
-	GetUserAuthByUserIdResp  = pb.GetUserAuthByUserIdResp
-	GetUserInfoReq           = pb.GetUserInfoReq
-	GetUserInfoResp          = pb.GetUserInfoResp
-	LoginReq                 = pb.LoginReq
-	LoginResp                = pb.LoginResp
-	RegisterReq              = pb.RegisterReq
-	RegisterResp             = pb.RegisterResp
-	UserAuth                 = pb.UserAuth
-	UserDetail               = pb.UserDetail
+	GenerateTokenReq          = pb.GenerateTokenReq
+	GenerateTokenResp         = pb.GenerateTokenResp
+	GetUserAuthByAuthKeyReq   = pb.GetUserAuthByAuthKeyReq
+	GetUserAuthByAuthKeyResp  = pb.GetUserAuthByAuthKeyResp
+	GetUserAuthByIdentityReq  = pb.GetUserAuthByIdentityReq
+	GetUserAuthByIdentityResp = pb.GetUserAuthByIdentityResp
+	GetUserInfoReq            = pb.GetUserInfoReq
+	GetUserInfoResp           = pb.GetUserInfoResp
+	LoginReq                  = pb.LoginReq
+	LoginResp                 = pb.LoginResp
+	RegisterReq               = pb.RegisterReq
+	RegisterResp              = pb.RegisterResp
+	UserAuth                  = pb.UserAuth
+	UserDetail                = pb.UserDetail
 
 	User interface {
 		Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error)
 		Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterResp, error)
 		GetUserInfo(ctx context.Context, in *GetUserInfoReq, opts ...grpc.CallOption) (*GetUserInfoResp, error)
 		GetUserAuthByAuthKey(ctx context.Context, in *GetUserAuthByAuthKeyReq, opts ...grpc.CallOption) (*GetUserAuthByAuthKeyResp, error)
-		GetUserAuthByUserId(ctx context.Context, in *GetUserAuthByUserIdReq, opts ...grpc.CallOption) (*GetUserAuthByUserIdResp, error)
+		GetUserAuthByIdentity(ctx context.Context, in *GetUserAuthByIdentityReq, opts ...grpc.CallOption) (*GetUserAuthByIdentityResp, error)
 		GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*GenerateTokenResp, error)
 	}
 
@@ -68,9 +68,9 @@ func (m *defaultUser) GetUserAuthByAuthKey(ctx context.Context, in *GetUserAuthB
 	return client.GetUserAuthByAuthKey(ctx, in, opts...)
 }
 
-func (m *defaultUser) GetUserAuthByUserId(ctx context.Context, in *GetUserAuthByUserIdReq, opts ...grpc.CallOption) (*GetUserAuthByUserIdResp, error) {
+func (m *defaultUser) GetUserAuthByIdentity(ctx context.Context, in *GetUserAuthByIdentityReq, opts ...grpc.CallOption) (*GetUserAuthByIdentityResp, error) {
 	client := pb.NewUserClient(m.cli.Conn())
-	return client.GetUserAuthByUserId(ctx, in, opts...)
+	return client.GetUserAuthByIdentity(ctx, in, opts...)
 }
 
 func (m *defaultUser) GenerateToken(ctx context.Context, in *GenerateTokenReq, opts ...grpc.CallOption) (*GenerateTokenResp, error) {

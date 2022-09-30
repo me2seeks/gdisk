@@ -9,7 +9,7 @@ import (
 // CtxKeyJwtUserId get uid from ctx
 var CtxKeyJwtUserId = "jwtUserId"
 
-func GetUidFromCtx(ctx context.Context) int64 {
+func GetUidFromCtx(ctx context.Context) string {
 	var uid int64
 	if jsonUid, ok := ctx.Value(CtxKeyJwtUserId).(json.Number); ok {
 		if int64Uid, err := jsonUid.Int64(); err == nil {

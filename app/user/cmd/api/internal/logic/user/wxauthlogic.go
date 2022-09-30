@@ -52,7 +52,7 @@ func (l *WxAuthLogic) WxAuth(req *types.WXMiniAuthReq) (*types.WXMiniAuthResp, e
 	}
 
 	//3、绑定用户或者创建用户
-	var userId int64
+	var identity string
 	rpcRsp, err := l.svcCtx.UserRpc.GetUserAuthByAuthKey(l.ctx, &user.GetUserAuthByAuthKeyReq{
 		AuthType: userModel.UserAuthTypeSmallWX,
 		AuthKey:  authResult.OpenID,
@@ -69,7 +69,7 @@ func (l *WxAuthLogic) WxAuth(req *types.WXMiniAuthReq) (*types.WXMiniAuthResp, e
 		registerRsp, err := l.svcCtx.UserRpc.Register(l.ctx, &user.RegisterReq{
 			AuthKey:  authResult.OpenID,
 			AuthType: userModel.UserAuthTypeSmallWX,
-			Phone:    Phone,
+			Email:    Phone,
 			Nickname: nickName,
 		})
 		if err != nil {
@@ -83,12 +83,12 @@ func (l *WxAuthLogic) WxAuth(req *types.WXMiniAuthReq) (*types.WXMiniAuthResp, e
 		}, nil
 
 	} else {
-		userId = rpcRsp.UserAuth.UserId
+		identity = rpcRsp.UserAuth.Identity
 		tokenResp, err := l.svcCtx.UserRpc.GenerateToken(l.ctx, &user.GenerateTokenReq{
-			UserId: userId,
+			Identity: identity,
 		})
 		if err != nil {
-			return nil, errors.Wrapf(ErrWxMiniAuthFailError, "userRpc.GenerateToken err :%v, userId : %d", err, userId)
+			return nil, errors.Wrapf(ErrWxMiniAuthFailError, "userRpc.GenerateToken err :%v, Identity : %d", err, identity)
 		}
 		return &types.WXMiniAuthResp{
 			AccessToken:  tokenResp.AccessToken,

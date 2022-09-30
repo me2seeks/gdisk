@@ -6,6 +6,7 @@ require (
 	github.com/8treenet/gcache v1.1.11
 	github.com/Masterminds/squirrel v1.5.3
 	github.com/dchest/captcha v0.0.0-20200903113550-03f5f0333e1f
+	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang-jwt/jwt/v4 v4.4.1
 	github.com/golang-module/carbon/v2 v2.1.8
 	github.com/hibiken/asynq v0.23.0
@@ -24,6 +25,7 @@ require (
 	github.com/zeromicro/go-zero v1.3.4
 	google.golang.org/grpc v1.47.0
 	google.golang.org/protobuf v1.28.0
+	gorm.io/driver/mysql v1.3.6
 	gorm.io/gorm v1.23.10
 )
 
@@ -41,9 +43,7 @@ require (
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/go-redis/redis v6.15.6+incompatible // indirect
 	github.com/go-redis/redis/v8 v8.11.6-0.20220405070650-99c79f7041fc // indirect
-	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang-sql/civil v0.0.0-20190719163853-cb61b32ac6fe // indirect
 	github.com/golang/mock v1.6.0 // indirect

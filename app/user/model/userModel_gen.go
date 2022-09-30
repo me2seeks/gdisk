@@ -34,6 +34,7 @@ type (
 		Insert(ctx context.Context, session sqlx.Session, data *User) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*User, error)
 		FindOneByEmail(ctx context.Context, email string) (*User, error)
+		FindOneByIdentity(ctx context.Context, Identity string) (*User, error)
 		Update(ctx context.Context, session sqlx.Session, data *User) (sql.Result, error)
 		UpdateWithVersion(ctx context.Context, session sqlx.Session, data *User) error
 		Delete(ctx context.Context, session sqlx.Session, id int64) error
@@ -45,19 +46,19 @@ type (
 	}
 
 	User struct {
-		Id         int64          `db:"id"`
-		Identity   sql.NullString `db:"identity"`
-		Email      string         `db:"email"`
-		Password   string         `db:"password"`
-		Name       string         `db:"name"`
-		Sex        int64          `db:"sex"` // 性别 0:男 1:女
-		Avatar     string         `db:"avatar"`
-		Info       string         `db:"info"`
-		DeleteTime time.Time      `db:"delete_time"`
-		DelState   int64          `db:"del_state"`
-		CreateTime time.Time      `db:"create_time"`
-		UpdateTime time.Time      `db:"update_time"`
-		Version    int64          `db:"version"` // 版本号
+		Id         int64     `db:"id"`
+		Identity   string    `db:"identity"`
+		Email      string    `db:"email"`
+		Password   string    `db:"password"`
+		Name       string    `db:"name"`
+		Sex        int64     `db:"sex"` // 性别 0:男 1:女
+		Avatar     string    `db:"avatar"`
+		Info       string    `db:"info"`
+		DeleteTime time.Time `db:"delete_time"`
+		DelState   int64     `db:"del_state"`
+		CreateTime time.Time `db:"create_time"`
+		UpdateTime time.Time `db:"update_time"`
+		Version    int64     `db:"version"` // 版本号
 	}
 )
 
@@ -104,6 +105,26 @@ func (m *defaultUserModel) FindOneByEmail(ctx context.Context, email string) (*U
 	err := m.QueryRowIndexCtx(ctx, &resp, cloudDiskUserEmailKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
 		query := fmt.Sprintf("select %s from %s where `email` = ? and del_state = ? limit 1", userRows, m.table)
 		if err := conn.QueryRowCtx(ctx, &resp, query, email, globalkey.DelStateNo); err != nil {
+			return nil, err
+		}
+		return resp.Id, nil
+	}, m.queryPrimary)
+	switch err {
+	case nil:
+		return &resp, nil
+	case sqlc.ErrNotFound:
+		return nil, ErrNotFound
+	default:
+		return nil, err
+	}
+}
+
+func (m *defaultUserModel) FindOneByIdentity(ctx context.Context, Identity string) (*User, error) {
+	cloudDiskUserEmailKey := fmt.Sprintf("%s%v", cacheCloudDiskUserEmailPrefix, Identity)
+	var resp User
+	err := m.QueryRowIndexCtx(ctx, &resp, cloudDiskUserEmailKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
+		query := fmt.Sprintf("select %s from %s where `identity` = ? and del_state = ? limit 1", userRows, m.table)
+		if err := conn.QueryRowCtx(ctx, &resp, query, Identity, globalkey.DelStateNo); err != nil {
 			return nil, err
 		}
 		return resp.Id, nil

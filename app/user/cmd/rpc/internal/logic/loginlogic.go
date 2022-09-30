@@ -29,11 +29,11 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 }
 
 func (l *LoginLogic) Login(in *pb.LoginReq) (*user.LoginResp, error) {
-	var userId int64
+	var identity string
 	var err error
 	switch in.AuthType {
 	case model.UserAuthTypeSystem:
-		userId, err = l.loginByemail(in.AuthKey, in.Password)
+		identity, err = l.loginByEmail(in.AuthKey, in.Password)
 	default:
 		return nil, xerr.NewErrCode(xerr.SERVER_COMMON_ERROR)
 	}
@@ -43,10 +43,10 @@ func (l *LoginLogic) Login(in *pb.LoginReq) (*user.LoginResp, error) {
 	//2、生成token 不用rpc调用
 	generateTokenLogic := NewGenerateTokenLogic(l.ctx, l.svcCtx)
 	tokenResp, err := generateTokenLogic.GenerateToken(&user.GenerateTokenReq{
-		UserId: userId,
+		Identity: identity,
 	})
 	if err != nil {
-		return nil, errors.Wrapf(ErrGenerateTokenError, "ERROR GenerateToken userId : %d", userId)
+		return nil, errors.Wrapf(ErrGenerateTokenError, "ERROR GenerateToken userId : %d", identity)
 	}
 
 	return &user.LoginResp{
@@ -56,19 +56,19 @@ func (l *LoginLogic) Login(in *pb.LoginReq) (*user.LoginResp, error) {
 	}, nil
 }
 
-func (l *LoginLogic) loginByemail(email, password string) (int64, error) {
+func (l *LoginLogic) loginByEmail(email, password string) (string, error) {
 
 	user, err := l.svcCtx.UserModel.FindOneByEmail(l.ctx, email)
 	if err != nil && err != model.ErrNotFound {
-		return 0, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR 根据手机号查询用户信息失败，email:%s,err:%v", email, err)
+		return "", errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR 根据Email查询用户信息失败，email:%s,err:%v", email, err)
 	}
 	if user == nil {
-		return 0, errors.Wrapf(ErrUserNoExistsError, "email:%s", email)
+		return "", errors.Wrapf(ErrUserNoExistsError, "email:%s", email)
 	}
 	if tool.Md5ByString(password) == user.Password {
-		return 0, errors.Wrap(ErrUsernamePwdError, "密码匹配错误")
+		return "", errors.Wrap(ErrUsernamePwdError, "密码匹配错误")
 	}
-	return user.Id, nil
+	return user.Identity, nil
 }
 
 func (l *LoginLogic) loginByMiniWx() error {

@@ -25,9 +25,9 @@ var (
 	userAuthRowsExpectAutoSet   = strings.Join(stringx.Remove(userAuthFieldNames, "`id`", "`create_time`", "`update_time`"), ",")
 	userAuthRowsWithPlaceHolder = strings.Join(stringx.Remove(userAuthFieldNames, "`id`", "`create_time`", "`update_time`"), "=?,") + "=?"
 
-	cacheCloudDiskUserAuthIdPrefix              = "cache:cloudDisk:userAuth:id:"
-	cacheCloudDiskUserAuthAuthTypeAuthKeyPrefix = "cache:cloudDisk:userAuth:authType:authKey:"
-	cacheCloudDiskUserAuthUserIdAuthTypePrefix  = "cache:cloudDisk:userAuth:userId:authType:"
+	cacheCloudDiskUserAuthIdPrefix               = "cache:cloudDisk:userAuth:id:"
+	cacheCloudDiskUserAuthAuthTypeAuthKeyPrefix  = "cache:cloudDisk:userAuth:authType:authKey:"
+	cacheCloudDiskUserAuthIdentityAuthTypePrefix = "cache:cloudDisk:userAuth:Identity:authType:"
 )
 
 type (
@@ -35,7 +35,7 @@ type (
 		Insert(ctx context.Context, session sqlx.Session, data *UserAuth) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*UserAuth, error)
 		FindOneByAuthTypeAuthKey(ctx context.Context, authType string, authKey string) (*UserAuth, error)
-		FindOneByUserIdAuthType(ctx context.Context, userId int64, authType string) (*UserAuth, error)
+		FindOneByIdentityAuthType(ctx context.Context, Identity string, authType string) (*UserAuth, error)
 		Update(ctx context.Context, session sqlx.Session, data *UserAuth) (sql.Result, error)
 		UpdateWithVersion(ctx context.Context, session sqlx.Session, data *UserAuth) error
 		Delete(ctx context.Context, session sqlx.Session, id int64) error
@@ -48,7 +48,7 @@ type (
 
 	UserAuth struct {
 		Id         int64     `db:"id"`
-		UserId     int64     `db:"user_id"`
+		Identity   string    `db:"user_id"`
 		AuthType   string    `db:"auth_type"` // 平台类型
 		AuthKey    string    `db:"auth_key"`  // 平台唯一id
 		DelState   int64     `db:"del_state"`
@@ -70,14 +70,14 @@ func (m *defaultUserAuthModel) Insert(ctx context.Context, session sqlx.Session,
 	data.DeleteTime = time.Unix(0, 0)
 	cloudDiskUserAuthAuthTypeAuthKeyKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthAuthTypeAuthKeyPrefix, data.AuthType, data.AuthKey)
 	cloudDiskUserAuthIdKey := fmt.Sprintf("%s%v", cacheCloudDiskUserAuthIdPrefix, data.Id)
-	cloudDiskUserAuthUserIdAuthTypeKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthUserIdAuthTypePrefix, data.UserId, data.AuthType)
+	cloudDiskUserAuthIdentityAuthTypeKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthIdentityAuthTypePrefix, data.Identity, data.AuthType)
 	return m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?)", m.table, userAuthRowsExpectAutoSet)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.UserId, data.AuthType, data.AuthKey, data.DelState, data.DeleteTime, data.Version)
+			return session.ExecCtx(ctx, query, data.Identity, data.AuthType, data.AuthKey, data.DelState, data.DeleteTime, data.Version)
 		}
-		return conn.ExecCtx(ctx, query, data.UserId, data.AuthType, data.AuthKey, data.DelState, data.DeleteTime, data.Version)
-	}, cloudDiskUserAuthAuthTypeAuthKeyKey, cloudDiskUserAuthIdKey, cloudDiskUserAuthUserIdAuthTypeKey)
+		return conn.ExecCtx(ctx, query, data.Identity, data.AuthType, data.AuthKey, data.DelState, data.DeleteTime, data.Version)
+	}, cloudDiskUserAuthAuthTypeAuthKeyKey, cloudDiskUserAuthIdKey, cloudDiskUserAuthIdentityAuthTypeKey)
 }
 
 func (m *defaultUserAuthModel) FindOne(ctx context.Context, id int64) (*UserAuth, error) {
@@ -117,12 +117,12 @@ func (m *defaultUserAuthModel) FindOneByAuthTypeAuthKey(ctx context.Context, aut
 	}
 }
 
-func (m *defaultUserAuthModel) FindOneByUserIdAuthType(ctx context.Context, userId int64, authType string) (*UserAuth, error) {
-	cloudDiskUserAuthUserIdAuthTypeKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthUserIdAuthTypePrefix, userId, authType)
+func (m *defaultUserAuthModel) FindOneByIdentityAuthType(ctx context.Context, Identity int64, authType string) (*UserAuth, error) {
+	cloudDiskUserAuthIdentityAuthTypeKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthIdentityAuthTypePrefix, Identity, authType)
 	var resp UserAuth
-	err := m.QueryRowIndexCtx(ctx, &resp, cloudDiskUserAuthUserIdAuthTypeKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
+	err := m.QueryRowIndexCtx(ctx, &resp, cloudDiskUserAuthIdentityAuthTypeKey, m.formatPrimary, func(ctx context.Context, conn sqlx.SqlConn, v interface{}) (i interface{}, e error) {
 		query := fmt.Sprintf("select %s from %s where `user_id` = ? and `auth_type` = ? and del_state = ? limit 1", userAuthRows, m.table)
-		if err := conn.QueryRowCtx(ctx, &resp, query, userId, authType, globalkey.DelStateNo); err != nil {
+		if err := conn.QueryRowCtx(ctx, &resp, query, Identity, authType, globalkey.DelStateNo); err != nil {
 			return nil, err
 		}
 		return resp.Id, nil
@@ -140,14 +140,14 @@ func (m *defaultUserAuthModel) FindOneByUserIdAuthType(ctx context.Context, user
 func (m *defaultUserAuthModel) Update(ctx context.Context, session sqlx.Session, data *UserAuth) (sql.Result, error) {
 	cloudDiskUserAuthAuthTypeAuthKeyKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthAuthTypeAuthKeyPrefix, data.AuthType, data.AuthKey)
 	cloudDiskUserAuthIdKey := fmt.Sprintf("%s%v", cacheCloudDiskUserAuthIdPrefix, data.Id)
-	cloudDiskUserAuthUserIdAuthTypeKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthUserIdAuthTypePrefix, data.UserId, data.AuthType)
+	cloudDiskUserAuthIdentityAuthTypeKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthIdentityAuthTypePrefix, data.Identity, data.AuthType)
 	return m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userAuthRowsWithPlaceHolder)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.UserId, data.AuthType, data.AuthKey, data.DelState, data.DeleteTime, data.Version, data.Id)
+			return session.ExecCtx(ctx, query, data.Identity, data.AuthType, data.AuthKey, data.DelState, data.DeleteTime, data.Version, data.Id)
 		}
-		return conn.ExecCtx(ctx, query, data.UserId, data.AuthType, data.AuthKey, data.DelState, data.DeleteTime, data.Version, data.Id)
-	}, cloudDiskUserAuthAuthTypeAuthKeyKey, cloudDiskUserAuthIdKey, cloudDiskUserAuthUserIdAuthTypeKey)
+		return conn.ExecCtx(ctx, query, data.Identity, data.AuthType, data.AuthKey, data.DelState, data.DeleteTime, data.Version, data.Id)
+	}, cloudDiskUserAuthAuthTypeAuthKeyKey, cloudDiskUserAuthIdKey, cloudDiskUserAuthIdentityAuthTypeKey)
 }
 
 func (m *defaultUserAuthModel) UpdateWithVersion(ctx context.Context, session sqlx.Session, data *UserAuth) error {
@@ -160,14 +160,14 @@ func (m *defaultUserAuthModel) UpdateWithVersion(ctx context.Context, session sq
 
 	cloudDiskUserAuthAuthTypeAuthKeyKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthAuthTypeAuthKeyPrefix, data.AuthType, data.AuthKey)
 	cloudDiskUserAuthIdKey := fmt.Sprintf("%s%v", cacheCloudDiskUserAuthIdPrefix, data.Id)
-	cloudDiskUserAuthUserIdAuthTypeKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthUserIdAuthTypePrefix, data.UserId, data.AuthType)
+	cloudDiskUserAuthIdentityAuthTypeKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthIdentityAuthTypePrefix, data.Identity, data.AuthType)
 	sqlResult, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ? and version = ? ", m.table, userAuthRowsWithPlaceHolder)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.UserId, data.AuthType, data.AuthKey, data.DelState, data.DeleteTime, data.Version, data.Id, oldVersion)
+			return session.ExecCtx(ctx, query, data.Identity, data.AuthType, data.AuthKey, data.DelState, data.DeleteTime, data.Version, data.Id, oldVersion)
 		}
-		return conn.ExecCtx(ctx, query, data.UserId, data.AuthType, data.AuthKey, data.DelState, data.DeleteTime, data.Version, data.Id, oldVersion)
-	}, cloudDiskUserAuthAuthTypeAuthKeyKey, cloudDiskUserAuthIdKey, cloudDiskUserAuthUserIdAuthTypeKey)
+		return conn.ExecCtx(ctx, query, data.Identity, data.AuthType, data.AuthKey, data.DelState, data.DeleteTime, data.Version, data.Id, oldVersion)
+	}, cloudDiskUserAuthAuthTypeAuthKeyKey, cloudDiskUserAuthIdKey, cloudDiskUserAuthIdentityAuthTypeKey)
 	if err != nil {
 		return err
 	}
@@ -190,14 +190,14 @@ func (m *defaultUserAuthModel) Delete(ctx context.Context, session sqlx.Session,
 
 	cloudDiskUserAuthAuthTypeAuthKeyKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthAuthTypeAuthKeyPrefix, data.AuthType, data.AuthKey)
 	cloudDiskUserAuthIdKey := fmt.Sprintf("%s%v", cacheCloudDiskUserAuthIdPrefix, id)
-	cloudDiskUserAuthUserIdAuthTypeKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthUserIdAuthTypePrefix, data.UserId, data.AuthType)
+	cloudDiskUserAuthIdentityAuthTypeKey := fmt.Sprintf("%s%v:%v", cacheCloudDiskUserAuthIdentityAuthTypePrefix, data.Identity, data.AuthType)
 	_, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
 		if session != nil {
 			return session.ExecCtx(ctx, query, id)
 		}
 		return conn.ExecCtx(ctx, query, id)
-	}, cloudDiskUserAuthAuthTypeAuthKeyKey, cloudDiskUserAuthIdKey, cloudDiskUserAuthUserIdAuthTypeKey)
+	}, cloudDiskUserAuthAuthTypeAuthKeyKey, cloudDiskUserAuthIdKey, cloudDiskUserAuthIdentityAuthTypeKey)
 	return err
 }
 

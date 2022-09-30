@@ -112,6 +112,7 @@ service disk {
 
 
   rpc FileUploadPrepare(FileUploadPrepareRep) returns(FileUploadPrepareResp);
+  rpc UpdateFile(UpdateFileReq) returns(UpdateFileResp);
 
   
 
@@ -133,3 +134,10 @@ message FileUploadPrepareResp {
   string key = 3 ;
 }
 
+message FileDetail {
+  int64 id = 1 ;
+  string identity =2 ;
+  string name = 3 ;
+  int64 Pid =4 ;
+  int64 DelState = 5  ;
+}
