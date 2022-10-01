@@ -13,11 +13,15 @@ import (
 )
 
 type (
+	FileDetail            = pb.FileDetail
 	FileUploadPrepareRep  = pb.FileUploadPrepareRep
-	FileUploadPrepareRrsp = pb.FileUploadPrepareRrsp
+	FileUploadPrepareResp = pb.FileUploadPrepareResp
+	UpdateFileReq         = pb.UpdateFileReq
+	UpdateFileResp        = pb.UpdateFileResp
 
 	Disk interface {
-		FileUploadPrepare(ctx context.Context, in *FileUploadPrepareRep, opts ...grpc.CallOption) (*FileUploadPrepareRrsp, error)
+		FileUploadPrepare(ctx context.Context, in *FileUploadPrepareRep, opts ...grpc.CallOption) (*FileUploadPrepareResp, error)
+		UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error)
 	}
 
 	defaultDisk struct {
@@ -31,7 +35,12 @@ func NewDisk(cli zrpc.Client) Disk {
 	}
 }
 
-func (m *defaultDisk) FileUploadPrepare(ctx context.Context, in *FileUploadPrepareRep, opts ...grpc.CallOption) (*FileUploadPrepareRrsp, error) {
+func (m *defaultDisk) FileUploadPrepare(ctx context.Context, in *FileUploadPrepareRep, opts ...grpc.CallOption) (*FileUploadPrepareResp, error) {
 	client := pb.NewDiskClient(m.cli.Conn())
 	return client.FileUploadPrepare(ctx, in, opts...)
+}
+
+func (m *defaultDisk) UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error) {
+	client := pb.NewDiskClient(m.cli.Conn())
+	return client.UpdateFile(ctx, in, opts...)
 }

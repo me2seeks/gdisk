@@ -22,7 +22,12 @@ func NewDiskServer(svcCtx *svc.ServiceContext) *DiskServer {
 	}
 }
 
-func (s *DiskServer) FileUploadPrepare(ctx context.Context, in *pb.FileUploadPrepareRep) (*pb.FileUploadPrepareRrsp, error) {
+func (s *DiskServer) FileUploadPrepare(ctx context.Context, in *pb.FileUploadPrepareRep) (*pb.FileUploadPrepareResp, error) {
 	l := logic.NewFileUploadPrepareLogic(ctx, s.svcCtx)
 	return l.FileUploadPrepare(in)
+}
+
+func (s *DiskServer) UpdateFile(ctx context.Context, in *pb.UpdateFileReq) (*pb.UpdateFileResp, error) {
+	l := logic.NewUpdateFileLogic(ctx, s.svcCtx)
+	return l.UpdateFile(in)
 }

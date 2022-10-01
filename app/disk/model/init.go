@@ -2,7 +2,6 @@ package model
 
 import (
 	"github.com/8treenet/gcache/option"
-
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/zeromicro/go-zero/core/logx"
 	"gorm.io/gorm"
@@ -25,3 +24,5 @@ func Init(dataSource string) *gorm.DB {
 
 	return engine
 }
+
+var ErrNotFound = gorm.ErrRecordNotFound

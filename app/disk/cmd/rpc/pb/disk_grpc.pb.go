@@ -22,7 +22,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DiskClient interface {
-	FileUploadPrepare(ctx context.Context, in *FileUploadPrepareRep, opts ...grpc.CallOption) (*FileUploadPrepareRrsp, error)
+	FileUploadPrepare(ctx context.Context, in *FileUploadPrepareRep, opts ...grpc.CallOption) (*FileUploadPrepareResp, error)
+	UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error)
 }
 
 type diskClient struct {
@@ -33,9 +34,18 @@ func NewDiskClient(cc grpc.ClientConnInterface) DiskClient {
 	return &diskClient{cc}
 }
 
-func (c *diskClient) FileUploadPrepare(ctx context.Context, in *FileUploadPrepareRep, opts ...grpc.CallOption) (*FileUploadPrepareRrsp, error) {
-	out := new(FileUploadPrepareRrsp)
+func (c *diskClient) FileUploadPrepare(ctx context.Context, in *FileUploadPrepareRep, opts ...grpc.CallOption) (*FileUploadPrepareResp, error) {
+	out := new(FileUploadPrepareResp)
 	err := c.cc.Invoke(ctx, "/pb.disk/FileUploadPrepare", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *diskClient) UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error) {
+	out := new(UpdateFileResp)
+	err := c.cc.Invoke(ctx, "/pb.disk/UpdateFile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +56,8 @@ func (c *diskClient) FileUploadPrepare(ctx context.Context, in *FileUploadPrepar
 // All implementations must embed UnimplementedDiskServer
 // for forward compatibility
 type DiskServer interface {
-	FileUploadPrepare(context.Context, *FileUploadPrepareRep) (*FileUploadPrepareRrsp, error)
+	FileUploadPrepare(context.Context, *FileUploadPrepareRep) (*FileUploadPrepareResp, error)
+	UpdateFile(context.Context, *UpdateFileReq) (*UpdateFileResp, error)
 	mustEmbedUnimplementedDiskServer()
 }
 
@@ -54,8 +65,11 @@ type DiskServer interface {
 type UnimplementedDiskServer struct {
 }
 
-func (UnimplementedDiskServer) FileUploadPrepare(context.Context, *FileUploadPrepareRep) (*FileUploadPrepareRrsp, error) {
+func (UnimplementedDiskServer) FileUploadPrepare(context.Context, *FileUploadPrepareRep) (*FileUploadPrepareResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FileUploadPrepare not implemented")
+}
+func (UnimplementedDiskServer) UpdateFile(context.Context, *UpdateFileReq) (*UpdateFileResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateFile not implemented")
 }
 func (UnimplementedDiskServer) mustEmbedUnimplementedDiskServer() {}
 
@@ -88,6 +102,24 @@ func _Disk_FileUploadPrepare_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Disk_UpdateFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateFileReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DiskServer).UpdateFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.disk/UpdateFile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DiskServer).UpdateFile(ctx, req.(*UpdateFileReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Disk_ServiceDesc is the grpc.ServiceDesc for Disk service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +130,10 @@ var Disk_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FileUploadPrepare",
 			Handler:    _Disk_FileUploadPrepare_Handler,
+		},
+		{
+			MethodName: "UpdateFile",
+			Handler:    _Disk_UpdateFile_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

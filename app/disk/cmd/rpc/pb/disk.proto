@@ -137,7 +137,17 @@ message FileUploadPrepareResp {
 message FileDetail {
   int64 id = 1 ;
   string identity =2 ;
-  string name = 3 ;
-  int64 Pid =4 ;
-  int64 DelState = 5  ;
+  string uid = 3 ;
+  string name = 4 ;
+  int64 Pid =5 ;
+  int64 DelState = 6  ;
+  int64 UpdatedAt = 7 ;
+}
+
+message UpdateFileReq {
+  FileDetail fileDetail = 1 ;
+}
+
+message UpdateFileResp{
+  FileDetail  fileDetail = 1 ;
 }

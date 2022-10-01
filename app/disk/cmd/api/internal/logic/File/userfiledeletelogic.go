@@ -1,7 +1,8 @@
 package File
 
 import (
-	"cloud-disk/app/disk/model"
+	"cloud-disk/app/disk/cmd/rpc/pb"
+	"cloud-disk/common/globalkey"
 	"context"
 
 	"cloud-disk/app/disk/cmd/api/internal/svc"
@@ -25,15 +26,15 @@ func NewUserFileDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Us
 }
 
 func (l *UserFileDeleteLogic) UserFileDelete(req *types.UserFileDeleteRequest, userIdentity string) (resp *types.UserFileDeleteReply, err error) {
-	//TODO 定时任务
-	err = l.svcCtx.Engine.
-		Where("user_identity = ? AND identity = ?", userIdentity, req.Identity).
-		Delete(new(model.UserRepository)).Error
+	var fileDetail *pb.FileDetail
+	fileDetail.Identity = req.Identity
+	fileDetail.DelState = globalkey.DelStateYes
+	fileDetail.Uid = userIdentity
 
-	resp = new(types.UserFileDeleteReply)
+	_, err = l.svcCtx.DiskRpc.UpdateFile(l.ctx, &pb.UpdateFileReq{FileDetail: fileDetail})
 	if err != nil {
-		return
+		return nil, err
 	}
+	return nil, nil
 
-	return
 }
