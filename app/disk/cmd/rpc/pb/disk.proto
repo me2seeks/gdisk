@@ -113,7 +113,8 @@ service disk {
 
   rpc FileUploadPrepare(FileUploadPrepareRep) returns(FileUploadPrepareResp);
   rpc UpdateFile(UpdateFileReq) returns(UpdateFileResp);
-
+//  rpc Statistics(StatisticsReq) returns(StatisticsResp);
+  rpc ListFile(ListFileReq) returns(ListFileResp);
   
 
 
@@ -121,6 +122,25 @@ service disk {
 
 
 }
+
+message FileDetail {
+  int64 id = 1 ;
+  string identity =2 ;
+  string uid = 3 ;
+  string name = 4 ;
+  int64 Pid =5 ;
+  int64 DelState = 6  ;
+  int64 UpdatedAt = 7 ;
+}
+
+message ListFileReq {
+  string uid = 1 ;
+
+}
+message ListFileResp {
+  FileDetail fileDetail =1 ;
+}
+
 
 
 message  FileUploadPrepareRep {
@@ -134,15 +154,7 @@ message FileUploadPrepareResp {
   string key = 3 ;
 }
 
-message FileDetail {
-  int64 id = 1 ;
-  string identity =2 ;
-  string uid = 3 ;
-  string name = 4 ;
-  int64 Pid =5 ;
-  int64 DelState = 6  ;
-  int64 UpdatedAt = 7 ;
-}
+
 
 message UpdateFileReq {
   FileDetail fileDetail = 1 ;
@@ -151,3 +163,13 @@ message UpdateFileReq {
 message UpdateFileResp{
   FileDetail  fileDetail = 1 ;
 }
+
+//message StatisticsReq {
+//  string uid = 1;
+//  int64 DelState = 2;
+//  int64 isUser = 3;
+//}
+//message StatisticsResp {
+//  int64 totalSize = 1 ;
+//  int64 count = 2 ;
+//}

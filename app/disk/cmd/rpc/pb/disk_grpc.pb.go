@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type DiskClient interface {
 	FileUploadPrepare(ctx context.Context, in *FileUploadPrepareRep, opts ...grpc.CallOption) (*FileUploadPrepareResp, error)
 	UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error)
+	Statistics(ctx context.Context, in *StatisticsReq, opts ...grpc.CallOption) (*StatisticsResp, error)
+	ListFile(ctx context.Context, in *ListFileReq, opts ...grpc.CallOption) (*ListFileResp, error)
 }
 
 type diskClient struct {
@@ -52,12 +54,32 @@ func (c *diskClient) UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...
 	return out, nil
 }
 
+func (c *diskClient) Statistics(ctx context.Context, in *StatisticsReq, opts ...grpc.CallOption) (*StatisticsResp, error) {
+	out := new(StatisticsResp)
+	err := c.cc.Invoke(ctx, "/pb.disk/Statistics", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *diskClient) ListFile(ctx context.Context, in *ListFileReq, opts ...grpc.CallOption) (*ListFileResp, error) {
+	out := new(ListFileResp)
+	err := c.cc.Invoke(ctx, "/pb.disk/ListFile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DiskServer is the server API for Disk service.
 // All implementations must embed UnimplementedDiskServer
 // for forward compatibility
 type DiskServer interface {
 	FileUploadPrepare(context.Context, *FileUploadPrepareRep) (*FileUploadPrepareResp, error)
 	UpdateFile(context.Context, *UpdateFileReq) (*UpdateFileResp, error)
+	Statistics(context.Context, *StatisticsReq) (*StatisticsResp, error)
+	ListFile(context.Context, *ListFileReq) (*ListFileResp, error)
 	mustEmbedUnimplementedDiskServer()
 }
 
@@ -70,6 +92,12 @@ func (UnimplementedDiskServer) FileUploadPrepare(context.Context, *FileUploadPre
 }
 func (UnimplementedDiskServer) UpdateFile(context.Context, *UpdateFileReq) (*UpdateFileResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateFile not implemented")
+}
+func (UnimplementedDiskServer) Statistics(context.Context, *StatisticsReq) (*StatisticsResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Statistics not implemented")
+}
+func (UnimplementedDiskServer) ListFile(context.Context, *ListFileReq) (*ListFileResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListFile not implemented")
 }
 func (UnimplementedDiskServer) mustEmbedUnimplementedDiskServer() {}
 
@@ -120,6 +148,42 @@ func _Disk_UpdateFile_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Disk_Statistics_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StatisticsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DiskServer).Statistics(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.disk/Statistics",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DiskServer).Statistics(ctx, req.(*StatisticsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Disk_ListFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFileReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DiskServer).ListFile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.disk/ListFile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DiskServer).ListFile(ctx, req.(*ListFileReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Disk_ServiceDesc is the grpc.ServiceDesc for Disk service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +198,14 @@ var Disk_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateFile",
 			Handler:    _Disk_UpdateFile_Handler,
+		},
+		{
+			MethodName: "Statistics",
+			Handler:    _Disk_Statistics_Handler,
+		},
+		{
+			MethodName: "ListFile",
+			Handler:    _Disk_ListFile_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

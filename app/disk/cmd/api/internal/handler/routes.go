@@ -6,6 +6,7 @@ import (
 
 	File "cloud-disk/app/disk/cmd/api/internal/handler/File"
 	Share "cloud-disk/app/disk/cmd/api/internal/handler/Share"
+	Statistics "cloud-disk/app/disk/cmd/api/internal/handler/Statistics"
 	"cloud-disk/app/disk/cmd/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -25,12 +26,25 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: Share.ShareBasicSaveHandler(serverCtx),
 			},
 		},
-		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
 	)
 
 	server.AddRoutes(
 		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/file/stat",
+				Handler: Statistics.StatisticsFileHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/share/statistics",
+				Handler: Statistics.StatisticsShareHandler(serverCtx),
+			},
+		},
+	)
 
+	server.AddRoutes(
+		[]rest.Route{
 			{
 				Method:  http.MethodPost,
 				Path:    "/file/upload",
@@ -65,6 +79,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPut,
 				Path:    "/user/file/move",
 				Handler: File.UserFileMoveHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/file/download",
+				Handler: File.FileDownloadHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,

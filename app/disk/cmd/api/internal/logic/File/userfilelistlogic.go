@@ -2,11 +2,11 @@ package File
 
 import (
 	"cloud-disk/app/define"
-	"context"
-	"time"
-
 	"cloud-disk/app/disk/cmd/api/internal/svc"
 	"cloud-disk/app/disk/cmd/api/internal/types"
+	"cloud-disk/app/disk/cmd/rpc/pb"
+	"context"
+	"github.com/jinzhu/copier"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -49,21 +49,12 @@ func (l *UserFileListLogic) UserFileList(req *types.UserFileListRequest, userIde
 	// }
 
 	//搜出用户的所以文件
-	err = l.svcCtx.Engine.
-		Table("user_repository").
-		Select("user_repository.id, user_repository.pid, user_repository.identity, "+
-			"user_repository.repository_identity, user_repository.ext, user_repository.updated_at,"+
-			"user_repository.name, repository_pool.path, repository_pool.size").
-		Where("uid = ? ", userIdentity).
-		Where("user_repository.deleted_at = ? OR user_repository.deleted_at IS NULL", time.Time{}.Format(define.Datetime)).
-		Joins("left join repository_pool on user_repository.repository_identity = repository_pool.identity").
-		Find(&usrFile).Error
-	//Limit(size).
-	//Offset(offset).
+	file, err := l.svcCtx.DiskRpc.ListFile(l.ctx, &pb.ListFileReq{Uid: userIdentity})
 	if err != nil {
-		return
+		return nil, err
 	}
-
+	_ = copier.Copy(&usrFile, file)
+	
 	err = l.svcCtx.Engine.
 		Table("user_repository").
 		Select("user_repository.id, user_repository.pid, user_repository.identity, "+

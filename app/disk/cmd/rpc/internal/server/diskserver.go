@@ -31,3 +31,13 @@ func (s *DiskServer) UpdateFile(ctx context.Context, in *pb.UpdateFileReq) (*pb.
 	l := logic.NewUpdateFileLogic(ctx, s.svcCtx)
 	return l.UpdateFile(in)
 }
+
+func (s *DiskServer) Statistics(ctx context.Context, in *pb.StatisticsReq) (*pb.StatisticsResp, error) {
+	l := logic.NewStatisticsLogic(ctx, s.svcCtx)
+	return l.Statistics(in)
+}
+
+func (s *DiskServer) ListFile(ctx context.Context, in *pb.ListFileReq) (*pb.ListFileResp, error) {
+	l := logic.NewListFileLogic(ctx, s.svcCtx)
+	return l.ListFile(in)
+}

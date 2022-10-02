@@ -18,6 +18,8 @@ func GetUidFromCtx(ctx context.Context) string {
 		//	logx.WithContext(ctx).Errorf("GetUidFromCtx err : %+v", err)
 		//}
 
+		print(identity)
+
 	}
 	return identity
 }

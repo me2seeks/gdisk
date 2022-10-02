@@ -8,41 +8,6 @@ info(
 	version: "type version here"
 )
 
-//need login
-//@server(
-////	prefix: /disk
-//	group: file
-//	jwt: JwtAuth
-//)
-//service disk {
-//
-//	@doc "获取上传凭证"
-//	@handler upload
-//	post /certificate/upload (UploadCertificateReq) returns (UploadCertificateResp)
-//
-//	@doc "获取下载凭证"
-//	@handler download
-//	post /certificate/download (DownloadCertificateReq) returns (DownloadCertificateResp)
-//
-//	@doc "上传回调"
-//	@handler callback
-//	post /certificate/callback (CallbackReq) returns (CallbackResp)
-//
-//	@doc "获取某类型的文件列表"
-//	@handler kind
-//	post /kind (KindReq) returns (KindResp)
-//}
-
-//@server(
-//	group: PublicPoll
-//	jwt: JwtAuth
-//)
-//service disk{
-//	@handler PublicFileSave
-//	post /public/file/save(PublicRepositorySaveRequest) returns (PublicRepositorySaveReply)
-//
-//}
-
 @server(
 	group: Share
 )
@@ -58,12 +23,22 @@ service disk{
 }
 
 @server(
+	group: Statistics
+)
+service disk{
+	@handler StatisticsFile
+	get /file/stat(StatisticsFileRequest) returns (StatisticsFileReply)
+	@handler StatisticsShare
+	get /share/statistics(StatisticsShareRequest) returns (StatisticsShareReply)
+}
+
+@server(
 	//	prefix: /disk
 	group: File
 	jwt: JwtAuth
 )
 service disk {
-
+	
 	// 文件上传
 	@handler FileUpload
 	post /file/upload(FileUploadRequest) returns (FileUploadReply)
@@ -108,6 +83,14 @@ service disk {
 	@handler FileUploadChunkComplete
 	post /file/upload/chunk/complete(FileUploadChunkCompleteRequest) returns (FileUploadChunkCompleteReply)
 }
+
+type StatisticsFileRequest {
+}
+type StatisticsFileReply {
+}
+
+type StatisticsShareRequest{}
+type StatisticsShareReply{}
 
 type FileDownloadRequest {
 	Hash string `json:"hash,optional"`
@@ -340,3 +323,38 @@ type FileUploadReply {
 	Ext      string `json:"ext"`
 	Name     string `json:"name"`
 }
+
+//need login
+//@server(
+////	prefix: /disk
+//	group: file
+//	jwt: JwtAuth
+//)
+//service disk {
+//
+//	@doc "获取上传凭证"
+//	@handler upload
+//	post /certificate/upload (UploadCertificateReq) returns (UploadCertificateResp)
+//
+//	@doc "获取下载凭证"
+//	@handler download
+//	post /certificate/download (DownloadCertificateReq) returns (DownloadCertificateResp)
+//
+//	@doc "上传回调"
+//	@handler callback
+//	post /certificate/callback (CallbackReq) returns (CallbackResp)
+//
+//	@doc "获取某类型的文件列表"
+//	@handler kind
+//	post /kind (KindReq) returns (KindResp)
+//}
+
+//@server(
+//	group: PublicPoll
+//	jwt: JwtAuth
+//)
+//service disk{
+//	@handler PublicFileSave
+//	post /public/file/save(PublicRepositorySaveRequest) returns (PublicRepositorySaveReply)
+//
+//}

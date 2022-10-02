@@ -17,6 +17,9 @@ var DateTimeFormatTplStandardTime = "H:i:s"
 var DeleteTypeMove int64 = -1 //移动
 var RenameTypeMove int64 = -2
 
+var IsUser int64 = 1
+var NotUser int64 = 0
+
 //文件类型
 var Postfix map[string][]string
 

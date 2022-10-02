@@ -16,12 +16,18 @@ type (
 	FileDetail            = pb.FileDetail
 	FileUploadPrepareRep  = pb.FileUploadPrepareRep
 	FileUploadPrepareResp = pb.FileUploadPrepareResp
+	ListFileReq           = pb.ListFileReq
+	ListFileResp          = pb.ListFileResp
+	StatisticsReq         = pb.StatisticsReq
+	StatisticsResp        = pb.StatisticsResp
 	UpdateFileReq         = pb.UpdateFileReq
 	UpdateFileResp        = pb.UpdateFileResp
 
 	Disk interface {
 		FileUploadPrepare(ctx context.Context, in *FileUploadPrepareRep, opts ...grpc.CallOption) (*FileUploadPrepareResp, error)
 		UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error)
+		Statistics(ctx context.Context, in *StatisticsReq, opts ...grpc.CallOption) (*StatisticsResp, error)
+		ListFile(ctx context.Context, in *ListFileReq, opts ...grpc.CallOption) (*ListFileResp, error)
 	}
 
 	defaultDisk struct {
@@ -43,4 +49,14 @@ func (m *defaultDisk) FileUploadPrepare(ctx context.Context, in *FileUploadPrepa
 func (m *defaultDisk) UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error) {
 	client := pb.NewDiskClient(m.cli.Conn())
 	return client.UpdateFile(ctx, in, opts...)
+}
+
+func (m *defaultDisk) Statistics(ctx context.Context, in *StatisticsReq, opts ...grpc.CallOption) (*StatisticsResp, error) {
+	client := pb.NewDiskClient(m.cli.Conn())
+	return client.Statistics(ctx, in, opts...)
+}
+
+func (m *defaultDisk) ListFile(ctx context.Context, in *ListFileReq, opts ...grpc.CallOption) (*ListFileResp, error) {
+	client := pb.NewDiskClient(m.cli.Conn())
+	return client.ListFile(ctx, in, opts...)
 }
