@@ -1,15 +1,14 @@
 package logic
 
 import (
+	"cloud-disk/app/disk/cmd/rpc/internal/svc"
+	"cloud-disk/app/disk/cmd/rpc/pb"
 	"cloud-disk/app/disk/model"
 	"cloud-disk/common/globalkey"
 	"cloud-disk/common/xerr"
 	"context"
 	"github.com/pkg/errors"
 	"time"
-
-	"cloud-disk/app/disk/cmd/rpc/internal/svc"
-	"cloud-disk/app/disk/cmd/rpc/pb"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -89,7 +88,8 @@ func (l *UpdateFileLogic) UpdateFile(in *pb.UpdateFileReq) (*pb.UpdateFileResp, 
 		err := l.svcCtx.Engine.
 			Table("user_repository").
 			Where("identity = ? AND user_identity = ?", in.FileDetail.Identity, in.FileDetail.Uid).
-			Update("del_state", globalkey.DelStateYes, "deleted_at", time.Now()).Error
+			Update("del_state", globalkey.DelStateYes).
+			Update("deleted_at", time.Now()).Error
 		if err != nil {
 			return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "更新user_repository失败")
 		}

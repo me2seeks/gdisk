@@ -24,9 +24,9 @@ func NewFileUploadPrepareLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 	}
 }
 
-func (l *FileUploadPrepareLogic) FileUploadPrepare(in *pb.FileUploadPrepareRep) (*pb.FileUploadPrepareRrsp, error) {
+func (l *FileUploadPrepareLogic) FileUploadPrepare(in *pb.FileUploadPrepareRep) (*pb.FileUploadPrepareResp, error) {
 	rp := new(model.RepositoryPool)
-	resp := new(pb.FileUploadPrepareRrsp)
+	resp := new(pb.FileUploadPrepareResp)
 
 	l.svcCtx.Engine.
 		Where("hash = ?", in.Md5).

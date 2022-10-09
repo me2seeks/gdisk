@@ -4,113 +4,7 @@ option go_package = "./pb";
 
 package pb;
 
-//message StoreDetail {
-//  int64 id = 1;
-//  int64 uid = 2;
-//  int64 maxSize = 3 ;
-//  int64 currentSize =4;
-//  int64 delState =5;
-//  int64 deleteTime = 6;
-//}
-//
-//message FileDetail {
-//  int64 id = 1 ;
-//  string fileName =2 ;
-//  string fileHash = 3 ;
-//  int64 userId = 4 ;
-//  int64 storeId =5 ;
-//  int64 parentFolderId = 6 ;
-//  int64 size = 7 ;
-//  string postfix = 8 ;
-//  int64 downloadNumber = 9 ;
-//  int64 updateTime =10 ;
-//  int64 deleteState =11 ;
-//  int64 deleteTime =12 ;
-//  int64 createTime =13 ;
-//}
-//
-//message FolderDetail {
-//  int64 id = 1 ;
-//  string folderName =2 ;
-//  int64 userId = 3 ;
-//  int64 storeId = 4 ;
-//  int64  parentFolderId = 5 ;
-//  int64 updateTime = 6 ;
-//  int64 deleteState = 7 ;
-//  int64 deleteTime = 8 ;
-//  int64 createTime = 9 ;
-//}
-//
-//message StoreDetailReq {
-//  int64 uid = 1;
-//}
-//
-//message StoreDetailResp {
-//  StoreDetail store = 1;
-//}
-//
-//message UpdateStoreReq {
-//  int64 uid = 1;
-//  int64 maxSize = 2 ;
-//  int64 currentSize =3;
-//  int64 delState =4;
-//}
-//
-//message UpdateStoreResp {
-//}
-//
-//
-//message UpdateFileReq {
-//  FileDetail file = 1;
-//}
-//
-//message UpdateFileResp {
-//}
-//
-//message UpdateFolderReq {
-//  FolderDetail folder = 1;
-//}
-//message UpdateFolderResp {
-//
-//}
-//
-//message ListFolderReq {
-//  int64 uid = 1;
-//  int64 pid =2 ;
-//}
-//
-//message ListFolderResp {
-//  repeated FileDetail files =1;
-//  repeated FolderDetail folders =2;
-//}
-//
-//message CreateStoreReq {
-//  int64 uid = 1;
-//}
-//
-//message CreateStoreResp {
-//
-//}
-
 service disk {
-//  //store 详情
-//  rpc DetailStore(StoreDetailReq) returns(StoreDetailResp);
-//
-//  //修改store大小
-//  rpc UpdateStore(UpdateStoreReq) returns(UpdateStoreResp);
-//
-//  //获取路径下的文件和文件夹
-//  rpc ListFolders(ListFolderReq) returns(ListFolderResp);
-//
-//  //更新file信息
-//  rpc UpdateFile(UpdateFileReq) returns(UpdateFileResp);
-//
-//  //更新folder信息
-//  rpc UpdateFolder(UpdateFolderReq) returns(UpdateFolderResp);
-//
-//  //分享
-
-
   rpc FileUploadPrepare(FileUploadPrepareRep) returns(FileUploadPrepareResp);
   rpc UpdateFile(UpdateFileReq) returns(UpdateFileResp);
 //  rpc Statistics(StatisticsReq) returns(StatisticsResp);
@@ -126,11 +20,14 @@ service disk {
 message FileDetail {
   int64 id = 1 ;
   string identity =2 ;
-  string uid = 3 ;
-  string name = 4 ;
-  int64 Pid =5 ;
-  int64 DelState = 6  ;
-  int64 UpdatedAt = 7 ;
+  string ParentId   =3 ;
+  string  RepositoryIdentity =4 ;
+  string Name = 5 ;
+  string Size = 6 ;
+  string Ext = 7 ;
+  string Path = 8 ;
+  int64 DeletedAt = 9  ;
+  int64 UpdatedAt = 10 ;
 }
 
 message ListFileReq {
@@ -138,7 +35,8 @@ message ListFileReq {
 
 }
 message ListFileResp {
-  FileDetail fileDetail =1 ;
+  FileDetail fileList =1 ;
+  FileDetail  deletedList = 2 ;
 }
 
 

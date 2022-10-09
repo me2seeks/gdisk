@@ -36,7 +36,7 @@ Redis:
   Pass: "000000"
 
 DB:
-  DataSource: root:000000@tcp(43.143.125.75:3306)/cloud_disk?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+  DataSource: root:000000@tcp(43.143.125.75:33060)/cloud_disk?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 
 Cache:
   - Host: 43.143.125.75:6379

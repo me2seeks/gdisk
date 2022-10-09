@@ -3,10 +3,10 @@ package svc
 import (
 	"cloud-disk/app/disk/cmd/rpc/internal/config"
 	"cloud-disk/app/disk/model"
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mssql"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/zeromicro/go-zero/core/stores/redis"
+	"gorm.io/gorm"
 )
 
 type ServiceContext struct {

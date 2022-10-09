@@ -268,8 +268,8 @@ type PublicFile {
 
 type UserFile {
 	Id                 int64  `json:"id"`
-	ParentId           int64  `json:"parent_id"`
 	Identity           string `json:"identity"`
+	ParentId           int64  `json:"parent_id"`
 	RepositoryIdentity string `json:"repository_identity"`
 	Name               string `json:"name"`
 	Size               int64  `json:"size"`
