@@ -4,9 +4,9 @@ import (
 	"cloud-disk/app/disk/cmd/api/internal/config"
 	"cloud-disk/app/disk/cmd/rpc/disk"
 	"cloud-disk/app/disk/model"
-	"github.com/jinzhu/gorm"
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/zrpc"
+	"gorm.io/gorm"
 )
 
 type ServiceContext struct {

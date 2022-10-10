@@ -31,26 +31,27 @@ func NewUpdateFileLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Update
 
 func (l *UpdateFileLogic) UpdateFile(in *pb.UpdateFileReq) (*pb.UpdateFileResp, error) {
 	fileDetail := new(model.UserRepository)
+	resp := pb.UpdateFileResp{}
 	//	move
-	if in.FileDetail.Pid != "" {
+	if in.FileDetail.ParentId != "" {
 		err := l.svcCtx.Engine.
 			Table("user_repository").
-			Where("identity = ? AND user_identity = ?", in.FileDetail.Identity, in.FileDetail.Uid).
+			Where("identity = ? AND uid = ?", in.FileDetail.Identity, in.FileDetail.Uid).
 			First(fileDetail).Error
 		if err != nil && err != model.ErrNotFound {
-			return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR 查询file失败，Pid:%s,Uid: %s,err:%v", in.FileDetail.Pid, in.FileDetail.Uid, err)
+			return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR 查询file失败，Pid:%s,Uid: %s,err:%v", in.FileDetail.ParentId, in.FileDetail.Uid, err)
 		}
 		if fileDetail.Id == 0 || err == model.ErrNotFound {
-			return nil, errors.Wrapf(ErrFileNoExistsError, "Pid: %s Uid:%s", in.FileDetail.Pid, in.FileDetail.Uid)
+			return nil, errors.Wrapf(ErrFileNoExistsError, "Pid: %s Uid:%s", in.FileDetail.ParentId, in.FileDetail.Uid)
 		}
 		err = l.svcCtx.Engine.
 			Table("user_repository").
-			Where("identity = ? AND deleted_at IS NULL", in.FileDetail.Identity).
-			Update("parent_id", in.FileDetail.Pid).Error
+			Where("identity = ? AND del_state = ?", in.FileDetail.Identity, globalkey.DelStateNo).
+			Update("parent_id", in.FileDetail.ParentId).Error
 		if err != nil {
 			return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "更新user_repository失败")
 		}
-		return nil, nil
+		return &resp, nil
 	}
 
 	//rename
@@ -59,26 +60,22 @@ func (l *UpdateFileLogic) UpdateFile(in *pb.UpdateFileReq) (*pb.UpdateFileResp, 
 		err := l.svcCtx.Engine.
 			Table("user_repository").
 			Where("name = ?", in.FileDetail.Name).
-			Where("parent_id = (select parent_id from user_repository ur where ur.identity = ?)", in.FileDetail.Identity).
+			Where("parent_id = (select parent_id from user_repository  ur where ur.identity = ?)", in.FileDetail.Identity).
 			Count(&cnt).Error
-		if err != nil && err != model.ErrNotFound {
-			return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR 查询file失败，Pid:%s,Uid: %s,err:%v", in.FileDetail.Pid, in.FileDetail.Uid, err)
-		}
-		if fileDetail.Id == 0 || err == model.ErrNotFound {
-			return nil, errors.Wrapf(ErrFileNoExistsError, "Identity: %s", in.FileDetail.Identity)
-		}
 		if cnt > 0 {
 			return nil, errors.New("文件名已存在")
 		}
 
+		println(in.FileDetail.Name)
+
 		err = l.svcCtx.Engine.
 			Table("user_repository").
-			Where("identity = ? AND user_identity = ?", in.FileDetail.Identity, in.FileDetail.Uid).
+			Where("identity = ? AND uid = ?", in.FileDetail.Identity, in.FileDetail.Uid).
 			Update("name", in.FileDetail.Name).Error
 		if err != nil {
 			return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "更新user_repository失败")
 		}
-		return nil, nil
+		return &resp, nil
 
 	}
 
@@ -87,14 +84,14 @@ func (l *UpdateFileLogic) UpdateFile(in *pb.UpdateFileReq) (*pb.UpdateFileResp, 
 	if in.FileDetail.DelState != 0 {
 		err := l.svcCtx.Engine.
 			Table("user_repository").
-			Where("identity = ? AND user_identity = ?", in.FileDetail.Identity, in.FileDetail.Uid).
+			Where("identity = ? AND uid = ?", in.FileDetail.Identity, in.FileDetail.Uid).
 			Update("del_state", globalkey.DelStateYes).
 			Update("deleted_at", time.Now()).Error
 		if err != nil {
 			return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "更新user_repository失败")
 		}
-		return nil, nil
+		return &resp, nil
 	}
 
-	return &pb.UpdateFileResp{}, nil
+	return &resp, nil
 }

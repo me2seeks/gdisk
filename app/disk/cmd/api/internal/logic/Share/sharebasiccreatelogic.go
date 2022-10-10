@@ -46,7 +46,7 @@ func (l *ShareBasicCreateLogic) ShareBasicCreate(req *types.ShareBasicCreateRequ
 		Identity:               idna,
 		UserIdentity:           userIdentity,
 		UserRepositoryIdentity: req.UserRepositoryIdentity,
-		RepositoryIdentity:     usr.RepositoryId,
+		RepositoryIdentity:     usr.RepositoryIdentity,
 		ExpiredTime:            req.ExpiredTime,
 		Desc:                   req.Desc,
 	}

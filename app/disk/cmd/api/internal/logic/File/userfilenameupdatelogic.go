@@ -26,7 +26,7 @@ func NewUserFileNameUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 func (l *UserFileNameUpdateLogic) UserFileNameUpdate(req *types.UserFileNameUpdateRequest, userIdentity string) (resp *types.UserFileNameUpdateReply, err error) {
 	var fileDetail *pb.FileDetail
 	fileDetail.Identity = req.Identity
-	fileDetail.Pid = req.Name
+	fileDetail.ParentId = req.Name
 	fileDetail.Uid = userIdentity
 
 	_, err = l.svcCtx.DiskRpc.UpdateFile(l.ctx, &pb.UpdateFileReq{FileDetail: fileDetail})

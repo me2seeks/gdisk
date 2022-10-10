@@ -18,16 +18,18 @@ service disk {
 }
 
 message FileDetail {
-  int64 id = 1 ;
-  string identity =2 ;
-  string ParentId   =3 ;
-  string  RepositoryIdentity =4 ;
-  string Name = 5 ;
-  string Size = 6 ;
-  string Ext = 7 ;
-  string Path = 8 ;
-  int64 DeletedAt = 9  ;
-  int64 UpdatedAt = 10 ;
+  int64 Id = 1 ;
+  string Identity =2 ;
+  string Uid =3 ;
+  string ParentId   = 4 ;
+  string  RepositoryIdentity = 5 ;
+  string Name =  6 ;
+  string Size =  7 ;
+  string Ext =  8 ;
+  string Path =  9 ;
+  int64  DelState =10 ;
+  string DeletedAt = 11  ;
+  string UpdatedAt = 12 ;
 }
 
 message ListFileReq {

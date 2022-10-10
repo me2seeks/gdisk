@@ -26,7 +26,7 @@ func NewUserFileMoveLogic(ctx context.Context, svcCtx *svc.ServiceContext) *User
 func (l *UserFileMoveLogic) UserFileMove(req *types.UserFileMoveRequest, userIdentity string) (resp *types.UserFileMoveReply, err error) {
 	var fileDetail *pb.FileDetail
 	fileDetail.Identity = req.Identity
-	fileDetail.Pid = req.ParentIdentity
+	fileDetail.ParentId = req.ParentIdentity
 	fileDetail.Uid = userIdentity
 
 	_, err = l.svcCtx.DiskRpc.UpdateFile(l.ctx, &pb.UpdateFileReq{FileDetail: fileDetail})

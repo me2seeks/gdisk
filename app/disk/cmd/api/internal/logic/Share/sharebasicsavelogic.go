@@ -45,12 +45,12 @@ func (l *ShareBasicSaveLogic) ShareBasicSave(req *types.ShareBasicSaveRequest, u
 
 	// 资源保存 to user_repository
 	usr := &model.UserRepository{
-		Identity:     uuid.UUID(),
-		Uid:          userIdentity,
-		Pid:          req.ParentId,
-		RepositoryId: req.RepositoryIdentity,
-		Ext:          rp.Ext,
-		Name:         rp.Name,
+		Identity:           uuid.UUID(),
+		Uid:                userIdentity,
+		ParentId:           req.ParentId,
+		RepositoryIdentity: req.RepositoryIdentity,
+		Ext:                rp.Ext,
+		Name:               rp.Name,
 	}
 
 	err = l.svcCtx.Engine.

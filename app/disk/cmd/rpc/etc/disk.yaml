@@ -2,10 +2,10 @@ Name: disk-rpc
 ListenOn: 127.0.0.1:2006
 Mode: dev
 
-#Etcd:
-#  Hosts:
-#    - 43.143.125.75:2379
-#  Key: disk.rpc
+Etcd:
+  Hosts:
+    - 43.143.125.75:2379
+  Key: disk.rpc
 
 #jwtAuth
 JwtAuth:

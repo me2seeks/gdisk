@@ -103,12 +103,18 @@ type ShareBasicDetailRequest struct {
 }
 
 type ShareBasicDetailReply struct {
+	Identity           string `json:"identity"`
 	RepositoryIdentity string `json:"repository_identity"`
 	Name               string `json:"name"`
+	Owner              string `json:"owner"`
+	Avatar             string `json:"avatar"`
 	Ext                string `json:"ext"`
 	Size               int64  `json:"size"`
 	Path               string `json:"path"`
 	ClickNum           int    `json:"click_num"`
+	ExpiredTime        int    `json:"expired_time"`
+	Desc               string `json:"desc"`
+	UpdatedAt          string `json:"updated_at"`
 }
 
 type ShareBasicCreateRequest struct {
@@ -191,8 +197,8 @@ type PublicFile struct {
 
 type UserFile struct {
 	Id                 int64  `json:"id"`
-	ParentId           int64  `json:"parent_id"`
 	Identity           string `json:"identity"`
+	ParentId           int64  `json:"parent_id"`
 	RepositoryIdentity string `json:"repository_identity"`
 	Name               string `json:"name"`
 	Size               int64  `json:"size"`
@@ -245,4 +251,27 @@ type FileUploadReply struct {
 	Identity string `json:"identity"`
 	Ext      string `json:"ext"`
 	Name     string `json:"name"`
+}
+
+type UserShareListRequest struct {
+}
+
+type UserShareListReply struct {
+	List []*ShareBasicDetailReply `json:"list"`
+}
+
+type PopularShareListRequest struct {
+	ClickNum int `json:"click_num,optional"`
+}
+
+type PopularShareListReply struct {
+	List []*ShareBasicDetailReply `json:"list"`
+}
+
+type ShareStatisticsRequest struct {
+}
+
+type ShareStatisticsReply struct {
+	ShareCount int `json:"share_count"`
+	ClickNum   int `json:"click_num"`
 }

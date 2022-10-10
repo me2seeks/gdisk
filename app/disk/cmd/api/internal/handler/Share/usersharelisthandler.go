@@ -1,26 +1,25 @@
-package File
+package Share
 
 import (
-	"github.com/zeromicro/go-zero/rest/httpx"
+	"cloud-disk/common/result"
 	"net/http"
 
-	"cloud-disk/common/result"
-
-	"cloud-disk/app/disk/cmd/api/internal/logic/File"
+	"cloud-disk/app/disk/cmd/api/internal/logic/Share"
 	"cloud-disk/app/disk/cmd/api/internal/svc"
 	"cloud-disk/app/disk/cmd/api/internal/types"
+	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-func FileDownloadHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func UserShareListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.FileDownloadRequest
+		var req types.UserShareListRequest
 		if err := httpx.Parse(r, &req); err != nil {
 			result.ParamErrorResult(r, w, err)
 			return
 		}
 
-		l := File.NewFileDownloadLogic(r.Context(), svcCtx)
-		resp, err := l.FileDownload(&req)
+		l := Share.NewUserShareListLogic(r.Context(), svcCtx)
+		resp, err := l.UserShareList(&req)
 		result.HttpResult(r, w, resp, err)
 	}
 }

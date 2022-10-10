@@ -31,12 +31,12 @@ func NewUserRepositorySaveLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 func (l *UserRepositorySaveLogic) UserRepositorySave(req *types.UserRepositorySaveRequest, UserIdentity string) (resp *types.UserRepositorySaveReply, err error) {
 	// 用户新增文件
 	usr := &model.UserRepository{
-		Identity:     uuid.UUID(),
-		Uid:          UserIdentity,
-		Pid:          req.ParentId,
-		RepositoryId: req.RepositoryIdentity,
-		Name:         req.Name,
-		Ext:          req.Ext,
+		Identity:           uuid.UUID(),
+		Uid:                UserIdentity,
+		ParentId:           req.ParentId,
+		RepositoryIdentity: req.RepositoryIdentity,
+		Name:               req.Name,
+		Ext:                req.Ext,
 	}
 
 	resp = new(types.UserRepositorySaveReply)
