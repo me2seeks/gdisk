@@ -48,6 +48,7 @@ func (l *RegisterLogic) Register(in *pb.RegisterReq) (*pb.RegisterResp, error) {
 		u.Email = in.Email
 		u.Name = in.Nickname
 		u.Identity = identity
+
 		if len(u.Name) == 0 {
 			u.Name = tool.Krand(8, tool.KC_RAND_KIND_ALL)
 		}

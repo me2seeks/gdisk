@@ -26,10 +26,8 @@ func NewDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DetailLogi
 	}
 }
 
-func (l *DetailLogic) Detail(req *types.UserInfoReq) (resp *types.UserInfoResp, err error) {
+func (l *DetailLogic) Detail(req *types.UserInfoReq) (*types.UserInfoResp, error) {
 	identity := ctxdata.GetUidFromCtx(l.ctx)
-
-	print(identity)
 
 	userInfoResp, err := l.svcCtx.UserRpc.GetUserInfo(l.ctx, &user.GetUserInfoReq{
 		Identity: identity,

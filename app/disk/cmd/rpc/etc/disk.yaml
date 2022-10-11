@@ -4,7 +4,7 @@ Mode: dev
 
 Etcd:
   Hosts:
-    - 43.143.125.75:2379
+    - 127.0.0.1:2379
   Key: disk.rpc
 
 #jwtAuth

@@ -1,6 +1,6 @@
 Name: user-api
 Host: 0.0.0.0
-Port: 1001
+Port: 3001
 Mode: dev
 
 
@@ -41,6 +41,6 @@ Redis:
 UserRpcConf:
   Etcd:
     Hosts:
-      - 43.143.125.75:2379
+      - 127.0.0.1:2379
     Key: user.rpc
 

@@ -4,7 +4,7 @@ Mode: dev
 
 Etcd:
   Hosts:
-    - etcd:2379
+    - 127.0.0.1:2379
   Key: verification.rpc
 
 #jwtAuth
@@ -30,7 +30,7 @@ Log:
   Level: error
 
 Redis:
-  Host: redis:6379
+  Host: 43.143.125.75:6379
   Key: rpc:verification
   Type: node
   Pass: "000000"

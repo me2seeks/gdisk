@@ -9,16 +9,19 @@ info(
 )
 
 type User {
-    Id int64 `json:"id"`
+    Identity int64 `json:"identity"`
     Email string `json:"email"`
-    Nickname string `json:"nickname"`
+    Name string `json:"name"`
     Sex string `json:"sex"`
     Avatar string `json:"avatar"`
     Info string `json:"info"`
+    Capacity int `json:"capacity"`
+    CreateAt   string `json:"create_at"`
 }
 
 type (
     RegisterReq {
+        Name string `json:"name""`
         Email   string `json:"email"`
         Password string `json:"password"`
         Captcha string `json:"captcha"`

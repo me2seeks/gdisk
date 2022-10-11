@@ -1,6 +1,6 @@
 Name: disk-api
 Host: 0.0.0.0
-Port: 1006
+Port: 2003
 Mode: dev
 
 #jwtAuth
@@ -44,7 +44,7 @@ Cache:
 DiskRpcConf:
   Etcd:
     Hosts:
-      - 43.143.125.75:2379
+      - 127.0.0.1:2379
     Key: disk.rpc
 
 

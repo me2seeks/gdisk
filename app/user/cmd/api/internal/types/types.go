@@ -2,15 +2,18 @@
 package types
 
 type User struct {
-	Id       int64  `json:"id"`
-	Phone    int64  `json:"phone"`
-	Nickname string `json:"nickname"`
+	Identity int64  `json:"identity"`
+	Email    string `json:"email"`
+	Name     string `json:"name"`
 	Sex      string `json:"sex"`
 	Avatar   string `json:"avatar"`
 	Info     string `json:"info"`
+	Capacity int    `json:"capacity"`
+	CreateAt string `json:"create_at"`
 }
 
 type RegisterReq struct {
+	Name     string `json:"name""`
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	Captcha  string `json:"captcha"`
