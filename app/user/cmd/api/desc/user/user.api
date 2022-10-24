@@ -27,9 +27,11 @@ type (
         Captcha string `json:"captcha"`
     }
     RegisterResp {
-        AccessToken  string `json:"accessToken"`
-        AccessExpire int64  `json:"accessExpire"`
-        RefreshAfter int64  `json:"refreshAfter"`
+//        AccessToken  string `json:"accessToken"`
+//        AccessExpire int64  `json:"accessExpire"`
+//        RefreshAfter int64  `json:"refreshAfter"`
+        Token        string `json:"token"`
+        RefreshToken string `json:"refresh_token"`
     }
 )
 
@@ -39,9 +41,11 @@ type (
         Password string `json:"password"`
     }
     LoginResp {
-        AccessToken string `json:"accessToken"`
-        AccessExpire int64 `json:"AccessExpire"`
-        RefreshAfter int64 `json:"RefreshAfter"`
+//        AccessToken string `json:"accessToken"`
+//        AccessExpire int64 `json:"AccessExpire"`
+//        RefreshAfter int64 `json:"RefreshAfter"`
+        Token        string `json:"token"`
+        RefreshToken string `json:"refresh_token"`
     }
 )
 
@@ -52,9 +56,11 @@ type (
         EncryptedData string `json:"encryptedData"`
     }
     WXMiniAuthResp {
-        AccessToken  string `json:"accessToken"`
-        AccessExpire int64  `json:"accessExpire"`
-        RefreshAfter int64  `json:"refreshAfter"`
+//        AccessToken  string `json:"accessToken"`
+//        AccessExpire int64  `json:"accessExpire"`
+//        RefreshAfter int64  `json:"refreshAfter"`
+        Token        string `json:"token"`
+        RefreshToken string `json:"refresh_token"`
     }
 )
 

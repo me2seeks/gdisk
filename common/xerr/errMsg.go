@@ -12,6 +12,8 @@ func init() {
 	message[DB_ERROR] = "数据库繁忙,请稍后再试"
 	message[DB_UPDATE_AFFECTED_ZERO_ERROR] = "更新数据影响行数为0"
 	message[VERIFY_ERROR] = "验证错误"
+	message[ErrUserPwdError] = "用户名或密码错误"
+	message[ErrUserAlreadyRegisterError] = "用户已存在"
 }
 
 func MapErrMsg(errcode uint32) string {

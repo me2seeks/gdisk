@@ -2,13 +2,13 @@
 package types
 
 type User struct {
-	Identity int64  `json:"identity"`
+	Identity string  `json:"identity"`
 	Email    string `json:"email"`
 	Name     string `json:"name"`
-	Sex      string `json:"sex"`
+	Sex      int64 `json:"sex"`
 	Avatar   string `json:"avatar"`
 	Info     string `json:"info"`
-	Capacity int    `json:"capacity"`
+	Capacity int64    `json:"capacity"`
 	CreateAt string `json:"create_at"`
 }
 
@@ -20,9 +20,8 @@ type RegisterReq struct {
 }
 
 type RegisterResp struct {
-	AccessToken  string `json:"accessToken"`
-	AccessExpire int64  `json:"accessExpire"`
-	RefreshAfter int64  `json:"refreshAfter"`
+	Token        string `json:"token"`
+	RefreshToken string `json:"refresh_token"`
 }
 
 type LoginReq struct {
@@ -31,9 +30,8 @@ type LoginReq struct {
 }
 
 type LoginResp struct {
-	AccessToken  string `json:"accessToken"`
-	AccessExpire int64  `json:"AccessExpire"`
-	RefreshAfter int64  `json:"RefreshAfter"`
+	Token        string `json:"token"`
+	RefreshToken string `json:"refresh_token"`
 }
 
 type WXMiniAuthReq struct {
@@ -43,9 +41,8 @@ type WXMiniAuthReq struct {
 }
 
 type WXMiniAuthResp struct {
-	AccessToken  string `json:"accessToken"`
-	AccessExpire int64  `json:"accessExpire"`
-	RefreshAfter int64  `json:"refreshAfter"`
+	Token        string `json:"token"`
+	RefreshToken string `json:"refresh_token"`
 }
 
 type UserInfoReq struct {

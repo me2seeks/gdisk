@@ -1,10 +1,11 @@
 Name: verification.rpc
 ListenOn: 0.0.0.0:2002
 Mode: dev
+Timeout: 3000
 
 Etcd:
   Hosts:
-    - 127.0.0.1:2379
+    - etcd:2379
   Key: verification.rpc
 
 #jwtAuth
@@ -30,7 +31,7 @@ Log:
   Level: error
 
 Redis:
-  Host: 43.143.125.75:6379
+  Host: redis:6379
   Key: rpc:verification
   Type: node
   Pass: "000000"

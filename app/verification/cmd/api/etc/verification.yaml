@@ -1,7 +1,7 @@
 Name: verification
 Host: 0.0.0.0
 Port: 3002
-
+Timeout: 4000
 
 #jwtAuth
 JwtAuth:
@@ -28,5 +28,5 @@ Log:
 VerificationRpc:
   Etcd:
     Hosts:
-      - 127.0.0.1:2379
+      - etcd:2379
     Key: verification.rpc

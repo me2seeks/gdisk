@@ -22,11 +22,7 @@ func NewUserServer(svcCtx *svc.ServiceContext) *UserServer {
 	}
 }
 
-func (s *UserServer) Login(ctx context.Context, in *pb.LoginReq) (*pb.LoginResp, error) {
-	l := logic.NewLoginLogic(ctx, s.svcCtx)
-	return l.Login(in)
-}
-
+// rpc login(LoginReq) returns(LoginResp);
 func (s *UserServer) Register(ctx context.Context, in *pb.RegisterReq) (*pb.RegisterResp, error) {
 	l := logic.NewRegisterLogic(ctx, s.svcCtx)
 	return l.Register(in)

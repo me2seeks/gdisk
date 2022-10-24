@@ -12,9 +12,9 @@ const (
 	KC_RAND_KIND_ALL   = 3 // 数字、大小写字母
 )
 
-//随机字符串
+// 随机字符串
 func Krand(size int, kind int) string {
-	ikind, kinds, result := kind, [][]int{[]int{10, 48}, []int{26, 97}, []int{26, 65}}, make([]byte, size)
+	ikind, kinds, result := kind, [][]int{{10, 48}, {26, 97}, {26, 65}}, make([]byte, size)
 	is_all := kind > 2 || kind < 0
 	rand.Seed(time.Now().UnixNano())
 	for i := 0; i < size; i++ {

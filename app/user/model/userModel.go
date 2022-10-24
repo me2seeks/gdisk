@@ -48,7 +48,7 @@ func NewUserModel(conn sqlx.SqlConn, c cache.CacheConf) UserModel {
 
 func (m *defaultUserModel) DeleteSoft(ctx context.Context, session sqlx.Session, data *User) error {
 	data.DelState = globalkey.DelStateYes
-	data.DeleteTime = time.Now()
+	data.DeleteAt = time.Now()
 	if err := m.UpdateWithVersion(ctx, session, data); err != nil {
 		return errors.Wrapf(xerr.NewErrMsg("删除数据失败"), "UserModel delete err : %+v", err)
 	}
@@ -178,7 +178,7 @@ func (m *defaultUserModel) FindPageListByIdDESC(ctx context.Context, rowBuilder 
 	}
 }
 
-//按照id升序分页查询数据，不支持排序
+// 按照id升序分页查询数据，不支持排序
 func (m *defaultUserModel) FindPageListByIdASC(ctx context.Context, rowBuilder squirrel.SelectBuilder, preMaxId, pageSize int64) ([]*User, error) {
 
 	if preMaxId > 0 {

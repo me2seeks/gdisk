@@ -20,9 +20,6 @@ type GenerateTokenLogic struct {
 	logx.Logger
 }
 
-var ErrGenerateTokenError = xerr.NewErrMsg("生成token失败")
-var ErrUsernamePwdError = xerr.NewErrMsg("账号或密码不正确")
-
 func NewGenerateTokenLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GenerateTokenLogic {
 	return &GenerateTokenLogic{
 		ctx:    ctx,
@@ -36,13 +33,13 @@ func (l *GenerateTokenLogic) GenerateToken(in *pb.GenerateTokenReq) (*pb.Generat
 	accessExpire := l.svcCtx.Config.JwtAuth.AccessExpire
 	accessToken, err := l.getJwtToken(l.svcCtx.Config.JwtAuth.AccessSecret, now, accessExpire, in.Identity)
 	if err != nil {
-		return nil, errors.Wrapf(ErrGenerateTokenError, "getJwtToken err userId:%d , err:%v", in.Identity, err)
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.TOKEN_GENERATE_ERROR), "getJwtToken err userId:%d , err:%v", in.Identity, err)
 	}
+	refreshToken, err := l.getJwtToken(l.svcCtx.Config.JwtAuth.AccessSecret, now, accessExpire+31536000, in.Identity)
 
 	return &pb.GenerateTokenResp{
-		AccessToken:  accessToken,
-		AccessExpire: now + accessExpire,
-		RefreshAfter: now + accessExpire/2,
+		Token:        accessToken,
+		RefreshToken: refreshToken,
 	}, nil
 }
 

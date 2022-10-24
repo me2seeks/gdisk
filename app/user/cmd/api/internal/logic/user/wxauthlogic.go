@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 
-	wechat "github.com/silenceper/wechat/v2"
+	"github.com/silenceper/wechat/v2"
 	"github.com/silenceper/wechat/v2/cache"
 	miniConfig "github.com/silenceper/wechat/v2/miniprogram/config"
 	"github.com/zeromicro/go-zero/core/logx"
@@ -77,9 +77,8 @@ func (l *WxAuthLogic) WxAuth(req *types.WXMiniAuthReq) (*types.WXMiniAuthResp, e
 		}
 
 		return &types.WXMiniAuthResp{
-			AccessToken:  registerRsp.AccessToken,
-			AccessExpire: registerRsp.AccessExpire,
-			RefreshAfter: registerRsp.RefreshAfter,
+			Token:        registerRsp.Token,
+			RefreshToken: registerRsp.RefreshToken,
 		}, nil
 
 	} else {
@@ -91,9 +90,8 @@ func (l *WxAuthLogic) WxAuth(req *types.WXMiniAuthReq) (*types.WXMiniAuthResp, e
 			return nil, errors.Wrapf(ErrWxMiniAuthFailError, "userRpc.GenerateToken err :%v, Identity : %d", err, identity)
 		}
 		return &types.WXMiniAuthResp{
-			AccessToken:  tokenResp.AccessToken,
-			AccessExpire: tokenResp.AccessExpire,
-			RefreshAfter: tokenResp.RefreshAfter,
+			Token:        tokenResp.Token,
+			RefreshToken: tokenResp.RefreshToken,
 		}, nil
 	}
 }

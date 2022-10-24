@@ -46,19 +46,19 @@ type (
 	}
 
 	User struct {
-		Id         int64     `db:"id"`
-		Identity   string    `db:"identity"`
-		Email      string    `db:"email"`
-		Password   string    `db:"password"`
-		Name       string    `db:"name"`
-		Sex        int64     `db:"sex"` // 性别 0:男 1:女
-		Avatar     string    `db:"avatar"`
-		Info       string    `db:"info"`
-		DeleteTime time.Time `db:"delete_time"`
-		DelState   int64     `db:"del_state"`
-		CreateTime time.Time `db:"create_time"`
-		UpdateTime time.Time `db:"update_time"`
-		Version    int64     `db:"version"` // 版本号
+		Id       int64     `db:"id"`
+		Identity string    `db:"identity"`
+		Email    string    `db:"email"`
+		Password string    `db:"password"`
+		Name     string    `db:"name"`
+		Sex      int64     `db:"sex"` // 性别 0:男 1:女
+		Avatar   string    `db:"avatar"`
+		Info     string    `db:"info"`
+		DeleteAt time.Time `db:"delete_at"`
+		DelState int64     `db:"del_state"`
+		CreateAt time.Time `db:"create_at"`
+		UpdateAt time.Time `db:"update_at"`
+		Version  int64     `db:"version"` // 版本号
 	}
 )
 
@@ -70,15 +70,15 @@ func newUserModel(conn sqlx.SqlConn, c cache.CacheConf) *defaultUserModel {
 }
 
 func (m *defaultUserModel) Insert(ctx context.Context, session sqlx.Session, data *User) (sql.Result, error) {
-	data.DeleteTime = time.Unix(0, 0)
+	data.DeleteAt = time.Unix(0, 0)
 	cloudDiskUserEmailKey := fmt.Sprintf("%s%v", cacheCloudDiskUserEmailPrefix, data.Email)
 	cloudDiskUserIdKey := fmt.Sprintf("%s%v", cacheCloudDiskUserIdPrefix, data.Id)
 	return m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version)
+			return session.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteAt, data.DelState, data.Version)
 		}
-		return conn.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version)
+		return conn.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteAt, data.DelState, data.Version)
 	}, cloudDiskUserEmailKey, cloudDiskUserIdKey)
 }
 
@@ -145,9 +145,9 @@ func (m *defaultUserModel) Update(ctx context.Context, session sqlx.Session, dat
 	return m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userRowsWithPlaceHolder)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version, data.Id)
+			return session.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteAt, data.DelState, data.Version, data.Id)
 		}
-		return conn.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version, data.Id)
+		return conn.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteAt, data.DelState, data.Version, data.Id)
 	}, cloudDiskUserEmailKey, cloudDiskUserIdKey)
 }
 
@@ -164,9 +164,9 @@ func (m *defaultUserModel) UpdateWithVersion(ctx context.Context, session sqlx.S
 	sqlResult, err = m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ? and version = ? ", m.table, userRowsWithPlaceHolder)
 		if session != nil {
-			return session.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version, data.Id, oldVersion)
+			return session.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteAt, data.DelState, data.Version, data.Id, oldVersion)
 		}
-		return conn.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteTime, data.DelState, data.Version, data.Id, oldVersion)
+		return conn.ExecCtx(ctx, query, data.Identity, data.Email, data.Password, data.Name, data.Sex, data.Avatar, data.Info, data.DeleteAt, data.DelState, data.Version, data.Id, oldVersion)
 	}, cloudDiskUserEmailKey, cloudDiskUserIdKey)
 	if err != nil {
 		return err

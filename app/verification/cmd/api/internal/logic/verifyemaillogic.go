@@ -29,9 +29,10 @@ func (l *VerifyemailLogic) Verifyemail(req *types.VerifyEmailReq) (resp *types.V
 	_, err = l.svcCtx.VerificationRpc.VerifyEmail(l.ctx, &verification.VerifyEmailReq{
 		Email: req.Email,
 	})
+
 	if err != nil {
 		return nil, errors.Wrapf(err, "req: %+v", req)
 	}
 
-	return nil, nil
+	return resp, nil
 }

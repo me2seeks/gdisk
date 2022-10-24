@@ -16,8 +16,6 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-var ErrUserAlreadyRegisterError = xerr.NewErrMsg("user has been registered")
-
 type RegisterLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
@@ -33,12 +31,12 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 }
 
 func (l *RegisterLogic) Register(in *pb.RegisterReq) (*pb.RegisterResp, error) {
-	userInfo, err := l.svcCtx.UserModel.FindOneByEmail(l.ctx, in.Email)
+	_, err := l.svcCtx.UserModel.FindOneByEmail(l.ctx, in.Email)
 	if err != nil && err != model.ErrNotFound {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR: RPC[user] UserModel.FindOneByPhone verify:%s,err:%v", in.Email, err)
 	}
-	if userInfo != nil {
-		return nil, errors.Wrapf(ErrUserAlreadyRegisterError, "ERROR: RPC[user]  用户已存在 :%s,err:%v", in.Email, err)
+	if err != model.ErrNotFound {
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.ErrUserAlreadyRegisterError), "ERROR: RPC[user]  用户已存在 :%s,err:%v", in.Email, err)
 	}
 
 	var identity string
@@ -83,12 +81,11 @@ func (l *RegisterLogic) Register(in *pb.RegisterReq) (*pb.RegisterResp, error) {
 		Identity: identity,
 	})
 	if err != nil {
-		return nil, errors.Wrapf(ErrGenerateTokenError, "ERROR: RPC[user] 获取token错误: %d", identity)
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.TOKEN_GENERATE_ERROR), "ERROR: RPC[user] 获取token错误: %d", identity)
 	}
 
 	return &pb.RegisterResp{
-		AccessToken:  tokenResp.AccessToken,
-		AccessExpire: tokenResp.AccessExpire,
-		RefreshAfter: tokenResp.RefreshAfter,
+		Token:        tokenResp.Token,
+		RefreshToken: tokenResp.RefreshToken,
 	}, nil
 }

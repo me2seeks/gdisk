@@ -41,8 +41,11 @@ func (l *VerifyemailLogic) VerifyEmail(in *pb.VerifyEmailReq) (*pb.VerifyEmailRe
 
 	//发邮件  之后将邮箱和授权码放外面
 	err = verify.SendMail("chinaskillproject@163.com", in.Email, "验证码", "验证码:"+value, "JUBMSUDZGUVSHKYF")
-	if err != nil {
-		return nil, err
-	}
+
+	// slowcall 时会报RPC超时
+	//if err != nil {
+	//	return nil, err
+	//}
+
 	return &pb.VerifyEmailResp{}, nil
 }

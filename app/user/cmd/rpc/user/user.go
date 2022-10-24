@@ -21,15 +21,13 @@ type (
 	GetUserAuthByIdentityResp = pb.GetUserAuthByIdentityResp
 	GetUserInfoReq            = pb.GetUserInfoReq
 	GetUserInfoResp           = pb.GetUserInfoResp
-	LoginReq                  = pb.LoginReq
-	LoginResp                 = pb.LoginResp
 	RegisterReq               = pb.RegisterReq
 	RegisterResp              = pb.RegisterResp
 	UserAuth                  = pb.UserAuth
 	UserDetail                = pb.UserDetail
 
 	User interface {
-		Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error)
+		//   rpc login(LoginReq) returns(LoginResp);
 		Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterResp, error)
 		GetUserInfo(ctx context.Context, in *GetUserInfoReq, opts ...grpc.CallOption) (*GetUserInfoResp, error)
 		GetUserAuthByAuthKey(ctx context.Context, in *GetUserAuthByAuthKeyReq, opts ...grpc.CallOption) (*GetUserAuthByAuthKeyResp, error)
@@ -48,11 +46,7 @@ func NewUser(cli zrpc.Client) User {
 	}
 }
 
-func (m *defaultUser) Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error) {
-	client := pb.NewUserClient(m.cli.Conn())
-	return client.Login(ctx, in, opts...)
-}
-
+// rpc login(LoginReq) returns(LoginResp);
 func (m *defaultUser) Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterResp, error) {
 	client := pb.NewUserClient(m.cli.Conn())
 	return client.Register(ctx, in, opts...)
