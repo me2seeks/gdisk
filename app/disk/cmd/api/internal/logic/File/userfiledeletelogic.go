@@ -2,6 +2,7 @@ package File
 
 import (
 	"cloud-disk/app/disk/cmd/rpc/pb"
+	"cloud-disk/common/ctxdata"
 	"cloud-disk/common/globalkey"
 	"context"
 
@@ -25,7 +26,9 @@ func NewUserFileDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Us
 	}
 }
 
-func (l *UserFileDeleteLogic) UserFileDelete(req *types.UserFileDeleteRequest, userIdentity string) (resp *types.UserFileDeleteReply, err error) {
+func (l *UserFileDeleteLogic) UserFileDelete(req *types.UserFileDeleteRequest) (resp *types.UserFileDeleteReply, err error) {
+	userIdentity := ctxdata.GetUidFromCtx(l.ctx)
+
 	var fileDetail *pb.FileDetail
 	fileDetail.Identity = req.Identity
 	fileDetail.DelState = globalkey.DelStateYes

@@ -3,6 +3,7 @@ package File
 import (
 	"cloud-disk/app/define"
 	"cloud-disk/app/disk/model"
+	"cloud-disk/common/ctxdata"
 	"cloud-disk/common/uuid"
 	"cloud-disk/common/xerr"
 	"context"
@@ -28,11 +29,13 @@ func NewUserRepositorySaveLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 	}
 }
 
-func (l *UserRepositorySaveLogic) UserRepositorySave(req *types.UserRepositorySaveRequest, UserIdentity string) (resp *types.UserRepositorySaveReply, err error) {
+func (l *UserRepositorySaveLogic) UserRepositorySave(req *types.UserRepositorySaveRequest) (resp *types.UserRepositorySaveReply, err error) {
+	userIdentity := ctxdata.GetUidFromCtx(l.ctx)
+
 	// 用户新增文件
 	usr := &model.UserRepository{
 		Identity:           uuid.UUID(),
-		Uid:                UserIdentity,
+		Uid:                userIdentity,
 		ParentId:           req.ParentId,
 		RepositoryIdentity: req.RepositoryIdentity,
 		Name:               req.Name,
@@ -46,7 +49,7 @@ func (l *UserRepositorySaveLogic) UserRepositorySave(req *types.UserRepositorySa
 	l.svcCtx.Engine.
 		Table("user_repository").
 		Select("sum(repository_pool.size) as total_size").
-		Where("user_repository.uid = ? AND user_repository.deleted_at IS NULL", UserIdentity).
+		Where("user_repository.uid = ? AND user_repository.deleted_at IS NULL", userIdentity).
 		Joins("left join repository_pool on user_repository.repository_identity = repository_pool.identity").
 		Take(&Size)
 	if Size.TotalSize >= define.UserRepositoryMaxSize {
@@ -57,7 +60,7 @@ func (l *UserRepositorySaveLogic) UserRepositorySave(req *types.UserRepositorySa
 	var count int64
 	err = l.svcCtx.Engine.
 		Table("user_repository").
-		Where("name = ? AND pid = ? AND uid = ? AND deleted_at IS NULL", req.Name, req.ParentId, UserIdentity).
+		Where("name = ? AND pid = ? AND uid = ? AND deleted_at IS NULL", req.Name, req.ParentId, userIdentity).
 		Count(&count).Error
 	if count > 0 {
 		return nil, errors.New("exist")

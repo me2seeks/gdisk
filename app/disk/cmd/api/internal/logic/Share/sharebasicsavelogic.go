@@ -2,6 +2,7 @@ package Share
 
 import (
 	"cloud-disk/app/disk/model"
+	"cloud-disk/common/ctxdata"
 	"cloud-disk/common/uuid"
 	"context"
 
@@ -25,7 +26,9 @@ func NewShareBasicSaveLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Sh
 	}
 }
 
-func (l *ShareBasicSaveLogic) ShareBasicSave(req *types.ShareBasicSaveRequest, userIdentity string) (resp *types.ShareBasicSaveReply, err error) {
+func (l *ShareBasicSaveLogic) ShareBasicSave(req *types.ShareBasicSaveRequest) (resp *types.ShareBasicSaveReply, err error) {
+	userIdentity := ctxdata.GetUidFromCtx(l.ctx)
+
 	// logic：其他用户保存分享文件
 	resp = new(types.ShareBasicSaveReply)
 	// 获取资源详情 from repository_pool

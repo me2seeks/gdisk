@@ -20,7 +20,7 @@ func UserFileNameUpdateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := File.NewUserFileNameUpdateLogic(r.Context(), svcCtx)
-		resp, err := l.UserFileNameUpdate(&req, r.Header.Get("UserIdentity"))
+		resp, err := l.UserFileNameUpdate(&req)
 		result.HttpResult(r, w, resp, err)
 	}
 }

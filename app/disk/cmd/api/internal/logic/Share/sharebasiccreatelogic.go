@@ -2,6 +2,7 @@ package Share
 
 import (
 	"cloud-disk/app/disk/model"
+	"cloud-disk/common/ctxdata"
 	"cloud-disk/common/uuid"
 	"cloud-disk/common/xerr"
 	"context"
@@ -27,7 +28,9 @@ func NewShareBasicCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-func (l *ShareBasicCreateLogic) ShareBasicCreate(req *types.ShareBasicCreateRequest, userIdentity string) (resp *types.ShareBasicCreateReply, err error) {
+func (l *ShareBasicCreateLogic) ShareBasicCreate(req *types.ShareBasicCreateRequest) (resp *types.ShareBasicCreateReply, err error) {
+	userIdentity := ctxdata.GetUidFromCtx(l.ctx)
+
 	resp = new(types.ShareBasicCreateReply)
 	idna := uuid.UUID()
 	usr := new(model.UserRepository)

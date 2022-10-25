@@ -4,6 +4,7 @@ import (
 	"cloud-disk/app/disk/cmd/api/internal/svc"
 	"cloud-disk/app/disk/cmd/api/internal/types"
 	"cloud-disk/app/disk/cmd/rpc/pb"
+	"cloud-disk/common/ctxdata"
 	"context"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -23,7 +24,9 @@ func NewUserFileNameUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 	}
 }
 
-func (l *UserFileNameUpdateLogic) UserFileNameUpdate(req *types.UserFileNameUpdateRequest, userIdentity string) (resp *types.UserFileNameUpdateReply, err error) {
+func (l *UserFileNameUpdateLogic) UserFileNameUpdate(req *types.UserFileNameUpdateRequest) (resp *types.UserFileNameUpdateReply, err error) {
+	userIdentity := ctxdata.GetUidFromCtx(l.ctx)
+
 	var fileDetail *pb.FileDetail
 	fileDetail.Identity = req.Identity
 	fileDetail.ParentId = req.Name

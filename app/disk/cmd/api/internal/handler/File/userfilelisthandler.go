@@ -20,7 +20,7 @@ func UserFileListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := File.NewUserFileListLogic(r.Context(), svcCtx)
-		resp, err := l.UserFileList(&req, r.Header.Get("UserIdentity"))
+		resp, err := l.UserFileList(&req)
 		result.HttpResult(r, w, resp, err)
 	}
 }

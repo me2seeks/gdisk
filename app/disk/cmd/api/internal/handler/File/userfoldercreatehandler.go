@@ -20,7 +20,7 @@ func UserFolderCreateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := File.NewUserFolderCreateLogic(r.Context(), svcCtx)
-		resp, err := l.UserFolderCreate(&req, r.Header.Get("UserIdentity"))
+		resp, err := l.UserFolderCreate(&req)
 		result.HttpResult(r, w, resp, err)
 	}
 }

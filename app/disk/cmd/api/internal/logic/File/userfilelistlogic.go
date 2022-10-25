@@ -5,6 +5,7 @@ import (
 	"cloud-disk/app/disk/cmd/api/internal/svc"
 	"cloud-disk/app/disk/cmd/api/internal/types"
 	"cloud-disk/app/disk/cmd/rpc/pb"
+	"cloud-disk/common/ctxdata"
 	"context"
 	"github.com/jinzhu/copier"
 
@@ -25,7 +26,9 @@ func NewUserFileListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *User
 	}
 }
 
-func (l *UserFileListLogic) UserFileList(req *types.UserFileListRequest, userIdentity string) (resp *types.UserFileListReply, err error) {
+func (l *UserFileListLogic) UserFileList(req *types.UserFileListRequest) (resp *types.UserFileListReply, err error) {
+	userIdentity := ctxdata.GetUidFromCtx(l.ctx)
+
 	usrFile := make([]*types.UserFile, 0)
 	deletedFile := make([]*types.DeletedUserFile, 0)
 	var cnt int64
@@ -54,7 +57,7 @@ func (l *UserFileListLogic) UserFileList(req *types.UserFileListRequest, userIde
 		return nil, err
 	}
 	_ = copier.Copy(&usrFile, file)
-	
+
 	err = l.svcCtx.Engine.
 		Table("user_repository").
 		Select("user_repository.id, user_repository.pid, user_repository.identity, "+

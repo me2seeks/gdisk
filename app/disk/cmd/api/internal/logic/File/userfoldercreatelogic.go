@@ -2,6 +2,7 @@ package File
 
 import (
 	"cloud-disk/app/disk/model"
+	"cloud-disk/common/ctxdata"
 	"cloud-disk/common/uuid"
 	"cloud-disk/common/xerr"
 	"context"
@@ -27,7 +28,9 @@ func NewUserFolderCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-func (l *UserFolderCreateLogic) UserFolderCreate(req *types.UserFolderCreateRequest, userIdentity string) (resp *types.UserFolderCreateReply, err error) {
+func (l *UserFolderCreateLogic) UserFolderCreate(req *types.UserFolderCreateRequest) (resp *types.UserFolderCreateReply, err error) {
+	userIdentity := ctxdata.GetUidFromCtx(l.ctx)
+
 	if req.Name == "" {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.REUQEST_PARAM_ERROR), "name is empty")
 	}
@@ -52,7 +55,7 @@ func (l *UserFolderCreateLogic) UserFolderCreate(req *types.UserFolderCreateRequ
 	data := &model.UserRepository{
 		Identity: resp.Identity,
 		Uid:      userIdentity,
-		ParentId:      req.ParentId,
+		ParentId: req.ParentId,
 		Name:     req.Name,
 	}
 	err = l.svcCtx.Engine.

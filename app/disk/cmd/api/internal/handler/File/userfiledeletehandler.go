@@ -20,7 +20,7 @@ func UserFileDeleteHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := File.NewUserFileDeleteLogic(r.Context(), svcCtx)
-		resp, err := l.UserFileDelete(&req, r.Header.Get("UserIdentity"))
+		resp, err := l.UserFileDelete(&req)
 		result.HttpResult(r, w, resp, err)
 	}
 }
