@@ -11,16 +11,16 @@ import (
 	"cloud-disk/app/disk/cmd/api/internal/types"
 )
 
-func ShareBasicSaveHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func ShareBasicCreateHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.ShareBasicSaveRequest
+		var req types.ShareBasicCreateRequest
 		if err := httpx.Parse(r, &req); err != nil {
 			result.ParamErrorResult(r, w, err)
 			return
 		}
 
-		l := Share.NewShareBasicSaveLogic(r.Context(), svcCtx)
-		resp, err := l.ShareBasicSave(&req, r.Header.Get("UserIdentity"))
+		l := Share.NewShareBasicCreateLogic(r.Context(), svcCtx)
+		resp, err := l.ShareBasicCreate(&req)
 		result.HttpResult(r, w, resp, err)
 	}
 }

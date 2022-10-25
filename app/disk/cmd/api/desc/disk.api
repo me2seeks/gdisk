@@ -15,13 +15,22 @@ service disk{
 	// 获取分享资源详情
 	@handler ShareBasicDetail
 	post /share/basic/detail(ShareBasicDetailRequest) returns (ShareBasicDetailReply)
+	
 	// 获取热门分享列表
 	@handler PopularShareList
-	post /popular/share/list(PopularShareListRequest) returns (PopularShareListReply)
+	post /share/popular/list(PopularShareListRequest) returns (PopularShareListReply)
 	
 	// 分享统计
 	@handler ShareStatistics
 	get /share/statistics(ShareStatisticsRequest) returns (ShareStatisticsReply)
+}
+
+@server (
+	group: File
+)
+service disk{
+	@handler PublicFileList
+	post /file/public/list(PublicFileListRequest) returns (PublicFileListReply)
 }
 
 @server(
@@ -30,16 +39,16 @@ service disk{
 )
 service  disk {
 	// 分享 - 创建分享记录
-	@handler ShareBasicCreate
-	post /share/basic/create(ShareBasicCreateRequest) returns (ShareBasicCreateReply)
+	@handler ShareCreate
+	post /share/create(ShareBasicCreateRequest) returns (ShareBasicCreateReply)
 	
 	// 分享 - 分享资源保存
-	@handler ShareBasicSave
-	post /share/basic/save(ShareBasicSaveRequest) returns (ShareBasicSaveReply)
+	@handler ShareSave
+	post /share/save(ShareBasicSaveRequest) returns (ShareBasicSaveReply)
 	
 	// 分享 - 用户分享资源列表
 	@handler UserShareList
-	get /user/share/list(UserShareListRequest) returns (UserShareListReply)
+	get /share/user/list(UserShareListRequest) returns (UserShareListReply)
 }
 
 @server(
@@ -49,37 +58,49 @@ service  disk {
 )
 service disk {
 	
+//		@handler  PublicFileSave
+//	    post /file/public/save(PublicFileSaveRequest) returns (PublicFileSaveReply)
+//
+//		@handler  PublicFolderCreate
+//		post /file/public/folder/create(PublicFolderCreateRequest) returns (PublicFolderCreateReply)
+//
+//		@handler  PublicFileDelete
+//		delete /file/public(PublicFileDeleteRequest) returns (PublicFileDeleteReply)
+//
+//		@handler  PublicFileRename
+//		post /file/public/rename(PublicFileDeleteRequest) returns (PublicFileDeleteReply)
+	
+	// 用户- 文件关联存储
+	@handler UserRepositorySave
+	post /file/repository/save(UserRepositorySaveRequest) returns (UserRepositorySaveReply)
+	
+	// 用户 - 文件列表
+	@handler UserFileList
+	get /file/list(UserFileListRequest) returns (UserFileListReply)
+	
+	// 用户 - 文件重命名
+	@handler UserFileNameUpdate
+	post /file/rename(UserFileNameUpdateRequest) returns (UserFileNameUpdateReply)
+	
+	// 用户 - 文件夹创建
+	@handler UserFolderCreate
+	post /file/folder/create(UserFolderCreateRequest) returns (UserFolderCreateReply)
+	
+	// 用户 - 文件删除
+	@handler UserFileDelete
+	delete /file(UserFileDeleteRequest) returns (UserFileDeleteReply)
+	
+	// 用户 - 文件移动
+	@handler UserFileMove
+	put /file(UserFileMoveRequest) returns (UserFileMoveReply)
+	
 	// 文件上传
 	@handler FileUpload
 	post /file/upload(FileUploadRequest) returns (FileUploadReply)
 	
-	// 用户- 文件关联存储
-	@handler UserRepositorySave
-	post /user/repository/save(UserRepositorySaveRequest) returns (UserRepositorySaveReply)
-	
-	// 用户 - 文件列表
-	@handler UserFileList
-	get /user/file/list(UserFileListRequest) returns (UserFileListReply)
-	
-	// 用户 - 文件重命名
-	@handler UserFileNameUpdate
-	post /user/file/name/update(UserFileNameUpdateRequest) returns (UserFileNameUpdateReply)
-	
-	// 用户 - 文件夹创建
-	@handler UserFolderCreate
-	post /user/folder/create(UserFolderCreateRequest) returns (UserFolderCreateReply)
-	
-	// 用户 - 文件删除
-	@handler UserFileDelete
-	delete /user/file/delete(UserFileDeleteRequest) returns (UserFileDeleteReply)
-	
-	// 用户 - 文件移动
-	@handler UserFileMove
-	put /user/file/move(UserFileMoveRequest) returns (UserFileMoveReply)
-	
-	// 用户 - 文件下载
-	@handler FileDownload
-	post /file/download(FileDownloadRequest) returns (FileDownloadReply)
+	//	// 文件下载  //感觉没有
+	//	@handler FileDownload
+	//	post /file/download(FileDownloadRequest) returns (FileDownloadReply)
 	
 	// 文件上传前基本信息处理
 	@handler FileUploadPrepare
@@ -259,9 +280,7 @@ type UserFileListReply {
 }
 
 type PublicFileListRequest {
-	Id   int64 `json:"id,optional"`
-	Page int   `json:"page,optional"`
-	Size int   `json:"size,optional"`
+	ClickNum int64 `json:"click_num"`
 }
 
 type PublicFileListReply {

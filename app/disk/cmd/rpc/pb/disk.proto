@@ -37,8 +37,8 @@ message ListFileReq {
 
 }
 message ListFileResp {
-  FileDetail fileList =1 ;
-  FileDetail  deletedList = 2 ;
+  repeated FileDetail fileList =1 ;
+  repeated FileDetail  deletedList = 2 ;
 }
 
 

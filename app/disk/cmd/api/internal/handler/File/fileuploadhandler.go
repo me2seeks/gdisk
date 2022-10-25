@@ -48,6 +48,7 @@ func FileUploadHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		// 	return
 		// }
 		// 文件已存在
+
 		if rp.Id != 0 {
 			resp := &types.FileUploadReply{
 				Identity: rp.Identity,
@@ -55,6 +56,7 @@ func FileUploadHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 				Name:     rp.Name,
 			}
 			result.HttpResult(r, w, resp, err)
+			return
 		}
 
 		// 文件不存在，上传文件到COS

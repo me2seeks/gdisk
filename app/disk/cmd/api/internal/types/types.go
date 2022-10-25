@@ -172,9 +172,7 @@ type UserFileListReply struct {
 }
 
 type PublicFileListRequest struct {
-	Id   int64 `json:"id,optional"`
-	Page int   `json:"page,optional"`
-	Size int   `json:"size,optional"`
+	ClickNum int64 `json:"click_num"`
 }
 
 type PublicFileListReply struct {

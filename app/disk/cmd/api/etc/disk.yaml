@@ -1,6 +1,6 @@
 Name: disk-api
 Host: 0.0.0.0
-Port: 2003
+Port: 3003
 Mode: dev
 
 #jwtAuth

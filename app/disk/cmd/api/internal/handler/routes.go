@@ -16,12 +16,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/share/basic/detail",
+				Path:    "/share/detail",
 				Handler: Share.ShareBasicDetailHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/popular/share/list",
+				Path:    "/share/popular/list",
 				Handler: Share.PopularShareListHandler(serverCtx),
 			},
 			{
@@ -35,18 +35,28 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
+				Method:  http.MethodGet,
+				Path:    "/file/public/list",
+				Handler: File.PublicFileListHandler(serverCtx),
+			},
+		},
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
 				Method:  http.MethodPost,
-				Path:    "/share/basic/create",
+				Path:    "/share/create",
 				Handler: Share.ShareBasicCreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/share/basic/save",
+				Path:    "/share/save",
 				Handler: Share.ShareBasicSaveHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/user/share/list",
+				Path:    "/share/user/list",
 				Handler: Share.UserShareListHandler(serverCtx),
 			},
 		},
@@ -57,43 +67,38 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/file/upload",
-				Handler: File.FileUploadHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/user/repository/save",
+				Path:    "/file/repository/save",
 				Handler: File.UserRepositorySaveHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
-				Path:    "/user/file/list",
+				Path:    "/file/list",
 				Handler: File.UserFileListHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/user/file/name/update",
+				Path:    "/file/rename",
 				Handler: File.UserFileNameUpdateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/user/folder/create",
+				Path:    "/file/folder/create",
 				Handler: File.UserFolderCreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodDelete,
-				Path:    "/user/file/delete",
+				Path:    "/file",
 				Handler: File.UserFileDeleteHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPut,
-				Path:    "/user/file/move",
+				Path:    "/file",
 				Handler: File.UserFileMoveHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/file/download",
-				Handler: File.FileDownloadHandler(serverCtx),
+				Path:    "/file/upload",
+				Handler: File.FileUploadHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
