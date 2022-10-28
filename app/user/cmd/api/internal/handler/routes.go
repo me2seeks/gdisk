@@ -23,6 +23,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/login",
 				Handler: user.LoginHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/register",
+				Handler: user.CountHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/user"),
 	)

@@ -10,7 +10,7 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-func ShareStatisticsHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func StatisticsHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.ShareStatisticsRequest
 		if err := httpx.Parse(r, &req); err != nil {

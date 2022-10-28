@@ -18,6 +18,7 @@ type ShareBasic struct {
 	CreatedAt              time.Time      `gorm:"created"`
 	UpdatedAt              time.Time      `gorm:"updated"`
 	DeletedAt              gorm.DeletedAt `gorm:"deleted"`
+	DelState               int
 }
 
 func (table ShareBasic) TableName() string {

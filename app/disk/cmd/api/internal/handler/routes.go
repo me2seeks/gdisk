@@ -17,7 +17,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodPost,
 				Path:    "/share/detail",
-				Handler: Share.ShareBasicDetailHandler(serverCtx),
+				Handler: Share.DetailHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
@@ -27,7 +27,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodGet,
 				Path:    "/share/statistics",
-				Handler: Share.ShareStatisticsHandler(serverCtx),
+				Handler: Share.StatisticsHandler(serverCtx),
 			},
 		},
 	)
@@ -47,12 +47,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodPost,
 				Path:    "/share/create",
-				Handler: Share.ShareBasicCreateHandler(serverCtx),
+				Handler: Share.CreateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/share/save",
-				Handler: Share.ShareBasicSaveHandler(serverCtx),
+				Handler: Share.SaveHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodGet,
@@ -65,6 +65,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 
 	server.AddRoutes(
 		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/file/public/save",
+				Handler: File.PublicFileSaveHandler(serverCtx),
+			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/file/repository/save",

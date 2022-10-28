@@ -11,7 +11,7 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-//http返回
+// http返回
 func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err error) {
 
 	if err == nil {
@@ -21,7 +21,8 @@ func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err er
 	} else {
 		//错误返回
 		errcode := xerr.SERVER_COMMON_ERROR
-		errmsg := "服务器开小差啦，稍后再来试一试"
+		//errmsg := "服务器开小差啦，稍后再来试一试"
+		errmsg := err.Error()
 
 		causeErr := errors.Cause(err)                // err类型
 		if e, ok := causeErr.(*xerr.CodeError); ok { //自定义错误类型
@@ -44,7 +45,7 @@ func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err er
 	}
 }
 
-//授权的http方法
+// 授权的http方法
 func AuthHttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err error) {
 
 	if err == nil {
@@ -77,7 +78,7 @@ func AuthHttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, er
 	}
 }
 
-//http 参数错误返回
+// http 参数错误返回
 func ParamErrorResult(r *http.Request, w http.ResponseWriter, err error) {
 	errMsg := fmt.Sprintf("%s ,%s", xerr.MapErrMsg(xerr.REUQEST_PARAM_ERROR), err.Error())
 	httpx.WriteJson(w, http.StatusBadRequest, Error(xerr.REUQEST_PARAM_ERROR, errMsg))

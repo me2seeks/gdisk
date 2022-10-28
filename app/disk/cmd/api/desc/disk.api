@@ -13,15 +13,15 @@ info(
 )
 service disk{
 	// 获取分享资源详情
-	@handler ShareBasicDetail
-	post /share/basic/detail(ShareBasicDetailRequest) returns (ShareBasicDetailReply)
+	@handler Detail
+	post /share/detail(ShareBasicDetailRequest) returns (ShareBasicDetailReply)
 	
 	// 获取热门分享列表
 	@handler PopularShareList
 	post /share/popular/list(PopularShareListRequest) returns (PopularShareListReply)
 	
 	// 分享统计
-	@handler ShareStatistics
+	@handler Statistics
 	get /share/statistics(ShareStatisticsRequest) returns (ShareStatisticsReply)
 }
 
@@ -30,7 +30,7 @@ service disk{
 )
 service disk{
 	@handler PublicFileList
-	post /file/public/list(PublicFileListRequest) returns (PublicFileListReply)
+	get /file/public/list(PublicFileListRequest) returns (PublicFileListReply)
 }
 
 @server(
@@ -39,11 +39,11 @@ service disk{
 )
 service  disk {
 	// 分享 - 创建分享记录
-	@handler ShareCreate
+	@handler Create
 	post /share/create(ShareBasicCreateRequest) returns (ShareBasicCreateReply)
 	
 	// 分享 - 分享资源保存
-	@handler ShareSave
+	@handler Save
 	post /share/save(ShareBasicSaveRequest) returns (ShareBasicSaveReply)
 	
 	// 分享 - 用户分享资源列表
@@ -58,17 +58,17 @@ service  disk {
 )
 service disk {
 	
-//		@handler  PublicFileSave
-//	    post /file/public/save(PublicFileSaveRequest) returns (PublicFileSaveReply)
-//
-//		@handler  PublicFolderCreate
-//		post /file/public/folder/create(PublicFolderCreateRequest) returns (PublicFolderCreateReply)
-//
-//		@handler  PublicFileDelete
-//		delete /file/public(PublicFileDeleteRequest) returns (PublicFileDeleteReply)
-//
-//		@handler  PublicFileRename
-//		post /file/public/rename(PublicFileDeleteRequest) returns (PublicFileDeleteReply)
+	@handler  PublicFileSave
+	post /file/public/save(PublicFileSaveRequest) returns (PublicFileSaveReply)
+	//
+	//		@handler  PublicFolderCreate
+	//		post /file/public/folder/create(PublicFolderCreateRequest) returns (PublicFolderCreateReply)
+	//
+	//		@handler  PublicFileDelete
+	//		delete /file/public(PublicFileDeleteRequest) returns (PublicFileDeleteReply)
+	//
+	//		@handler  PublicFileRename
+	//		post /file/public/rename(PublicFileDeleteRequest) returns (PublicFileDeleteReply)
 	
 	// 用户- 文件关联存储
 	@handler UserRepositorySave
@@ -113,6 +113,15 @@ service disk {
 	// 文件分片上传完成
 	@handler FileUploadChunkComplete
 	post /file/upload/chunk/complete(FileUploadChunkCompleteRequest) returns (FileUploadChunkCompleteReply)
+}
+
+type PublicFileSaveRequest {
+	RepositoryIdentity string `json:"repositoryIdentity"`
+	ParentId           int64  `json:"parentId"`
+	Ext                string `json:"ext"`
+	Name               string `json:"name"`
+}
+type PublicFileSaveReply {
 }
 
 type StatisticsFileRequest {
@@ -280,7 +289,6 @@ type UserFileListReply {
 }
 
 type PublicFileListRequest {
-	ClickNum int64 `json:"click_num"`
 }
 
 type PublicFileListReply {
@@ -375,6 +383,6 @@ type PopularShareListReply {
 type ShareStatisticsRequest {
 }
 type ShareStatisticsReply {
-	ShareCount int `json:"share_count"`
-	ClickNum   int `json:"click_num"`
+	ShareCount int64 `json:"share_count"`
+	ClickNum   int64 `json:"click_num"`
 }

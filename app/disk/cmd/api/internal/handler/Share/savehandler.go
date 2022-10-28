@@ -11,7 +11,7 @@ import (
 	"cloud-disk/app/disk/cmd/api/internal/types"
 )
 
-func ShareBasicSaveHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func SaveHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.ShareBasicSaveRequest
 		if err := httpx.Parse(r, &req); err != nil {

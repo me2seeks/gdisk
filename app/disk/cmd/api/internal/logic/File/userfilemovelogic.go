@@ -4,9 +4,10 @@ import (
 	"cloud-disk/app/disk/cmd/api/internal/svc"
 	"cloud-disk/app/disk/cmd/api/internal/types"
 	"cloud-disk/app/disk/cmd/rpc/pb"
+	"cloud-disk/app/disk/model"
 	"cloud-disk/common/ctxdata"
 	"context"
-
+	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -27,9 +28,19 @@ func NewUserFileMoveLogic(ctx context.Context, svcCtx *svc.ServiceContext) *User
 func (l *UserFileMoveLogic) UserFileMove(req *types.UserFileMoveRequest) (resp *types.UserFileMoveReply, err error) {
 	userIdentity := ctxdata.GetUidFromCtx(l.ctx)
 
+	parentData := new(model.UserRepository)
+	err = l.svcCtx.Engine.
+		Table("user_repository").
+		Where("identity = ? AND user_identity = ?", req.ParentIdentity, userIdentity).
+		First(parentData).Error
+	if err != nil || parentData.Id == 0 {
+
+		return nil, errors.New("文件夹不存在")
+	}
+
 	var fileDetail *pb.FileDetail
 	fileDetail.Identity = req.Identity
-	fileDetail.ParentId = req.ParentIdentity
+	fileDetail.ParentId = parentData.Id
 	fileDetail.Uid = userIdentity
 
 	_, err = l.svcCtx.DiskRpc.UpdateFile(l.ctx, &pb.UpdateFileReq{FileDetail: fileDetail})

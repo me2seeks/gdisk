@@ -92,6 +92,7 @@ func (m *defaultUserModel) FindSum(ctx context.Context, sumBuilder squirrel.Sele
 func (m *defaultUserModel) FindCount(ctx context.Context, countBuilder squirrel.SelectBuilder) (int64, error) {
 
 	query, values, err := countBuilder.Where("del_state = ?", globalkey.DelStateNo).ToSql()
+
 	if err != nil {
 		return 0, err
 	}

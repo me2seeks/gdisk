@@ -54,7 +54,6 @@ func (l *UserRepositorySaveLogic) UserRepositorySave(req *types.UserRepositorySa
 		Joins("left join repository_pool on user_repository.repository_identity = repository_pool.identity").
 		Take(&Size)
 	if Size.TotalSize >= define.UserRepositoryMaxSize {
-
 		return nil, errors.New("容量不足")
 	}
 

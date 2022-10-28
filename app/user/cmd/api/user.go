@@ -1,12 +1,11 @@
 package main
 
 import (
+	"cloud-disk/app/user/cmd/api/internal/config"
 	"cloud-disk/app/user/cmd/api/internal/handler"
+	"cloud-disk/app/user/cmd/api/internal/svc"
 	"flag"
 	"fmt"
-
-	"cloud-disk/app/user/cmd/api/internal/config"
-	"cloud-disk/app/user/cmd/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
@@ -21,7 +20,7 @@ func main() {
 	conf.MustLoad(*configFile, &c)
 
 	ctx := svc.NewServiceContext(c)
-	server := rest.MustNewServer(c.RestConf)
+	server := rest.MustNewServer(c.RestConf, rest.WithCors())
 	defer server.Stop()
 
 	handler.RegisterHandlers(server, ctx)

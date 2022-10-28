@@ -18,6 +18,7 @@ type RepositoryPool struct {
 	UpdatedAt time.Time      `gorm:"updated"`
 	DeletedAt gorm.DeletedAt `gorm:"deleted"`
 	DelState  int
+	IsPublic  int
 }
 
 func (table RepositoryPool) TableName() string {

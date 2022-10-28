@@ -7,7 +7,7 @@ import (
 )
 
 type UserRepository struct {
-	Id                 int
+	Id                 int64
 	Identity           string
 	Uid                string
 	ParentId           int64

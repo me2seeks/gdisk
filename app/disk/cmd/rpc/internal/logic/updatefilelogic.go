@@ -32,28 +32,6 @@ func NewUpdateFileLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Update
 func (l *UpdateFileLogic) UpdateFile(in *pb.UpdateFileReq) (*pb.UpdateFileResp, error) {
 	fileDetail := new(model.UserRepository)
 	resp := pb.UpdateFileResp{}
-	//	move
-	if in.FileDetail.ParentId != "" {
-		err := l.svcCtx.Engine.
-			Table("user_repository").
-			Where("identity = ? AND uid = ?", in.FileDetail.Identity, in.FileDetail.Uid).
-			First(fileDetail).Error
-		if err != nil && err != model.ErrNotFound {
-			return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR 查询file失败，Pid:%s,Uid: %s,err:%v", in.FileDetail.ParentId, in.FileDetail.Uid, err)
-		}
-		if fileDetail.Id == 0 || err == model.ErrNotFound {
-			return nil, errors.Wrapf(ErrFileNoExistsError, "Pid: %s Uid:%s", in.FileDetail.ParentId, in.FileDetail.Uid)
-		}
-		err = l.svcCtx.Engine.
-			Table("user_repository").
-			Where("identity = ? AND del_state = ?", in.FileDetail.Identity, globalkey.DelStateNo).
-			Update("parent_id", in.FileDetail.ParentId).Error
-		if err != nil {
-			return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "更新user_repository失败")
-		}
-		return &resp, nil
-	}
-
 	//rename
 	if in.FileDetail.Name != "" {
 		var cnt int64
@@ -87,6 +65,28 @@ func (l *UpdateFileLogic) UpdateFile(in *pb.UpdateFileReq) (*pb.UpdateFileResp, 
 			Where("identity = ? AND uid = ?", in.FileDetail.Identity, in.FileDetail.Uid).
 			Update("del_state", globalkey.DelStateYes).
 			Update("deleted_at", time.Now()).Error
+		if err != nil {
+			return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "更新user_repository失败")
+		}
+		return &resp, nil
+	}
+
+	//	move
+	if in.FileDetail.ParentId != 0 {
+		err := l.svcCtx.Engine.
+			Table("user_repository").
+			Where("identity = ? AND uid = ?", in.FileDetail.Identity, in.FileDetail.Uid).
+			First(fileDetail).Error
+		if err != nil && err != model.ErrNotFound {
+			return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR 查询file失败，Pid:%s,Uid: %s,err:%v", in.FileDetail.ParentId, in.FileDetail.Uid, err)
+		}
+		if fileDetail.Id == 0 || err == model.ErrNotFound {
+			return nil, errors.Wrapf(ErrFileNoExistsError, "Pid: %s Uid:%s", in.FileDetail.ParentId, in.FileDetail.Uid)
+		}
+		err = l.svcCtx.Engine.
+			Table("user_repository").
+			Where("identity = ? AND del_state = ?", in.FileDetail.Identity, globalkey.DelStateNo).
+			Update("parent_id", in.FileDetail.ParentId).Error
 		if err != nil {
 			return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "更新user_repository失败")
 		}

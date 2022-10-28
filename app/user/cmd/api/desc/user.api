@@ -22,6 +22,9 @@ service user {
 	@doc "登入"
 	@handler login
 	post /login (LoginReq) returns (LoginResp)
+	
+	@handler count
+	get /register (RegisterCountReq) returns (RegisterCountResp)
 }
 
 @server(

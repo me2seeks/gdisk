@@ -27,7 +27,7 @@ func NewUserFileListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *User
 }
 
 func (l *UserFileListLogic) UserFileList(req *types.UserFileListRequest) (resp *types.UserFileListReply, err error) {
-	userIdentity := ctxdata.GetUidFromCtx(l.ctx)
+	uid := ctxdata.GetUidFromCtx(l.ctx)
 
 	resp = new(types.UserFileListReply)
 
@@ -49,20 +49,20 @@ func (l *UserFileListLogic) UserFileList(req *types.UserFileListRequest) (resp *
 	// }
 
 	//搜出用户的所以文件
-	file, err := l.svcCtx.DiskRpc.ListFile(l.ctx, &pb.ListFileReq{Uid: userIdentity})
-
+	fl, err := l.svcCtx.DiskRpc.ListFile(l.ctx, &pb.ListFileReq{Uid: uid})
 	if err != nil {
 		return nil, err
 	}
-	_ = copier.Copy(&resp.List, file.FileList)
 
-	_ = copier.Copy(&resp.DeletedList, file.DeletedList)
+	_ = copier.Copy(&resp.List, fl.FileList)
+
+	_ = copier.Copy(&resp.DeletedList, fl.DeletedList)
 
 	// 查询总数
 	err = l.svcCtx.Engine.
 		Table("user_repository").
 		// TODO pid = ? AND
-		Where("uid = ? AND deleted_at IS NULL", userIdentity).
+		Where("uid = ? AND deleted_at IS NULL", uid).
 		Count(&resp.Count).Error
 	if err != nil {
 		return

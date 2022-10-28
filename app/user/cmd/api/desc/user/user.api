@@ -19,6 +19,16 @@ type User {
     CreateAt   string `json:"create_at"`
 }
 
+
+type (
+    RegisterCountReq{
+    }
+    RegisterCountResp{
+        Count int64  `json:"count"`
+    }
+)
+
+
 type (
     RegisterReq {
         Name string `json:"name""`

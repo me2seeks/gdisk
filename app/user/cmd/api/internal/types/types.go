@@ -2,14 +2,21 @@
 package types
 
 type User struct {
-	Identity string  `json:"identity"`
+	Identity string `json:"identity"`
 	Email    string `json:"email"`
 	Name     string `json:"name"`
-	Sex      int64 `json:"sex"`
+	Sex      int64  `json:"sex"`
 	Avatar   string `json:"avatar"`
 	Info     string `json:"info"`
-	Capacity int64    `json:"capacity"`
+	Capacity int    `json:"capacity"`
 	CreateAt string `json:"create_at"`
+}
+
+type RegisterCountReq struct {
+}
+
+type RegisterCountResp struct {
+	Count int64 `json:"count"`
 }
 
 type RegisterReq struct {
