@@ -3,6 +3,7 @@ package File
 import (
 	"cloud-disk/app/disk/cmd/api/internal/svc"
 	"cloud-disk/app/disk/cmd/api/internal/types"
+	"cloud-disk/app/disk/model"
 	"cloud-disk/common/ctxdata"
 	"context"
 
@@ -24,10 +25,10 @@ func NewPublicFileSaveLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Pu
 }
 
 func (l *PublicFileSaveLogic) PublicFileSave(req *types.PublicFileSaveRequest) (resp *types.PublicFileSaveReply, err error) {
-	_ = ctxdata.GetUidFromCtx(l.ctx)
+	u := ctxdata.GetUidFromCtx(l.ctx)
 	l.svcCtx.Engine.Table("repository_pool").
 		Where("identity = ? ", req.RepositoryIdentity).
-		Update("is_public", 1)
+		Updates(model.RepositoryPool{IsPublic: 1, Owner: u})
 
 	return resp, nil
 }

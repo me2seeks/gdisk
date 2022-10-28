@@ -19,6 +19,7 @@ type RepositoryPool struct {
 	DeletedAt gorm.DeletedAt `gorm:"deleted"`
 	DelState  int
 	IsPublic  int
+	Owner     string
 }
 
 func (table RepositoryPool) TableName() string {

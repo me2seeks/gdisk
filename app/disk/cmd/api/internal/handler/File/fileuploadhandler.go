@@ -49,26 +49,19 @@ func FileUploadHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		// }
 		// 文件已存在
 
-		if rp.Id != 0 {
-			resp := &types.FileUploadReply{
-				Identity: rp.Identity,
-				Ext:      rp.Ext,
-				Name:     rp.Name,
+		if rp.Id == 0 {
+			cosPath, err := oss.CosUpload(r)
+			if err != nil {
+				return
 			}
-			result.HttpResult(r, w, resp, err)
-			return
-		}
-
-		// 文件不存在，上传文件到COS
-		cosPath, err := oss.CosUpload(r)
-		if err != nil {
-			return
+			req.Path = cosPath
+		} else {
+			req.Path = rp.Path
 		}
 
 		// to logic
 		req.Name = fileHeader.Filename
 		req.Hash = hash
-		req.Path = cosPath
 		req.Ext = path.Ext(fileHeader.Filename)
 		req.Size = fileHeader.Size
 		if req.Ext == "" {
