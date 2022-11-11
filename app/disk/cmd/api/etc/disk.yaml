@@ -46,5 +46,9 @@ DiskRpcConf:
     Hosts:
       - etcd:2379
     Key: disk.rpc
-
+UserRpcConf:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: user.rpc
 

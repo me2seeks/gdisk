@@ -29,7 +29,7 @@ func NewUserFolderCreateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 }
 
 func (l *UserFolderCreateLogic) UserFolderCreate(req *types.UserFolderCreateRequest) (resp *types.UserFolderCreateReply, err error) {
-	userIdentity := ctxdata.GetUidFromCtx(l.ctx)
+	u := ctxdata.GetUidFromCtx(l.ctx)
 
 	if req.Name == "" {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.REUQEST_PARAM_ERROR), "name is empty")
@@ -39,7 +39,7 @@ func (l *UserFolderCreateLogic) UserFolderCreate(req *types.UserFolderCreateRequ
 	var cnt int64
 	err = l.svcCtx.Engine.
 		Table("user_repository").
-		Where("name = ? AND parent_id = ? AND uid = ?", req.Name, req.ParentId, userIdentity).
+		Where("name = ? AND parent_id = ? AND uid = ?", req.Name, req.ParentId, u).
 		Count(&cnt).Error
 
 	resp = new(types.UserFolderCreateReply)
@@ -54,13 +54,13 @@ func (l *UserFolderCreateLogic) UserFolderCreate(req *types.UserFolderCreateRequ
 	// 创建文件夹
 	data := &model.UserRepository{
 		Identity: resp.Identity,
-		Uid:      userIdentity,
+		Uid:      u,
 		ParentId: req.ParentId,
 		Name:     req.Name,
 	}
 	err = l.svcCtx.Engine.
 		Table("user_repository").
-		Select("identity", "name", "user_identity", "parent_id", "created_at", "updated_at").
+		Select("identity", "uid", "name", "user_identity", "parent_id", "created_at", "updated_at").
 		Create(data).Error
 	if err != nil {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "db failed error: %v", err)

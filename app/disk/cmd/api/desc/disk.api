@@ -61,14 +61,14 @@ service disk {
 	@handler  PublicFileSave
 	post /file/public/save(PublicFileSaveRequest) returns (PublicFileSaveReply)
 	//
-	//		@handler  PublicFolderCreate
-	//		post /file/public/folder/create(PublicFolderCreateRequest) returns (PublicFolderCreateReply)
-	//
-	//		@handler  PublicFileDelete
-	//		delete /file/public(PublicFileDeleteRequest) returns (PublicFileDeleteReply)
-	//
-	//		@handler  PublicFileRename
-	//		post /file/public/rename(PublicFileDeleteRequest) returns (PublicFileDeleteReply)
+	@handler  PublicFolderCreate
+	post /file/public/folder/create(PublicFolderCreateRequest) returns (PublicFolderCreateReply)
+	
+	@handler  PublicDelete
+	delete /file/public(PublicDeleteRequest) returns (PublicDeleteReply)
+	//前端没有
+	//	@handler  PublicFileRename
+	//	post /file/public/rename(PublicRenameRequest) returns (PublicRenameReply)
 	
 	// 用户- 文件关联存储
 	@handler UserRepositorySave
@@ -115,12 +115,30 @@ service disk {
 	post /file/upload/chunk/complete(FileUploadChunkCompleteRequest) returns (FileUploadChunkCompleteReply)
 }
 
+
+
+
+type PublicDeleteRequest {
+	Identity string `json:"identity"`
+}
+type PublicDeleteReply {
+}
+
+type PublicFolderCreateRequest {
+	Name     string `json:"name"`
+	ParentId int64  `json:"parent_id"`
+}
+
 type PublicFileSaveRequest {
 	RepositoryIdentity string `json:"repositoryIdentity"`
 	ParentId           int64  `json:"parentId"`
 	Ext                string `json:"ext"`
 	Name               string `json:"name"`
 }
+type PublicFolderCreateReply {
+	Identity string `json:"identity"`
+}
+
 type PublicFileSaveReply {
 }
 

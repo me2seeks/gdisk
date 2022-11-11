@@ -20,4 +20,5 @@ type Config struct {
 		DataSource string
 	}
 	DiskRpcConf zrpc.RpcClientConf
+	UserRpcConf zrpc.RpcClientConf
 }

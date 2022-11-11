@@ -31,7 +31,7 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 
 func (l *RegisterLogic) Register(req *types.RegisterReq) (*types.RegisterResp, error) {
 	//验证
-	if res, _ := l.svcCtx.RedisClient.Get(req.Email); req.Captcha != res || req.Captcha == "" {
+	if res, _ := l.svcCtx.RedisClient.Get(req.Email); req.Code != res || req.Code == "" {
 		return nil, xerr.NewErrCode(xerr.VERIFY_ERROR)
 	}
 

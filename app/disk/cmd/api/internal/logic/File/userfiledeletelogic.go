@@ -27,12 +27,12 @@ func NewUserFileDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Us
 }
 
 func (l *UserFileDeleteLogic) UserFileDelete(req *types.UserFileDeleteRequest) (resp *types.UserFileDeleteReply, err error) {
-	userIdentity := ctxdata.GetUidFromCtx(l.ctx)
+	u := ctxdata.GetUidFromCtx(l.ctx)
 
 	var fileDetail *pb.FileDetail
 	fileDetail.Identity = req.Identity
 	fileDetail.DelState = globalkey.DelStateYes
-	fileDetail.Uid = userIdentity
+	fileDetail.Uid = u
 
 	_, err = l.svcCtx.DiskRpc.UpdateFile(l.ctx, &pb.UpdateFileReq{FileDetail: fileDetail})
 	if err != nil {

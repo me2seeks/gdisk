@@ -11,6 +11,7 @@ type RepositoryPool struct {
 	Identity  string
 	Hash      string
 	Name      string
+	ParentId  int64
 	Ext       string
 	Size      int64
 	Path      string
