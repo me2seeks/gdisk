@@ -5,6 +5,7 @@ import (
 	"cloud-disk/common/tool"
 	"cloud-disk/common/xerr"
 	"context"
+
 	"github.com/pkg/errors"
 
 	"cloud-disk/app/user/cmd/api/internal/svc"
@@ -76,7 +77,7 @@ func (l *LoginLogic) loginByEmail(email, password string) (string, error) {
 	return user.Identity, nil
 }
 
-func (l *LoginLogic) loginByMiniWx() error {
+func (*LoginLogic) loginByMiniWx() error {
 	//待定
 	return nil
 }

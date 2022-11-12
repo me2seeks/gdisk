@@ -21,6 +21,6 @@ type ShareBasic struct {
 	DelState               int
 }
 
-func (table ShareBasic) TableName() string {
+func (ShareBasic) TableName() string {
 	return "share_basic"
 }

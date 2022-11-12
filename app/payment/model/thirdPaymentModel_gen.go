@@ -184,7 +184,7 @@ func (m *defaultThirdPaymentModel) Delete(ctx context.Context, session sqlx.Sess
 	return err
 }
 
-func (m *defaultThirdPaymentModel) formatPrimary(primary interface{}) string {
+func (*defaultThirdPaymentModel) formatPrimary(primary interface{}) string {
 	return fmt.Sprintf("%s%v", cacheTrytryThirdPaymentIdPrefix, primary)
 }
 func (m *defaultThirdPaymentModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary interface{}) error {

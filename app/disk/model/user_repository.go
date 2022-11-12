@@ -20,6 +20,6 @@ type UserRepository struct {
 	DelState           int
 }
 
-func (table UserRepository) TableName() string {
+func (UserRepository) TableName() string {
 	return "user_repository"
 }

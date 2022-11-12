@@ -4,9 +4,10 @@ import (
 	"cloud-disk/common/ctxdata"
 	"cloud-disk/common/xerr"
 	"context"
+	"time"
+
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/pkg/errors"
-	"time"
 
 	"cloud-disk/app/user/cmd/rpc/internal/svc"
 	"cloud-disk/app/user/cmd/rpc/pb"
@@ -43,7 +44,7 @@ func (l *GenerateTokenLogic) GenerateToken(in *pb.GenerateTokenReq) (*pb.Generat
 	}, nil
 }
 
-func (l *GenerateTokenLogic) getJwtToken(secretKey string, iat, seconds int64, identity string) (string, error) {
+func (*GenerateTokenLogic) getJwtToken(secretKey string, iat, seconds int64, identity string) (string, error) {
 
 	claims := make(jwt.MapClaims)
 	claims["exp"] = iat + seconds

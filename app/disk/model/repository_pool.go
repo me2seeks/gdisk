@@ -23,6 +23,6 @@ type RepositoryPool struct {
 	Owner     string
 }
 
-func (table RepositoryPool) TableName() string {
+func (RepositoryPool) TableName() string {
 	return "repository_pool"
 }

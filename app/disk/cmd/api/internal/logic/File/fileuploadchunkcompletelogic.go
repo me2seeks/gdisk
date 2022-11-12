@@ -3,6 +3,7 @@ package File
 import (
 	"cloud-disk/common/oss"
 	"context"
+
 	"github.com/tencentyun/cos-go-sdk-v5"
 
 	"cloud-disk/app/disk/cmd/api/internal/svc"
@@ -25,7 +26,7 @@ func NewFileUploadChunkCompleteLogic(ctx context.Context, svcCtx *svc.ServiceCon
 	}
 }
 
-func (l *FileUploadChunkCompleteLogic) FileUploadChunkComplete(req *types.FileUploadChunkCompleteRequest) (resp *types.FileUploadChunkCompleteReply, err error) {
+func (*FileUploadChunkCompleteLogic) FileUploadChunkComplete(req *types.FileUploadChunkCompleteRequest) (resp *types.FileUploadChunkCompleteReply, err error) {
 	co := make([]cos.Object, 0)
 	for _, v := range req.CosObjects {
 		co = append(co, cos.Object{

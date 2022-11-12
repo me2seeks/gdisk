@@ -200,7 +200,7 @@ func (m *defaultUserModel) Delete(ctx context.Context, session sqlx.Session, id 
 	return err
 }
 
-func (m *defaultUserModel) formatPrimary(primary interface{}) string {
+func (*defaultUserModel) formatPrimary(primary interface{}) string {
 	return fmt.Sprintf("%s%v", cacheCloudDiskUserIdPrefix, primary)
 }
 func (m *defaultUserModel) queryPrimary(ctx context.Context, conn sqlx.SqlConn, v, primary interface{}) error {
