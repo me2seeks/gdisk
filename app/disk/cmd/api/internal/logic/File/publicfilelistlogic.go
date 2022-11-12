@@ -6,6 +6,7 @@ import (
 	"cloud-disk/app/disk/model"
 	"cloud-disk/common/xerr"
 	"context"
+
 	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,7 +25,7 @@ func NewPublicFileListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Pu
 	}
 }
 
-func (l *PublicFileListLogic) PublicFileList(req *types.PublicFileListRequest) (*types.PublicFileListReply, error) {
+func (l *PublicFileListLogic) PublicFileList(_ *types.PublicFileListRequest) (*types.PublicFileListReply, error) {
 	resp := types.PublicFileListReply{}
 
 	err := l.svcCtx.Engine.Table("repository_pool").

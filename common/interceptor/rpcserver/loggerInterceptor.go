@@ -3,6 +3,7 @@ package rpcserver
 import (
 	"cloud-disk/common/xerr"
 	"context"
+
 	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc"
@@ -10,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func LoggerInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+func LoggerInterceptor(ctx context.Context, req interface{}, _ *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
 
 	resp, err = handler(ctx, req)
 	if err != nil {

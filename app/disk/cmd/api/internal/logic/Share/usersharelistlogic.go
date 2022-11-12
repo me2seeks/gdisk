@@ -23,7 +23,7 @@ func NewUserShareListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Use
 	}
 }
 
-func (l *UserShareListLogic) UserShareList(req *types.UserShareListRequest) (resp *types.UserShareListReply, err error) {
+func (l *UserShareListLogic) UserShareList(_ *types.UserShareListRequest) (resp *types.UserShareListReply, err error) {
 	// todo: add your logic here and delete this line
 
 	return

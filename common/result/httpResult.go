@@ -3,10 +3,11 @@ package result
 import (
 	"cloud-disk/common/xerr"
 	"fmt"
+	"net/http"
+
 	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 	"google.golang.org/grpc/status"
-	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
@@ -79,7 +80,7 @@ func AuthHttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, er
 }
 
 // http 参数错误返回
-func ParamErrorResult(r *http.Request, w http.ResponseWriter, err error) {
+func ParamErrorResult(_ *http.Request, w http.ResponseWriter, err error) {
 	errMsg := fmt.Sprintf("%s ,%s", xerr.MapErrMsg(xerr.REUQEST_PARAM_ERROR), err.Error())
 	httpx.WriteJson(w, http.StatusBadRequest, Error(xerr.REUQEST_PARAM_ERROR, errMsg))
 }

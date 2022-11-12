@@ -24,7 +24,7 @@ func NewShareStatisticsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *S
 	}
 }
 
-func (l *ShareStatisticsLogic) ShareStatistics(req *types.ShareStatisticsRequest) (*types.ShareStatisticsReply, error) {
+func (l *ShareStatisticsLogic) ShareStatistics(_ *types.ShareStatisticsRequest) (*types.ShareStatisticsReply, error) {
 	var s int64
 	var c []int64
 	//var sum int64
