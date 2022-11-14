@@ -9,9 +9,7 @@ import (
 var CtxKeyJwtUserId = "jwtUserId"
 
 func GetUidFromCtx(ctx context.Context) string {
-	var identity string
-
-	identity = fmt.Sprintf("%v", ctx.Value(CtxKeyJwtUserId))
+	var i string = fmt.Sprintf("%v", ctx.Value(CtxKeyJwtUserId))
 
 	//if jsonIdentity, ok := ctx.Value(CtxKeyJwtUserId).(json.Number); ok {
 	//	identity = jsonIdentity.String()
@@ -24,5 +22,5 @@ func GetUidFromCtx(ctx context.Context) string {
 	//
 	//
 	//}
-	return identity
+	return i
 }
