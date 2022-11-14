@@ -9,7 +9,7 @@ import (
 	"gorm.io/driver/mysql"
 )
 
-func Init(dataSource string) *gorm.DB {
+func Init(_ string) *gorm.DB {
 	opt := option.DefaultOption{}
 	opt.Expires = 300              //缓存时间，默认60秒。范围 30-900
 	opt.Level = option.LevelSearch //缓存级别，默认LevelSearch。LevelDisable:关闭缓存，LevelModel:模型缓存， LevelSearch:查询缓存

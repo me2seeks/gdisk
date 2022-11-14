@@ -26,7 +26,7 @@ func NewVerifyImageLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Verif
 	}
 }
 
-func (l *VerifyimageLogic) VerifyImage(in *pb.VerifyImageReq) (*pb.VerifyImageResp, error) {
+func (l *VerifyimageLogic) VerifyImage(_ *pb.VerifyImageReq) (*pb.VerifyImageResp, error) {
 
 	captchaId := verify.Instance().CreateImage()
 	data := verify.Instance().GetImageByte(captchaId)

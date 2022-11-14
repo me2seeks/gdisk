@@ -23,7 +23,7 @@ func NewPopularShareListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 	}
 }
 
-func (l *PopularShareListLogic) PopularShareList(req *types.PopularShareListRequest) (resp *types.PopularShareListReply, err error) {
+func (l *PopularShareListLogic) PopularShareList(_ *types.PopularShareListRequest) (resp *types.PopularShareListReply, err error) {
 	// todo: add your logic here and delete this line
 
 	return

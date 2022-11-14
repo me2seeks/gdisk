@@ -23,7 +23,7 @@ func NewFileDownloadLogic(ctx context.Context, svcCtx *svc.ServiceContext) *File
 	}
 }
 
-func (l *FileDownloadLogic) FileDownload(req *types.FileDownloadRequest) (resp *types.FileDownloadReply, err error) {
+func (l *FileDownloadLogic) FileDownload(_ *types.FileDownloadRequest) (resp *types.FileDownloadReply, err error) {
 	// todo: add your logic here and delete this line
 
 	return
