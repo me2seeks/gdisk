@@ -1,13 +1,11 @@
 package logic
 
 import (
+	"cloud-disk/app/verification/cmd/rpc/internal/svc"
+	"cloud-disk/app/verification/cmd/rpc/pb"
 	"cloud-disk/common/oss"
 	"cloud-disk/common/verify"
 	"context"
-	"fmt"
-
-	"cloud-disk/app/verification/cmd/rpc/internal/svc"
-	"cloud-disk/app/verification/cmd/rpc/pb"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -36,7 +34,6 @@ func (l *VerifyimageLogic) VerifyImage(_ *pb.VerifyImageReq) (*pb.VerifyImageRes
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(url)
 
 	return &pb.VerifyImageResp{
 		ImageUrl: url,

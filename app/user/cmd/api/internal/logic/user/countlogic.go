@@ -25,7 +25,7 @@ func NewCountLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CountLogic 
 func (l *CountLogic) Count(_ *types.RegisterCountReq) (*types.RegisterCountResp, error) {
 
 	b := l.svcCtx.UserModel.CountBuilder("id")
-	c, nil := l.svcCtx.UserModel.FindCount(l.ctx, b)
+	c, _ := l.svcCtx.UserModel.FindCount(l.ctx, b)
 
 	return &types.RegisterCountResp{Count: c}, nil
 }

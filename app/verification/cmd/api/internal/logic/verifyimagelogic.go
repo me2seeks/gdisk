@@ -27,7 +27,7 @@ func NewVerifyimageLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Verif
 
 func (l *VerifyimageLogic) Verifyimage() (resp *types.VerifyImageResp, err error) {
 
-	verifyimage, err := l.svcCtx.VerificationRpc.VerifyImage(l.ctx, &verification.VerifyImageReq{})
+	verifyimage, _ := l.svcCtx.VerificationRpc.VerifyImage(l.ctx, &verification.VerifyImageReq{})
 	var verifyImageResp types.VerifyImageResp
 	_ = copier.Copy(&verifyImageResp, verifyimage)
 
