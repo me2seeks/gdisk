@@ -38,7 +38,7 @@ Redis:
   Pass: "000000"
 
 DB:
-  DataSource: root:000000@tcp(mysql:3306)/cloud_disk?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+  DataSource: root:docker@tcp(mysql:3306)/cloud_disk?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 
 Cache:
     - Host: redis:6379
@@ -48,5 +48,7 @@ UserRpcConf:
   Etcd:
     Hosts:
       - etcd:2379
-    Key: user.rpc
+    Key: mqueue.rpc
+
+
 

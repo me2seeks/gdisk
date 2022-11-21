@@ -1,9 +1,9 @@
 package svc
 
 import (
+	"cloud-disk/app/disk/cmd/rpc/disk"
 	"cloud-disk/app/mqueue/cmd/job/internal/config"
-	"cloud-disk/app/order/cmd/rpc/order"
-	"cloud-disk/app/user/cmd/rpc/user"
+	//"cloud-disk/app/user/cmd/rpc/user"
 	"github.com/hibiken/asynq"
 	"github.com/silenceper/wechat/v2/miniprogram"
 	"github.com/zeromicro/go-zero/zrpc"
@@ -14,16 +14,15 @@ type ServiceContext struct {
 	AsynqServer *asynq.Server
 	MiniProgram *miniprogram.MiniProgram
 
-	OrderRpc      order.Order
-	UsercenterRpc user.Usercenter
+	DiskRpc disk.Disk
+	//UserRpc user.User
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
-		Config:        c,
-		AsynqServer:   newAsynqServer(c),
-		MiniProgram:   newMiniprogramClient(c),
-		OrderRpc:      order.NewOrder(zrpc.MustNewClient(c.OrderRpcConf)),
-		UsercenterRpc: user.NewUsercenter(zrpc.MustNewClient(c.UsercenterRpcConf)),
+		Config:      c,
+		AsynqServer: newAsynqServer(c),
+		MiniProgram: newMiniprogramClient(c),
+		DiskRpc:     disk.NewDisk(zrpc.MustNewClient(c.DiskRpcConf)),
 	}
 }

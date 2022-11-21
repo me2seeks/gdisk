@@ -1,13 +1,11 @@
 package jobtype
 
-import "cloud-disk/app/order/model"
-
-// DeferCloseHomestayOrderPayload defer close homestay order
-type DeferCloseHomestayOrderPayload struct {
+// RemoveDeletedObject remove deleted object
+type RemoveDeletedObject struct {
 	Sn string
 }
 
-// PaySuccessNotifyUserPayload pay success notify user
-type PaySuccessNotifyUserPayload struct {
-	Order *model.HomestayOrder
+// RemoveDeletedObjectPayload pay success notify user
+type RemoveDeletedObjectPayload struct {
+	Identity string
 }

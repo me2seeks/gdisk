@@ -5,6 +5,7 @@ import (
 	"cloud-disk/app/disk/cmd/rpc/disk"
 	"cloud-disk/app/disk/model"
 	"cloud-disk/app/user/cmd/rpc/user"
+	"github.com/hibiken/asynq"
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/zrpc"
 	"gorm.io/gorm"
@@ -17,6 +18,7 @@ type ServiceContext struct {
 
 	RedisClient *redis.Redis
 	Engine      *gorm.DB // gorm
+	AsynqClient *asynq.Client
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -28,6 +30,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			r.Type = c.Redis.Type
 			r.Pass = c.Redis.Pass
 		}),
-		Engine: model.Init(c.DB.DataSource),
+		Engine:      model.Init(c.DB.DataSource),
+		AsynqClient: newAsynqClient(c),
 	}
 }

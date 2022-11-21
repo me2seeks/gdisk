@@ -9,11 +9,11 @@ import (
 
 func (l *MqueueScheduler) closeOrder() {
 
-	task := asynq.NewTask(jobtype.DeferCloseHomestayOrder, nil)
+	task := asynq.NewTask(jobtype.DeferRemoveDeletedObject, nil)
 	// every one minute exec
 	entryID, err := l.svcCtx.Scheduler.Register("*/1 * * * *", task)
 	if err != nil {
-		logx.WithContext(l.ctx).Errorf("!!!M queueSchedulerErr!!! ====> 【closeOrder】 registered  err:%+v , task:%+v", err, task)
+		logx.WithContext(l.ctx).Errorf("!!!M queueSchedulerErr!!! ====> 【removeObject】 registered  err:%+v , task:%+v", err, task)
 	}
-	fmt.Printf("【closeOrder】 registered an  entry: %q \n", entryID)
+	fmt.Printf("【removeObject】 registered an  entry: %q \n", entryID)
 }

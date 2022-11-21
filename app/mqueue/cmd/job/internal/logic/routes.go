@@ -24,14 +24,8 @@ func (l *CronJob) Register() *asynq.ServeMux {
 
 	mux := asynq.NewServeMux()
 
-	//scheduler job
-	mux.Handle(jobtype.ScheduleSettleRecord, NewSettleRecordHandler(l.svcCtx))
-
 	//defer job
-	mux.Handle(jobtype.DeferCloseHomestayOrder, NewCloseHomestayOrderHandler(l.svcCtx))
-
-	//notify user
-	mux.Handle(jobtype.MsgPaySuccessNotifyUser, NewPaySuccessNotifyUserHandler(l.svcCtx))
+	mux.Handle(jobtype.DeferRemoveDeletedObject, NewRemoveDeletedObjectHandler(l.svcCtx))
 
 	//queue job , asynq support queue job
 	// wait you fill..

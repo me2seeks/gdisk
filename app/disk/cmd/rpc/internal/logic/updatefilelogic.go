@@ -8,8 +8,6 @@ import (
 	"cloud-disk/common/xerr"
 	"context"
 	"github.com/pkg/errors"
-	"time"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -32,7 +30,7 @@ func NewUpdateFileLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Update
 func (l *UpdateFileLogic) UpdateFile(in *pb.UpdateFileReq) (*pb.UpdateFileResp, error) {
 	fileDetail := new(model.UserRepository)
 	resp := pb.UpdateFileResp{}
-	//rename
+	// rename
 	if in.FileDetail.Name != "" {
 		var cnt int64
 		err := l.svcCtx.Engine.
@@ -57,14 +55,12 @@ func (l *UpdateFileLogic) UpdateFile(in *pb.UpdateFileReq) (*pb.UpdateFileResp, 
 
 	}
 
-	//delete
-	//TODO 定时任务
+	// remove
 	if in.FileDetail.DelState != 0 {
 		err := l.svcCtx.Engine.
 			Table("user_repository").
-			Where("identity = ? AND uid = ?", in.FileDetail.Identity, in.FileDetail.Uid).
-			Update("del_state", globalkey.DelStateYes).
-			Update("deleted_at", time.Now()).Error
+			Where("identity = ? AND uid = ? AND del_state = ?", in.FileDetail.Identity, in.FileDetail.Uid, globalkey.DelStateYes).
+			Delete(model.UserRepository{})
 		if err != nil {
 			return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "更新user_repository失败")
 		}

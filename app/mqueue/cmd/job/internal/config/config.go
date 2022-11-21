@@ -9,9 +9,9 @@ import (
 type Config struct {
 	service.ServiceConf
 	Redis redis.RedisConf
-	WxMiniConf    WxMiniConf
+	//WxMiniConf WxMiniConf
 
 	SettleRpcConf zrpc.RpcClientConf
-	OrderRpcConf zrpc.RpcClientConf
-	UsercenterRpcConf zrpc.RpcClientConf
+	DiskRpcConf   zrpc.RpcClientConf
+	//UserRpcConf   zrpc.RpcClientConf
 }

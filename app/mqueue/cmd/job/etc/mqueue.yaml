@@ -21,22 +21,19 @@ Log:
   Level: error
 
 Redis:
-  Host: 127.0.0.1:6379
+  Host: redis:6379
   Type: node
   Pass: "000000"
 
 #WxMiniConf
 WxMiniConf:
-  AppId: wx2add729fadddddd
-  Secret: 20365395b3de9b2a9351ddddddd
+  AppId:
+  Secret:
 
 #rpc service.
-OrderRpcConf:
-  Endpoints:
-    - 127.0.0.1:2004
-  NonBlock: true
+UserRpcConf:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: user.rpc
 
-UsercenterRpcConf:
-  Endpoints:
-    - 127.0.0.1:2001
-  NonBlock: true
