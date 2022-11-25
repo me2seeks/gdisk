@@ -23,7 +23,7 @@ service community {
 	delete /posts/delete(PostsDeleteRequest) returns (PostsDeleteReply)
 	
 	@handler PostsList
-	post /posts/list(PostsListRequest) returns (PostsListReply)
+	get /posts/list(PostsListRequest) returns (PostsListReply)
 	
 	@handler PostsDetail
 	post /posts/detail(PostsDetailRequest) returns (PostsDetailReply)

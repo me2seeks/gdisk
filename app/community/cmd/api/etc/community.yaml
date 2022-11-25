@@ -40,15 +40,4 @@ Cache:
     Pass: "000000"
 
 
-#rpc
-DiskRpcConf:
-  Etcd:
-    Hosts:
-      - etcd:2379
-    Key: disk.rpc
-UserRpcConf:
-  Etcd:
-    Hosts:
-      - etcd:2379
-    Key: user.rpc
 
