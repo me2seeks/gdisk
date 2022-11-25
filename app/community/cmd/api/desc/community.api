@@ -1,0 +1,176 @@
+syntax = "v1"
+
+info(
+	title: "type title here"
+	desc: "type desc here"
+	author: "type author here"
+	email: "type email here"
+	version: "type version here"
+)
+
+@server (
+	middleware: Auth
+)
+service community {
+	// 社区模块
+	@handler PostsCreate
+	post /posts/create(PostsCreateRequest) returns (PostsCreateReply)
+	
+	@handler PostsUpdate
+	post /posts/update(PostsUpdateRequest) returns (PostsUpdateReply)
+	
+	@handler PostsDelete
+	delete /posts/delete(PostsDeleteRequest) returns (PostsDeleteReply)
+	
+	@handler PostsList
+	post /posts/list(PostsListRequest) returns (PostsListReply)
+	
+	@handler PostsDetail
+	post /posts/detail(PostsDetailRequest) returns (PostsDetailReply)
+	
+	@handler PostsCommentCreate
+	post /posts/comment/create(PostsCommentCreateRequest) returns (PostsCommentCreateReply)
+	
+	@handler PostsCommentDelete
+	delete /posts/comment/delete(PostsCommentDeleteRequest) returns (PostsCommentDeleteReply)
+	
+	@handler PostsComment
+	post /posts/comment(PostsCommentRequest) returns (PostsCommentReply)
+	
+	//	@handler PostsCommentupdate
+	//	post /posts/comment/update(PostsCommentupdateRequest) returns (PostsCommentupdateReply)
+	
+	@handler PostsFeedbackCreate
+	post /posts/feedback/create(PostsFeedbackCreateRequest) returns (PostsFeedbackCreateReply)
+	
+}
+
+type PostsCommentRequest {
+	PostsIdentity string `json:"posts_identity"`
+}
+type PostsCommentReply {
+	List []PostsCommentsItem `json:"list"`
+}
+
+type PostsFeedbackCreateRequest {
+	Type          string `json:"type"`
+	PostsIdentity string `json:"posts_identity"`
+}
+type PostsFeedbackCreateReply {
+	Ilike   int `json:"ilike"`
+	Dislike int `json:"dislike"`
+	Collect int `json:"collect"`
+}
+
+type GongDeUpdateRequest {
+	CurrentCount int `json:"current_count"`
+}
+type GongDeUpdateReply {
+	Count int `json:"count"`
+}
+
+type PostsCreateRequest {
+	Title   string `json:"title"`
+	Tags    string `json:"tags,optional"`
+	Content string `json:"content,optional"`
+	Mention string `json:"mention,optional"`
+	Cover   string `json:"cover,optional"`
+}
+type PostsCreateReply {
+}
+
+type PostsUpdateRequest {
+	Identity string `json:"identity"`
+	Title    string `json:"title,optional"`
+	Tags     string `json:"tags,optional"`
+	Content  string `json:"content,optional"`
+	Mention  string `json:"mention,optional"`
+	Cover    string `json:"cover,optional"`
+}
+type PostsUpdateReply {
+}
+
+type PostsDeleteRequest {
+	Identity string `json:"identity"`
+}
+type PostsDeleteReply {
+}
+
+type PostsDetailRequest {
+	Identity string `json:"identity"`
+}
+type PostsDetailReply {
+	Identity   string `json:"identity"`
+	Title      string `json:"title"`
+	Tags       string `json:"tags"`
+	Content    string `json:"content"`
+	Mention    string `json:"mention"`
+	Cover      string `json:"cover"`
+	Ilike      int    `json:"ilike"`
+	Dislike    int    `json:"dislike"`
+	Collection int    `json:"collection"`
+	ClickNum   int    `json:"click_num"`
+	Owner      string `json:"owner"`
+	Avatar     string `json:"avatar"`
+	UpdatedAt  string `json:"updated_at"`
+}
+
+type PostsCommentCreateRequest {
+	Content       string `json:"content"`
+	Mention       string `json:"mention,optional"`
+	ReplyIdentity string `json:"reply_identity,optional"`
+	PostsIdentity string `json:"posts_identity"`
+	ReplyName     string `json:"reply_name,optional"`
+}
+type PostsCommentCreateReply {
+}
+
+type PostsCommentDeleteRequest {
+	Identity string `json:"identity"`
+}
+type PostsCommentDeleteReply {
+}
+
+type PostsListRequest {
+	Id   int64 `json:"id,optional"`
+	Page int   `json:"page,optional"`
+	Size int   `json:"size,optional"`
+}
+type PostsListReply {
+	List []*PostsListItem `json:"list"`
+}
+type PostsListItem {
+	Identity  string `json:"identity"`
+	Title     string `json:"title"`
+	Tags      string `json:"tags"`
+	Content   string `json:"content"`
+	Mention   string `json:"mention"`
+	Cover     string `json:"cover"`
+	ClickNum  int    `json:"click_num"`
+	Owner     string `json:"owner"`
+	Avatar    string `json:"avatar"`
+	ReplyNum  int    `json:"reply_num"`
+	UpdatedAt string `json:"updated_at"`
+}
+
+type PostsCommentsRequest {
+	PostsIdentity string `json:"posts_identity"`
+}
+type PostsCommentsReply {
+	List []*PostsCommentsItem `json:"list"`
+}
+type PostsCommentsItem {
+	Identity      string `json:"identity"`
+	ReplyIdentity string `json:"reply_identity"`
+	PostsIdentity string `json:"posts_identity"`
+	PostsName     string `json:"posts_name"`
+	ReplyName     string `json:"reply_name"`
+	Content       string `json:"content"`
+	Mention       string `json:"mention"`
+	Owner         string `json:"owner"`
+	OwnerIdentity string `json:"owner_identity"`
+	Avatar        string `json:"avatar"`
+	Like          int    `json:"like"`
+	Dislike       int    `json:"dislike"`
+	UpdatedAt     string `json:"updated_at"`
+}

@@ -1,0 +1,54 @@
+Name: disk-api
+Host: 0.0.0.0
+Port: 3004
+Mode: dev
+
+#jwtAuth
+JwtAuth:
+  AccessSecret: ae0536f9-1024-4606-8e13-5a19ed505da0
+  AccessExpire: 31536000
+
+
+#Monitoring
+Prometheus:
+  Host: 0.0.0.0
+  Port: 4013
+  Path: /metrics
+
+#Link Tracking
+Telemetry:
+  Name: disk-api
+  Endpoint: http://jaeger:14268/api/traces
+  Sampler: 1.0
+  Batcher: jaeger
+
+Log:
+  ServiceName: payment-api
+  Level: error
+
+
+Redis:
+  Host: redis:6379
+  Key: api:disk
+  Type: node
+  Pass: "000000"
+
+DB:
+  DataSource: root:docker@tcp(mysql:3306)/cloud_disk?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+Cache:
+  - Host: redis:6379
+    Pass: "000000"
+
+
+#rpc
+DiskRpcConf:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: disk.rpc
+UserRpcConf:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: user.rpc
+
