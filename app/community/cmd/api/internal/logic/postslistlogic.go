@@ -29,11 +29,11 @@ func (l *PostsListLogic) PostsList(req *types.PostsListRequest) (resp *types.Pos
 
 	err = l.svcCtx.Engine.
 		Table("posts_basic").
-		Select("posts_basic.identity, posts_basic.title, posts_basic.tags, user_basic.name as owner, user_basic.avatar, " +
+		Select("posts_basic.identity, posts_basic.title, posts_basic.tags, user.name as owner, user.avatar, " +
 			"posts_basic.content, posts_basic.click_num, posts_basic.mention, " +
 			"posts_basic.cover, posts_basic.updated_at, " +
 			"(SELECT count(posts_comment_basic.identity) from posts_comment_basic where posts_comment_basic.posts_identity = posts_basic.identity and posts_comment_basic.deleted_at IS NULL) as reply_num").
-		Joins("left join user_basic on posts_basic.user_identity = user_basic.identity").
+		Joins("left join user on posts_basic.user_identity = user.identity").
 		Where("posts_basic.deleted_at IS NULL").
 		Order("posts_basic.updated_at desc").
 		Find(&postsList).Error

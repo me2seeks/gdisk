@@ -36,13 +36,13 @@ func (l *PostsDetailLogic) PostsDetail(req *types.PostsDetailRequest) (resp *typ
 
 	err = l.svcCtx.Engine.
 		Table("posts_basic").
-		Select("posts_basic.identity, posts_basic.title, posts_basic.tags, user_basic.name as owner, user_basic.avatar, "+
+		Select("posts_basic.identity, posts_basic.title, posts_basic.tags, user.name as owner, user.avatar, "+
 			"posts_basic.content, posts_basic.click_num, posts_basic.mention, "+
 			"posts_basic.cover, posts_basic.updated_at, "+
 			"(SELECT count(posts_fb.identity) from posts_fb where posts_fb.type = 'collect' and posts_fb.count = 1 and posts_fb.posts_identity = posts_basic.identity and posts_fb.deleted_at IS NULL) as collection, "+
 			"(SELECT count(posts_fb.identity) from posts_fb where posts_fb.type = 'dislike' and posts_fb.count = 1 and posts_fb.posts_identity = posts_basic.identity and posts_fb.deleted_at IS NULL) as dislike, "+
 			"(SELECT count(posts_fb.identity) from posts_fb where posts_fb.type = 'ilike' and posts_fb.count = 1 and posts_fb.posts_identity = posts_basic.identity and posts_fb.deleted_at IS NULL) as ilike").
-		Joins("left join user_basic on posts_basic.user_identity = user_basic.identity").
+		Joins("left join user on posts_basic.user_identity = user.identity").
 		Where("posts_basic.identity = ?", req.Identity).
 		First(resp).Error
 	if err != nil {
