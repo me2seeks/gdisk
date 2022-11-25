@@ -40,4 +40,9 @@ service user {
 	@doc "wx Auth"
 	@handler wxAuth
 	post /wxMiniAuth (WXMiniAuthReq) returns (WXMiniAuthResp)
+	
+	@doc "更改头像"
+	@handler updateAvatar
+	post /updateAvatar (UpdateAvatarReq) returns (UpdateAvatarResp)
+	
 }

@@ -10,9 +10,8 @@ import (
 	"cloud-disk/common/xerr"
 	"context"
 	"github.com/pkg/errors"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
-
 	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
 type RegisterLogic struct {
@@ -39,10 +38,6 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (*types.RegisterResp, e
 	if err != nil && err != model.ErrNotFound {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR:  UserModel.FindOneByPhone verify:%s,err:%v", req.Email, err)
 	}
-	//TODO mysql反应慢
-	//if err != model.ErrNotFound {
-	//	return nil, errors.Wrapf(xerr.NewErrCode(xerr.ErrUserAlreadyRegisterError), "ERROR:  用户已存在 :%s,err:%v", req.Email, err)
-	//}
 
 	var identity string
 	if err := l.svcCtx.UserModel.Trans(l.ctx, func(ctx context.Context, session sqlx.Session) error {
@@ -51,6 +46,7 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (*types.RegisterResp, e
 		u.Email = req.Email
 		u.Name = req.Name
 		u.Identity = identity
+		u.Avatar = tool.GetAvatar()
 
 		if len(u.Name) == 0 {
 			u.Name = tool.Krand(8, tool.KC_RAND_KIND_ALL)

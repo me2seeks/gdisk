@@ -22,7 +22,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config:      c,
 		AsynqServer: newAsynqServer(c),
-		MiniProgram: newMiniprogramClient(c),
-		DiskRpc:     disk.NewDisk(zrpc.MustNewClient(c.DiskRpcConf)),
+		//MiniProgram: newMiniprogramClient(c),
+		DiskRpc: disk.NewDisk(zrpc.MustNewClient(c.DiskRpcConf)),
 	}
 }

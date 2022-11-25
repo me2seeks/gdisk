@@ -58,3 +58,10 @@ type UserInfoReq struct {
 type UserInfoResp struct {
 	UserInfo User `json:"userInfo"`
 }
+
+type UpdateAvatarReq struct {
+	Avatar string `json:"avatar"`
+}
+
+type UpdateAvatarResp struct {
+}

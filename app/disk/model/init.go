@@ -16,7 +16,7 @@ func Init(_ string) *gorm.DB {
 	opt.AsyncWrite = true          //异步缓存更新, 默认false。 insert update delete 成功后是否异步更新缓存
 	opt.PenetrationSafe = true     //开启防穿透, 默认false。
 
-	engine, err := gorm.Open(mysql.Open("root:"+"000000"+"@tcp(mysql:3306)/cloud_disk?charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{SkipDefaultTransaction: true})
+	engine, err := gorm.Open(mysql.Open("root:"+"docker"+"@tcp(mysql:3306)/cloud_disk?charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{SkipDefaultTransaction: true})
 	if err != nil {
 		logx.Errorf("gorm New Engine Error:%v", err)
 		return nil

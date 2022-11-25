@@ -9,10 +9,10 @@ info(
 )
 
 type User {
-    Identity int64 `json:"identity"`
+    Identity string `json:"identity"`
     Email string `json:"email"`
     Name string `json:"name"`
-    Sex string `json:"sex"`
+    Sex int64 `json:"sex"`
     Avatar string `json:"avatar"`
     Info string `json:"info"`
     Capacity int `json:"capacity"`
@@ -79,6 +79,14 @@ type (
     }
     UserInfoResp {
         UserInfo User `json:"userInfo"`
+    }
+)
+
+type (
+    UpdateAvatarReq{
+        Avatar string `json:"avatar"`
+    }
+    UpdateAvatarResp{
     }
 )
 

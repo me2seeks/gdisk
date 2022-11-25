@@ -44,6 +44,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/wxMiniAuth",
 				Handler: user.WxAuthHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/updateAvatar",
+				Handler: user.UpdateAvatarHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
 		rest.WithPrefix("/user"),
