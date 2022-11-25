@@ -1,10 +1,12 @@
 package logic
 
 import (
-	"context"
-
 	"cloud-disk/app/community/cmd/api/internal/svc"
 	"cloud-disk/app/community/cmd/api/internal/types"
+	"cloud-disk/common/globalkey"
+	"cloud-disk/common/xerr"
+	"context"
+	"github.com/pkg/errors"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -29,17 +31,17 @@ func (l *PostsListLogic) PostsList(req *types.PostsListRequest) (resp *types.Pos
 
 	err = l.svcCtx.Engine.
 		Table("posts_basic").
-		Select("posts_basic.identity, posts_basic.title, posts_basic.tags, user.name as owner, user.avatar, " +
-			"posts_basic.content, posts_basic.click_num, posts_basic.mention, " +
-			"posts_basic.cover, posts_basic.updated_at, " +
+		Select("posts_basic.identity, posts_basic.title, posts_basic.tags, user.name as owner, user.avatar, "+
+			"posts_basic.content, posts_basic.click_num, posts_basic.mention, "+
+			"posts_basic.cover, posts_basic.updated_at, "+
 			"(SELECT count(posts_comment_basic.identity) from posts_comment_basic where posts_comment_basic.posts_identity = posts_basic.identity and posts_comment_basic.deleted_at IS NULL) as reply_num").
 		Joins("left join user on posts_basic.user_identity = user.identity").
-		Where("posts_basic.deleted_at IS NULL").
+		Where("posts_basic.del_state = ?", globalkey.DelStateNo).
 		Order("posts_basic.updated_at desc").
 		Find(&postsList).Error
 
 	if err != nil {
-		return
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR  posts list error: %v", err)
 	}
 
 	resp.List = postsList

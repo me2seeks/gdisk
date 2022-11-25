@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"cloud-disk/common/globalkey"
 	"context"
 
 	"cloud-disk/app/community/cmd/api/internal/svc"
@@ -36,7 +37,7 @@ func (l *PostsCommentsLogic) PostsComment(req *types.PostsCommentRequest) (resp 
 		Joins("left join user on posts_comment_basic.user_identity = user.identity").
 		Joins("left join posts_basic on posts_basic.identity = posts_comment_basic.posts_identity").
 		Where("posts_comment_basic.posts_identity = ?", req.PostsIdentity).
-		Where("posts_comment_basic.deleted_at IS NULL").
+		Where("posts_comment_basic.del_state = ? ", globalkey.DelStateNo).
 		Find(&postsCommentList).Error
 
 	if err != nil {

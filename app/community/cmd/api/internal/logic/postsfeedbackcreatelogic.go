@@ -2,6 +2,7 @@ package logic
 
 import (
 	"cloud-disk/common/ctxdata"
+	"cloud-disk/common/globalkey"
 	"context"
 
 	"cloud-disk/app/community/model"
@@ -44,7 +45,7 @@ func (l *PostsFeedbackCreateLogic) PostsFeedbackCreate(req *types.PostsFeedbackC
 	var count int64
 	err = l.svcCtx.Engine.
 		Table("posts_fb").
-		Where("type = ? AND count = 1 AND posts_identity = ? AND user_identity = ? AND deleted_at IS NULL", req.Type, req.PostsIdentity, userIdentity).
+		Where("type = ? AND count = 1 AND posts_identity = ? AND user_identity = ? AND del_state = ? ", req.Type, req.PostsIdentity, userIdentity, globalkey.DelStateNo).
 		Count(&count).Error
 	if count > 0 {
 		l.svcCtx.Engine.
@@ -64,19 +65,19 @@ func (l *PostsFeedbackCreateLogic) PostsFeedbackCreate(req *types.PostsFeedbackC
 	var ilike int64
 	err = l.svcCtx.Engine.
 		Table("posts_fb").
-		Where("posts_identity = ? AND type = 'ilike' AND count = 1 AND deleted_at IS NULL", req.PostsIdentity).
+		Where("posts_identity = ? AND type = 'ilike' AND count = 1 AND del_state = ? ", req.PostsIdentity, globalkey.DelStateNo).
 		Count(&ilike).
 		Error
 	var dislike int64
 	err = l.svcCtx.Engine.
 		Table("posts_fb").
-		Where("posts_identity = ? AND type = 'dislike' AND count = 1 AND deleted_at IS NULL", req.PostsIdentity).
+		Where("posts_identity = ? AND type = 'dislike' AND count = 1 AND del_state = ? ", req.PostsIdentity, globalkey.DelStateNo).
 		Count(&dislike).
 		Error
 	var collect int64
 	err = l.svcCtx.Engine.
 		Table("posts_fb").
-		Where("posts_identity = ? AND type = 'collect' AND count = 1 AND deleted_at IS NULL", req.PostsIdentity).
+		Where("posts_identity = ? AND type = 'collect' AND count = 1 AND del_state = ? ", req.PostsIdentity, globalkey.DelStateNo).
 		Count(&collect).
 		Error
 	if err != nil {

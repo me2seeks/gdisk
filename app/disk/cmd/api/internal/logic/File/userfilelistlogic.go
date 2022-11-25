@@ -6,6 +6,7 @@ import (
 	"cloud-disk/app/disk/cmd/api/internal/types"
 	"cloud-disk/app/disk/cmd/rpc/pb"
 	"cloud-disk/common/ctxdata"
+	"cloud-disk/common/globalkey"
 	"context"
 	"github.com/jinzhu/copier"
 
@@ -62,7 +63,7 @@ func (l *UserFileListLogic) UserFileList(req *types.UserFileListRequest) (resp *
 	err = l.svcCtx.Engine.
 		Table("user_repository").
 		// TODO pid = ? AND
-		Where("uid = ? AND deleted_at IS NULL", uid).
+		Where("uid = ? AND  del_state = ?", uid, globalkey.DelStateNo).
 		Count(&resp.Count).Error
 	if err != nil {
 		return

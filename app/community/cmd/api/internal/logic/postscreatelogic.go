@@ -2,6 +2,7 @@ package logic
 
 import (
 	"cloud-disk/common/ctxdata"
+	"cloud-disk/common/globalkey"
 	"cloud-disk/common/uuid"
 	"context"
 
@@ -45,7 +46,7 @@ func (l *PostsCreateLogic) PostsCreate(req *types.PostsCreateRequest) (resp *typ
 	var count int64
 	err = l.svcCtx.Engine.
 		Table("posts_basic").
-		Where("title = ? AND user_identity = ? AND deleted_at IS NULL", req.Title, userIdentity).
+		Where("title = ? AND user_identity = ? AND del_state = ? ", req.Title, userIdentity, globalkey.DelStateNo).
 		Count(&count).Error
 
 	if count > 0 {
