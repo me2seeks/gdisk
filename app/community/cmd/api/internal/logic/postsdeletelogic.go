@@ -37,5 +37,5 @@ func (l *PostsDeleteLogic) PostsDelete(req *types.PostsDeleteRequest) (resp *typ
 
 		return
 	}
-	return
+	return resp, nil
 }

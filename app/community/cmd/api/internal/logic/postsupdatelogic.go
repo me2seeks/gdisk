@@ -57,5 +57,5 @@ func (l *PostsUpdateLogic) PostsUpdate(req *types.PostsUpdateRequest) (resp *typ
 		return
 	}
 
-	return
+	return resp, nil
 }

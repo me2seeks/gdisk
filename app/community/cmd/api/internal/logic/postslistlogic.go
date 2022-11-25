@@ -44,5 +44,5 @@ func (l *PostsListLogic) PostsList(req *types.PostsListRequest) (resp *types.Pos
 
 	resp.List = postsList
 
-	return
+	return resp, nil
 }

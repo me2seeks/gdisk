@@ -56,5 +56,5 @@ func (l *PostsCreateLogic) PostsCreate(req *types.PostsCreateRequest) (resp *typ
 		Select("identity", "user_identity", "title", "tags", "content", "mention", "cover", "click_num", "created_at", "updated_at").
 		Create(newPosts).Error
 
-	return
+	return resp, nil
 }

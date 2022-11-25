@@ -44,5 +44,5 @@ func (l *PostsCommentsLogic) PostsComment(req *types.PostsCommentRequest) (resp 
 	}
 
 	resp.List = postsCommentList
-	return
+	return resp, nil
 }

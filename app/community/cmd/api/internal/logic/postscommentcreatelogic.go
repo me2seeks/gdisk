@@ -48,5 +48,5 @@ func (l *PostsCommentCreateLogic) PostsCommentCreate(req *types.PostsCommentCrea
 		Select("identity", "user_identity", "posts_identity", "reply_identity", "reply_name", "content", "mention", "like", "dislike", "created_at", "updated_at").
 		Create(newPostsComment).Error
 
-	return
+	return resp, nil
 }

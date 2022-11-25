@@ -35,5 +35,5 @@ func (l *PostsCommentDeleteLogic) PostsCommentDelete(req *types.PostsCommentDele
 	if err != nil {
 		return
 	}
-	return
+	return resp, nil
 }

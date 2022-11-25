@@ -50,5 +50,5 @@ func (l *PostsDetailLogic) PostsDetail(req *types.PostsDetailRequest) (resp *typ
 		return
 	}
 
-	return
+	return resp, nil
 }

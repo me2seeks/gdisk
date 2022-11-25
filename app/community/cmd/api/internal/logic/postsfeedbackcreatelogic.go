@@ -88,5 +88,5 @@ func (l *PostsFeedbackCreateLogic) PostsFeedbackCreate(req *types.PostsFeedbackC
 	resp.Dislike = int(dislike)
 	resp.Collect = int(collect)
 
-	return
+	return resp, nil
 }
