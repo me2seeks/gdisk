@@ -31,9 +31,9 @@ WxMiniConf:
   Secret:
 
 #rpc service.
-UserRpcConf:
+DiskRpcConf:
   Etcd:
     Hosts:
       - etcd:2379
-    Key: user.rpc
+    Key: disk.rpc
 
