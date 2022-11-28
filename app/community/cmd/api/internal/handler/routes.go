@@ -28,7 +28,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: PostsDeleteHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodPost,
+				Method:  http.MethodGet,
 				Path:    "/posts/list",
 				Handler: PostsListHandler(serverCtx),
 			},
@@ -57,6 +57,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/posts/feedback/create",
 				Handler: PostsFeedbackCreateHandler(serverCtx),
 			},
-		}, rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
+		},
+		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
 	)
 }

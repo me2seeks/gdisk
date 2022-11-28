@@ -8,9 +8,6 @@ info(
 	version: "type version here"
 )
 
-@server (
-	middleware: Auth
-)
 service community {
 	// 社区模块
 	@handler PostsCreate
