@@ -4,7 +4,6 @@ import (
 	"cloud-disk/app/define"
 	"cloud-disk/app/disk/model"
 	"cloud-disk/common/ctxdata"
-	"cloud-disk/common/globalkey"
 	"cloud-disk/common/uuid"
 	"cloud-disk/common/xerr"
 	"context"
@@ -50,7 +49,7 @@ func (l *UserRepositorySaveLogic) UserRepositorySave(req *types.UserRepositorySa
 	l.svcCtx.Engine.
 		Table("user_repository").
 		Select("sum(repository_pool.size) as total_size").
-		Where("user_repository.uid = ? AND user_repository.del_state = ?", userIdentity, globalkey.DelStateNo).
+		Where("user_repository.uid = ? AND user_repository.deleted_at IS NULL", userIdentity).
 		Joins("left join repository_pool on user_repository.repository_identity = repository_pool.identity").
 		Take(&Size)
 	if Size.TotalSize >= define.UserRepositoryMaxSize {
@@ -60,7 +59,7 @@ func (l *UserRepositorySaveLogic) UserRepositorySave(req *types.UserRepositorySa
 	var count int64
 	err = l.svcCtx.Engine.
 		Table("user_repository").
-		Where("name = ? AND parent_id = ? AND uid = ? AND user_repository.del_state = ?", req.Name, req.ParentId, userIdentity, globalkey.DelStateNo).
+		Where("name = ? AND parent_id = ? AND uid = ? AND user_repository.deleted_at IS NULL", req.Name, req.ParentId, userIdentity).
 		Count(&count).Error
 	if count > 0 {
 		return nil, errors.New("exist")

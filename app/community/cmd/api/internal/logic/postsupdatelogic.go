@@ -2,7 +2,6 @@ package logic
 
 import (
 	"cloud-disk/common/ctxdata"
-	"cloud-disk/common/globalkey"
 	"context"
 
 	"cloud-disk/app/community/cmd/api/internal/svc"
@@ -36,7 +35,7 @@ func (l *PostsUpdateLogic) PostsUpdate(req *types.PostsUpdateRequest) (resp *typ
 	var cntTitle int64
 	err = l.svcCtx.Engine.
 		Table("posts_basic").
-		Where("title = ? AND identity != ? AND user_identity = ? AND del_state = ? ", req.Title, req.Identity, userIdentity, globalkey.DelStateNo).
+		Where("title = ? AND identity != ? AND user_identity = ? AND deleted_at IS NULL", req.Title, req.Identity, userIdentity).
 		Count(&cntTitle).Error
 	if err != nil {
 

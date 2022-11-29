@@ -54,7 +54,7 @@ func (l *PostsCreateLogic) PostsCreate(req *types.PostsCreateRequest) (resp *typ
 	}
 
 	err = l.svcCtx.Engine.
-		Select("identity", "user_identity", "title", "tags", "content", "mention", "cover", "click_num", "created_at", "updated_at").
+		Select("identity", "user_identity", "title", "tags", "content", "mention", "cover", "click_num", "created_at").
 		Create(newPosts).Error
 
 	return resp, nil
