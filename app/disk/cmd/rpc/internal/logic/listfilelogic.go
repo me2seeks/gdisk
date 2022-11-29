@@ -4,7 +4,6 @@ import (
 	"cloud-disk/app/disk/cmd/rpc/internal/svc"
 	"cloud-disk/app/disk/cmd/rpc/pb"
 	"cloud-disk/app/disk/model"
-	"cloud-disk/common/globalkey"
 	"cloud-disk/common/xerr"
 	"context"
 	"github.com/pkg/errors"
@@ -34,7 +33,7 @@ func (l *ListFileLogic) ListFile(in *pb.ListFileReq) (*pb.ListFileResp, error) {
 				"user_repository.repository_identity, user_repository.ext, user_repository.updated_at,"+
 				"user_repository.name, repository_pool.path, repository_pool.size").
 			Where("uid= ? ", in.Uid).
-			Where("user_repository.del_state", globalkey.DelStateNo).
+			Where("user_repository.deleted_at IS NULL").
 			Joins("left join repository_pool on user_repository.repository_identity = repository_pool.identity").
 			Find(&resp.FileList).Error
 		//Limit(size).
@@ -49,7 +48,7 @@ func (l *ListFileLogic) ListFile(in *pb.ListFileReq) (*pb.ListFileResp, error) {
 			"user_repository.repository_identity, user_repository.ext, user_repository.updated_at,"+
 			"user_repository.name, repository_pool.path, repository_pool.size").
 		Where("uid= ? ", in.Uid).
-		Where("user_repository.del_state", globalkey.DelStateYes).
+		Where("user_repository.deleted_at IS NOT NULL").
 		Joins("left join repository_pool on user_repository.repository_identity = repository_pool.identity").
 		Find(&resp.DeletedList).Error
 	//Limit(size).
