@@ -1,9 +1,9 @@
 package File
 
 import (
+	"cloud-disk/app/disk/model"
 	"cloud-disk/app/mqueue/cmd/job/jobtype"
 	"cloud-disk/common/ctxdata"
-	"cloud-disk/common/globalkey"
 	"cloud-disk/common/xerr"
 	"context"
 	"encoding/json"
@@ -39,8 +39,7 @@ func (l *UserFileDeleteLogic) UserFileDelete(req *types.UserFileDeleteRequest) (
 	err = l.svcCtx.Engine.
 		Table("user_repository").
 		Where("identity = ? AND uid = ?", req.Identity, u).
-		Update("del_state", globalkey.DelStateYes).
-		Update("deleted_at", time.Now()).Error
+		Delete(&model.UserRepository{}).Error
 	if err != nil {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "更新user_repository失败")
 	}
