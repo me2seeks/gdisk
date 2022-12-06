@@ -102,7 +102,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodDelete,
-				Path:    "/file",
+				Path:    "/file/user",
 				Handler: File.UserFileDeleteHandler(serverCtx),
 			},
 			{

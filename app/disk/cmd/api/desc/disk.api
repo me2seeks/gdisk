@@ -88,7 +88,7 @@ service disk {
 	
 	// 用户 - 文件删除
 	@handler UserFileDelete
-	delete /file(UserFileDeleteRequest) returns (UserFileDeleteReply)
+	delete /file/user(UserFileDeleteRequest) returns (UserFileDeleteReply)
 	
 	// 用户 - 文件移动
 	@handler UserFileMove
