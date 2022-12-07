@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloud_disk
-  namespace: cloud_disk
+  name: cloud-disk
+  namespace: cloud-disk
   labels:
-    app: cloud_disk
+    app: cloud-disk
 spec:
   replicas: 3
   revisionHistoryLimit: 5
   selector:
     matchLabels:
-      app: cloud_disk
+      app: cloud-disk
   template:
     metadata:
       labels:
-        app: cloud_disk
+        app: cloud-disk
     spec:
       containers:
-      - name: cloud_disk
+      - name: cloud-disk
         image: meeseekbox/gomodd:v1.18
         lifecycle:
           preStop:
@@ -53,35 +53,35 @@ spec:
             path: /usr/share/zoneinfo/Asia/Shanghai
         - name: app
           hostPath:
-            path: /go/cloud_disk
+            path: /go/cloud-disk
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: cloud_disk-svc
-  namespace: cloud_disk
+  name: cloud-disk-svc
+  namespace: cloud-disk
 spec:
   ports:
     - port: 80
   selector:
-    app: cloud_disk
+    app: cloud-disk
 
 ---
 
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: cloud_disk-hpa-c
-  namespace: cloud_disk
+  name: cloud-disk-hpa-c
+  namespace: cloud-disk
   labels:
-    app: cloud_disk-hpa-c
+    app: cloud-disk-hpa-c
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: cloud_disk
+    name: cloud-disk
   minReplicas: 3
   maxReplicas: 10
   metrics:
@@ -95,15 +95,15 @@ spec:
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: cloud_disk-hpa-m
-  namespace: cloud_disk
+  name: cloud-disk-hpa-m
+  namespace: cloud-disk
   labels:
-    app: cloud_disk-hpa-m
+    app: cloud-disk-hpa-m
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: cloud_disk
+    name: cloud-disk
   minReplicas: 3
   maxReplicas: 10
   metrics:

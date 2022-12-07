@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx
-  namespace: cloud_disk
+  namespace: cloud-disk
   labels:
     app: nginx
 spec:
@@ -66,7 +66,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nginx-svc
-  namespace: cloud_disk
+  namespace: cloud-disk
 spec:
   ports:
     - port: 80
@@ -81,7 +81,7 @@ apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: nginx-hpa-c
-  namespace: cloud_disk
+  namespace: cloud-disk
   labels:
     app: nginx-hpa-c
 spec:
@@ -103,7 +103,7 @@ apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: nginx-hpa-m
-  namespace: cloud_disk
+  namespace: cloud-disk
   labels:
     app: nginx-hpa-m
 spec:

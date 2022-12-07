@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis
-  namespace: cloud_disk
+  namespace: cloud-disk
   labels:
     app: redis
 spec:
@@ -60,7 +60,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redis-svc
-  namespace: cloud_disk
+  namespace: cloud-disk
 spec:
   ports:
     - port: 6379
@@ -73,7 +73,7 @@ apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: redis-hpa-c
-  namespace: cloud_disk
+  namespace: cloud-disk
   labels:
     app: redis-hpa-c
 spec:
@@ -95,7 +95,7 @@ apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: redis-hpa-m
-  namespace: cloud_disk
+  namespace: cloud-disk
   labels:
     app: redis-hpa-m
 spec:

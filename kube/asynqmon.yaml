@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: asynqmon
-  namespace: cloud_disk
+  namespace: cloud-disk
   labels:
     app: asynqmon
 spec:
@@ -56,7 +56,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: asynqmon-svc
-  namespace: cloud_disk
+  namespace: cloud-disk
 spec:
   ports:
     - port: 8080
@@ -69,7 +69,7 @@ apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: asynqmon-hpa-c
-  namespace: cloud_disk
+  namespace: cloud-disk
   labels:
     app: asynqmon-hpa-c
 spec:
@@ -91,7 +91,7 @@ apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: asynqmon-hpa-m
-  namespace: cloud_disk
+  namespace: cloud-disk
   labels:
     app: asynqmon-hpa-m
 spec:
