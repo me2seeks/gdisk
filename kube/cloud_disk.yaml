@@ -45,10 +45,15 @@ spec:
         volumeMounts:
         - name: timezone
           mountPath: /etc/localtime
+        - name: app
+          mountPath: ..
       volumes:
         - name: timezone
           hostPath:
             path: /usr/share/zoneinfo/Asia/Shanghai
+        - name: app
+          hostPath:
+            path: /go/cloud_disk
 
 ---
 

@@ -45,10 +45,20 @@ spec:
         volumeMounts:
         - name: timezone
           mountPath: /etc/localtime
+        - name: nginx
+          mountPath: ../deploy/nginx/conf.d
+        - name: disk
+          mountPath: ../disk
       volumes:
         - name: timezone
           hostPath:
             path: /usr/share/zoneinfo/Asia/Shanghai
+        - name: nginx
+          hostPath:
+            path: /etc/nginx/conf.d
+        - name: disk
+          hostPath:
+            path: /var/www
 
 ---
 
