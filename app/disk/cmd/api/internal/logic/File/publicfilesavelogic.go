@@ -28,7 +28,7 @@ func (l *PublicFileSaveLogic) PublicFileSave(req *types.PublicFileSaveRequest) (
 	u := ctxdata.GetUidFromCtx(l.ctx)
 	l.svcCtx.Engine.Table("repository_pool").
 		Where("identity = ? ", req.RepositoryIdentity).
-		Updates(model.RepositoryPool{IsPublic: 1, Owner: u})
+		Updates(model.RepositoryPool{IsPublic: 1, Owner: u, ParentId: req.ParentId})
 
 	return resp, nil
 }
