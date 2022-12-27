@@ -37,7 +37,7 @@ func (l *UserShareListLogic) UserShareList(_ *types.UserShareListRequest) (resp 
 		Joins("LEFT JOIN repository_pool ON repository_pool.identity = share_basic.repository_identity").
 		Joins("LEFT JOIN user_repository ON user_repository.identity = share_basic.user_repository_identity").
 		Joins("left join user on share_basic.user_identity = user.identity").
-		Where("share_basic.user_repository_identity = ?", u).
+		Where("share_basic.user_identity = ?", u).
 		Where("share_basic.deleted_at IS NULL").
 		Order("share_basic.click_num desc").
 		Find(&shareFile).Error

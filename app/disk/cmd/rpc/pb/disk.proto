@@ -9,12 +9,18 @@ service disk {
   rpc UpdateFile(UpdateFileReq) returns(UpdateFileResp);
 //  rpc Statistics(StatisticsReq) returns(StatisticsResp);
   rpc ListFile(ListFileReq) returns(ListFileResp);
+  rpc UnscopedFile(UnscopedFileReq) returns(UnscopedFileResp);
   
 
 
 
 
 
+}
+message UnscopedFileReq{
+  string Identity = 1;
+}
+message UnscopedFileResp {
 }
 
 message FileDetail {

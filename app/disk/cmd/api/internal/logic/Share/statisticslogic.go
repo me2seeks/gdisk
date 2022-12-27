@@ -1,7 +1,6 @@
 package Share
 
 import (
-	"cloud-disk/common/globalkey"
 	"context"
 
 	"cloud-disk/app/disk/cmd/api/internal/svc"
@@ -28,7 +27,7 @@ func (l *ShareStatisticsLogic) ShareStatistics(_ *types.ShareStatisticsRequest) 
 	var s int64
 	var c []int64
 	//var sum int64
-	l.svcCtx.Engine.Table("share_basic").Where("share_basic.del_state", globalkey.DelStateNo).Count(&s)
+	l.svcCtx.Engine.Table("share_basic").Where("share_basic.deleted_at IS NULL").Count(&s)
 	l.svcCtx.Engine.Table("share_basic").Pluck("click_num", &c)
 
 	var sum int64 = 0

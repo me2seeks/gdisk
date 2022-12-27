@@ -29,7 +29,12 @@ func (l *PublicFileListLogic) PublicFileList(_ *types.PublicFileListRequest) (*t
 	resp := types.PublicFileListReply{}
 
 	err := l.svcCtx.Engine.Table("repository_pool").
+		Select("repository_pool.name,repository_pool.ext ,repository_pool.id,repository_pool.parent_id,"+
+			"repository_pool.path,repository_pool.size,repository_pool.updated_at,"+
+			"user.name as owner,repository_pool.identity as repository_identity").
 		Where("is_public", 1).
+		Where("repository_pool.deleted_at IS NULL").
+		Joins("left join user on repository_pool.owner = user.identity").
 		Find(&resp.List).Error
 
 	l.svcCtx.Engine.Table("repository_pool").

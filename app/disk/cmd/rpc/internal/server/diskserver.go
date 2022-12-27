@@ -32,8 +32,13 @@ func (s *DiskServer) UpdateFile(ctx context.Context, in *pb.UpdateFileReq) (*pb.
 	return l.UpdateFile(in)
 }
 
-//   rpc Statistics(StatisticsReq) returns(StatisticsResp);
+// rpc Statistics(StatisticsReq) returns(StatisticsResp);
 func (s *DiskServer) ListFile(ctx context.Context, in *pb.ListFileReq) (*pb.ListFileResp, error) {
 	l := logic.NewListFileLogic(ctx, s.svcCtx)
 	return l.ListFile(in)
+}
+
+func (s *DiskServer) UnscopedFile(ctx context.Context, in *pb.UnscopedFileReq) (*pb.UnscopedFileResp, error) {
+	l := logic.NewUnscopedFileLogic(ctx, s.svcCtx)
+	return l.UnscopedFile(in)
 }

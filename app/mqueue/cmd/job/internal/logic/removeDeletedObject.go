@@ -2,10 +2,8 @@ package logic
 
 import (
 	"cloud-disk/app/disk/cmd/rpc/disk"
-	"cloud-disk/app/disk/cmd/rpc/pb"
 	"cloud-disk/app/mqueue/cmd/job/internal/svc"
 	"cloud-disk/app/mqueue/cmd/job/jobtype"
-	"cloud-disk/common/globalkey"
 	"cloud-disk/common/xerr"
 	"context"
 	"encoding/json"
@@ -34,11 +32,8 @@ func (l *RemoveDeletedObjectHandler) ProcessTask(ctx context.Context, t *asynq.T
 		return errors.Wrapf(ErrRemoveFal, "ERROR RemoveDeletedObjectHandler payload err:%v, payLoad:%+v", err, t.Payload())
 	}
 
-	l.svcCtx.DiskRpc.UpdateFile(ctx, &disk.UpdateFileReq{
-		FileDetail: &pb.FileDetail{
-			Identity: p.Identity,
-			DelState: globalkey.DelStateYes,
-		},
+	l.svcCtx.DiskRpc.UnscopedFile(ctx, &disk.UnscopedFileReq{
+		Identity: p.Identity,
 	})
 	return nil
 }
