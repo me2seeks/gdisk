@@ -26,7 +26,7 @@ type (
 	Disk interface {
 		FileUploadPrepare(ctx context.Context, in *FileUploadPrepareRep, opts ...grpc.CallOption) (*FileUploadPrepareResp, error)
 		UpdateFile(ctx context.Context, in *UpdateFileReq, opts ...grpc.CallOption) (*UpdateFileResp, error)
-		// rpc Statistics(StatisticsReq) returns(StatisticsResp);
+		//   rpc Statistics(StatisticsReq) returns(StatisticsResp);
 		ListFile(ctx context.Context, in *ListFileReq, opts ...grpc.CallOption) (*ListFileResp, error)
 		UnscopedFile(ctx context.Context, in *UnscopedFileReq, opts ...grpc.CallOption) (*UnscopedFileResp, error)
 	}
@@ -52,7 +52,7 @@ func (m *defaultDisk) UpdateFile(ctx context.Context, in *UpdateFileReq, opts ..
 	return client.UpdateFile(ctx, in, opts...)
 }
 
-// rpc Statistics(StatisticsReq) returns(StatisticsResp);
+//   rpc Statistics(StatisticsReq) returns(StatisticsResp);
 func (m *defaultDisk) ListFile(ctx context.Context, in *ListFileReq, opts ...grpc.CallOption) (*ListFileResp, error) {
 	client := pb.NewDiskClient(m.cli.Conn())
 	return client.ListFile(ctx, in, opts...)

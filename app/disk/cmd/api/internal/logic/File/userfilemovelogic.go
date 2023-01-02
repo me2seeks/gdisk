@@ -40,7 +40,7 @@ func (l *UserFileMoveLogic) UserFileMove(req *types.UserFileMoveRequest) (resp *
 
 	var fileDetail *pb.FileDetail
 	fileDetail.Identity = req.Identity
-	fileDetail.ParentId = parentData.Id
+	fileDetail.ParentId = req.ParentIdentity
 	fileDetail.Uid = userIdentity
 
 	_, err = l.svcCtx.DiskRpc.UpdateFile(l.ctx, &pb.UpdateFileReq{FileDetail: fileDetail})

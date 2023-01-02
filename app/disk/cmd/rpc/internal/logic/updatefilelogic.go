@@ -68,7 +68,7 @@ func (l *UpdateFileLogic) UpdateFile(in *pb.UpdateFileReq) (*pb.UpdateFileResp, 
 	}
 
 	//	move
-	if in.FileDetail.ParentId != 0 {
+	if in.FileDetail.ParentId != "" {
 		err := l.svcCtx.Engine.
 			Table("user_repository").
 			Where("identity = ? AND uid = ?", in.FileDetail.Identity, in.FileDetail.Uid).
