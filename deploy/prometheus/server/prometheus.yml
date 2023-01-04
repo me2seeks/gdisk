@@ -39,42 +39,42 @@ scrape_configs:
           app: verification-rpc
           env: dev
 
-  - job_name: 'order-api'
-    static_configs:
-      - targets: [ 'cloud_disk:4007' ]
-        labels:
-          job: order-api
-          app: order-api
-          env: dev
-  - job_name: 'order-rpc'
-    static_configs:
-      - targets: [ 'cloud_disk:4008' ]
-        labels:
-          job: order-rpc
-          app: order-rpc
-          env: dev
-  - job_name: 'order-mq'
-    static_configs:
-      - targets: [ 'cloud_disk:4009' ]
-        labels:
-          job: order-mq
-          app: order-mq
-          env: dev
+#  - job_name: 'order-api'
+#    static_configs:
+#      - targets: [ 'cloud_disk:4007' ]
+#        labels:
+#          job: order-api
+#          app: order-api
+#          env: dev
+#  - job_name: 'order-rpc'
+#    static_configs:
+#      - targets: [ 'cloud_disk:4008' ]
+#        labels:
+#          job: order-rpc
+#          app: order-rpc
+#          env: dev
+#  - job_name: 'order-mq'
+#    static_configs:
+#      - targets: [ 'cloud_disk:4009' ]
+#        labels:
+#          job: order-mq
+#          app: order-mq
+#          env: dev
 
-  - job_name: 'payment-api'
-    static_configs:
-      - targets: [ 'cloud_disk:4011' ]
-        labels:
-          job: payment-api
-          app: payment-api
-          env: dev
-  - job_name: 'payment-rpc'
-    static_configs:
-      - targets: [ 'cloud_disk:4012' ]
-        labels:
-          job: payment-rpc
-          app: payment-rpc
-          env: dev
+#  - job_name: 'payment-api'
+#    static_configs:
+#      - targets: [ 'cloud_disk:4011' ]
+#        labels:
+#          job: payment-api
+#          app: payment-api
+#          env: dev
+#  - job_name: 'payment-rpc'
+#    static_configs:
+#      - targets: [ 'cloud_disk:4012' ]
+#        labels:
+#          job: payment-rpc
+#          app: payment-rpc
+#          env: dev
 
   - job_name: 'disk-api'
     static_configs:
@@ -91,7 +91,13 @@ scrape_configs:
           app: disk-rpc
           env: dev
 
-
+  - job_name: 'community-api'
+    static_configs:
+      - targets: [ 'cloud_disk:4017' ]
+        labels:
+          job: community-api
+          app: community-api
+          env: dev
 
   - job_name: 'mqueue-job'
     static_configs:

@@ -57,6 +57,5 @@ func (l *ListFileLogic) ListFile(in *pb.ListFileReq) (*pb.ListFileResp, error) {
 	if err != nil && err != model.ErrNotFound {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "ERROR 查询repository_pool list失败，Uid: %s,err:%v", in.Uid, err)
 	}
-
 	return &resp, nil
 }

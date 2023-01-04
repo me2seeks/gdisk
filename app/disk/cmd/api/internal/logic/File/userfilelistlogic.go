@@ -54,7 +54,11 @@ func (l *UserFileListLogic) UserFileList(req *types.UserFileListRequest) (resp *
 		return nil, err
 	}
 
+	println(fl.FileList[6].ParentId)
+
 	_ = copier.Copy(&resp.List, fl.FileList)
+
+	println(resp.List[6].ParentId)
 
 	_ = copier.Copy(&resp.DeletedList, fl.DeletedList)
 

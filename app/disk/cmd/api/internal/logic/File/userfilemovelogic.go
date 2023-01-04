@@ -31,19 +31,22 @@ func (l *UserFileMoveLogic) UserFileMove(req *types.UserFileMoveRequest) (resp *
 	parentData := new(model.UserRepository)
 	err = l.svcCtx.Engine.
 		Table("user_repository").
-		Where("identity = ? AND user_identity = ?", req.ParentIdentity, userIdentity).
+		Where("identity = ? ", req.ParentIdentity).
 		First(parentData).Error
-	if err != nil || parentData.Id == 0 {
 
+	if err != nil || parentData.Id == 0 {
+		println(err.Error())
 		return nil, errors.New("文件夹不存在")
 	}
 
-	var fileDetail *pb.FileDetail
+	var fileDetail pb.FileDetail
+
+	fileDetail.ParentId = parentData.Id
 	fileDetail.Identity = req.Identity
-	fileDetail.ParentId = req.ParentIdentity
 	fileDetail.Uid = userIdentity
 
-	_, err = l.svcCtx.DiskRpc.UpdateFile(l.ctx, &pb.UpdateFileReq{FileDetail: fileDetail})
+	_, err = l.svcCtx.DiskRpc.UpdateFile(l.ctx, &pb.UpdateFileReq{FileDetail: &fileDetail})
+
 	if err != nil {
 		return nil, err
 	}

@@ -107,7 +107,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPut,
-				Path:    "/file",
+				Path:    "/file/move",
 				Handler: File.UserFileMoveHandler(serverCtx),
 			},
 			{

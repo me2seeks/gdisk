@@ -27,7 +27,7 @@ message FileDetail {
   int64 Id = 1 ;
   string Identity =2 ;
   string Uid =3 ;
-  string ParentId   = 4 ;
+  int64 ParentId   = 4 ;
   string  RepositoryIdentity = 5 ;
   string Name =  6 ;
   int64 Size =  7 ;

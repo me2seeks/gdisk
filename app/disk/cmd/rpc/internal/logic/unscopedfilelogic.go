@@ -29,7 +29,7 @@ func NewUnscopedFileLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Unsc
 func (l *UnscopedFileLogic) UnscopedFile(in *pb.UnscopedFileReq) (*pb.UnscopedFileResp, error) {
 	err := l.svcCtx.Engine.
 		Table("user_repository").
-		Where("identity = ? AND uid = ? AND del_state = ?", in.Identity).
+		Where("identity = ? ", in.Identity).
 		Where("repository_pool.deleted_at IS NOT NULL").
 		Unscoped().Delete(model.UserRepository{})
 	if err != nil {

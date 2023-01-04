@@ -246,6 +246,3 @@ func (m *defaultUserAuthModel) CountBuilder(field string) squirrel.SelectBuilder
 func (m *defaultUserAuthModel) SumBuilder(field string) squirrel.SelectBuilder {
 	return squirrel.Select("IFNULL(SUM(" + field + "),0)").From(m.table)
 }
-
-
-
